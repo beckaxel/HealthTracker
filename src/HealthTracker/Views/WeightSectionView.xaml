@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:SectionMainView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    xmlns:c="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+    x:Class="HealthTracker.Views.WeightSectionView"
+>
+    <mvvm:SectionMainView.SectionName>Gewicht</mvvm:SectionMainView.SectionName>
+    <mvvm:SectionMainView.SectionIconImageSource>
+        <FontImageSource
+            Glyph="&#xf496;"
+            FontFamily="FontAwesomeSolid"
+            Color="CornflowerBlue"
+            Size="24"
+        />
+    </mvvm:SectionMainView.SectionIconImageSource>
+    <mvvm:SectionMainView.SectionCollation><x:Int32>3</x:Int32></mvvm:SectionMainView.SectionCollation>
+    <mvvm:SectionMainView.SectionContent>
+        <AbsoluteLayout>
+            <StackLayout
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize"
+            >
+                <c:ChartView
+                    Chart="{Binding Chart}"
+                    HeightRequest="200"
+                />
+                <ListView ItemsSource="{Binding Weights}" HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout
+                                    Orientation="Horizontal"
+                                    Margin="0"
+                                    Spacing="0"
+                                    Padding="10"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand"
+                                >
+                                    <StackLayout
+                                        Margin="0"
+                                        Padding="0"
+                                        Spacing="0"
+                                        VerticalOptions="FillAndExpand"
+                                    >
+                                        <Label
+                                            VerticalOptions="FillAndExpand"
+                                            VerticalTextAlignment="Center"
+                                        >
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Date, StringFormat='{0:dd.MM.yyyy}'}" FontSize="Medium" FontAttributes="Bold" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label
+                                            VerticalOptions="FillAndExpand"
+                                            VerticalTextAlignment="Center"
+                                        >
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Time, StringFormat='{0:hh\\:mm}'}" FontSize="Medium" />
+                                                    <Span Text=" " FontSize="Medium" />
+                                                    <Span Text="Uhr" FontSize="Medium" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </StackLayout>
+                                    <Label
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="End"
+                                        VerticalTextAlignment="Center"
+                                    >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Amount, Converter={StaticResource Key=WeightToString}}" FontSize="Large" FontAttributes="Bold" />
+                                                <Span Text=" " FontSize="Large" />
+                                                <Span Text="kg" FontSize="Large" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+            <Button
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
+                CornerRadius="30"
+                WidthRequest="60"
+                HeightRequest="60"
+                Margin="10"
+                BackgroundColor="CornflowerBlue"
+                Command="{Binding AddWeightCommand}">
+                <Button.ImageSource>
+                    <FontImageSource
+                        Glyph="&#xf067;"
+                        FontFamily="FontAwesomeSolid"
+                        Color="DarkBlue"
+                        Size="36"
+                    />
+                </Button.ImageSource>
+            </Button>
+        </AbsoluteLayout>
+    </mvvm:SectionMainView.SectionContent>
+</mvvm:SectionMainView>

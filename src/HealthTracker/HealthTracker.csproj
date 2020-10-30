@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1560" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
+    <PackageReference Include="Microcharts.Forms" Version="0.9.5.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
+    <Folder Include="Models\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="TinyIoC\" />
+    <Folder Include="MVVM\" />
+    <Folder Include="Storage\" />
+    <Folder Include="Fonts\" />
+    <Folder Include="Storage\Impl\" />
+    <Folder Include="Skia\" />
+    <Folder Include="Controls\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\Impl\" />
+    <Folder Include="Converters\" />
+    <Folder Include="Common\" />
+    <Folder Include="Templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Fonts\Font Awesome 5 Free-Solid-900.otf" />
+    <None Remove="Fonts\Font Awesome 5 Free-Regular-400.otf" />
+    <None Remove="Fonts\Font Awesome 5 Brands-Regular-400.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Fonts\Font Awesome 5 Free-Solid-900.otf" />
+    <EmbeddedResource Include="Fonts\Font Awesome 5 Free-Regular-400.otf" />
+    <EmbeddedResource Include="Fonts\Font Awesome 5 Brands-Regular-400.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microcharts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+  </ItemGroup>
+ 
+</Project>

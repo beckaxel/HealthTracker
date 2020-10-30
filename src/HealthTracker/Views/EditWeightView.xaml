@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:ViewBase
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    xmlns:vm="clr-namespace:HealthTracker.ViewModels"
+    mc:Ignorable="d"
+    x:Class="HealthTracker.Views.EditWeightView"
+    d:DataContext="{d:DesignInstance vm:EditWeightViewModel, IsDesignTimeCreatable=False}"
+>
+    <ContentPage.Content>
+        <StackLayout
+            BackgroundColor="CornflowerBlue"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+        >
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="StartAndExpand"
+                BackgroundColor="DarkBlue"
+            >
+                <Button
+                    Margin="10"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="Start"
+                    VerticalOptions="CenterAndExpand"
+                    Command="{Binding CancelCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf060;"
+                            FontFamily="FontAwesomeSolid"
+                            Color="CornflowerBlue"
+                            Size="Title"
+                        />
+                    </Button.ImageSource>
+                </Button>
+                <Label
+                    Margin="10"
+                    Text="Gewicht eingeben"
+                    TextColor="CornflowerBlue"
+                    FontSize="Title"
+                    FontAttributes="Bold"
+                    HorizontalOptions="StartAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                />
+            </StackLayout>
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+            >
+                <DatePicker
+                    Date="{Binding Date}"
+                    BackgroundColor="CornflowerBlue"
+                    TextColor="DarkBlue"
+                    FontSize="Large"
+                />
+                <TimePicker
+                    Time="{Binding Time}"
+                    BackgroundColor="CornflowerBlue"
+                    TextColor="DarkBlue"
+                    FontSize="Large"
+                />
+            </StackLayout>
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="StartAndExpand"
+            >
+                <Button
+                    Margin="10"
+                    CornerRadius="4"
+                    Text="-"
+                    BackgroundColor="DarkBlue"
+                    TextColor="CornflowerBlue"
+                    FontSize="Large"
+                    HorizontalOptions="CenterAndExpand"
+                    Command="{Binding DecreaseWeightCommand}"
+                />
+                <Entry
+                    WidthRequest="80"
+                    Text="{Binding Amount, Converter={StaticResource Key=WeightToString}}"
+                    Keyboard="Numeric"
+                    HorizontalTextAlignment="End"
+                    BackgroundColor="CornflowerBlue"
+                    TextColor="DarkBlue"
+                    FontSize="Large"
+                />
+                <Label
+                    Text="kg"
+                    VerticalOptions="CenterAndExpand"
+                    FontSize="Large"
+                    TextColor="DarkBlue"
+                />
+                <Button
+                    Margin="10"
+                    CornerRadius="4"
+                    Text="+"
+                    BackgroundColor="DarkBlue"
+                    TextColor="CornflowerBlue"
+                    FontSize="Large"
+                    HorizontalOptions="CenterAndExpand"
+                    Command="{Binding IncreaseWeightCommand}"
+                />
+            </StackLayout>
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+            >
+                <Button
+                    Margin="10"
+                    CornerRadius="4"
+                    ContentLayout="Right, 30"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="Red"
+                    TextColor="White"
+                    FontSize="Medium"
+                    Command="{Binding CancelCommand}"
+                >
+                    <Button.Text>Abbrechen</Button.Text>
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf057;"
+                            FontFamily="FontAwesomeRegular"
+                        />
+                    </Button.ImageSource>
+                </Button>
+                <Button
+                    Margin="10"
+                    CornerRadius="4"
+                    ContentLayout="Right, 30"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    FontSize="Medium"
+                    Command="{Binding SaveCommand}"
+                >
+                    <Button.Text>Speichern</Button.Text>
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf058;"
+                            FontFamily="FontAwesomeRegular"
+                        />
+                    </Button.ImageSource>
+                </Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</mvvm:ViewBase>
