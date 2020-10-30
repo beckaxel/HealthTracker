@@ -6,7 +6,6 @@ using HealthTracker.Services.Impl;
 using HealthTracker.Storage;
 using HealthTracker.Storage.Impl;
 using HealthTracker.TinyIoC;
-using HealthTracker.ViewModels;
 using SQLite;
 using TinyIoC;
 using Xamarin.Forms;
@@ -32,29 +31,13 @@ namespace HealthTracker
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "HealthTracker.db3"),
                 openFlags: SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache
             ));
+            serviceLocator.RegisterSingleton<ISettingsStorage, SQLiteSettingsStorage>();
+            serviceLocator.RegisterSingleton<IUserStorage, SQLiteUserStorage>();
             serviceLocator.RegisterSingleton<IWeightStorage, SQLiteWeightStorage>();
-            //serviceLocator.RegisterSingleton<ISectionViewModel, BeveragesViewModel>("Beverages");
-            //serviceLocator.RegisterSingleton<ISectionViewModel, MealsViewModel>("Meals");
-            //serviceLocator.RegisterSingleton<ISectionViewModel, WeightViewModel>("Weight");
-            //serviceLocator.RegisterSingleton<ISectionViewModel, SleepViewModel>("Sleep");
-            //serviceLocator.RegisterSingleton<MainViewModel>();
-
-            //var mainViewModel = serviceLocator.Resolve<MainViewModel>();
-
-            //var weightModel = new Weight { Id = 1000, Date = DateTime.Now, Amount = 100.1m };
-            //var editWeightViewModel = new EditWeightViewModel(serviceLocator.Resolve<IWeightStorage>()) { Model = weightModel };
-            //var editWeightView = new EditWeightView { ViewModel = editWeightViewModel };
-            //mainViewModel.Content = editWeightView;
-
-            //MainPage = new MainView { BindingContext = mainViewModel };
-
-            //ToDo: Alle Sections auf neue Variante umstellen
-            //ToDo: Globale Config hinzufügen, inkl. Section Definition
-            //ToDo: Theming (Darkmode) nicht vergessen
-            //ToDo: HeaderToolbar mit User- und SettingsSymbol für Benutzerbezogene angaben, wie Größe und Alter, Settings z.B. für das Deaktivieren von Sections
-            //ToDo: Ins GIT einchecken
-            //ToDo: PlayStore freispielen und Autodeploy einrichten
-
+            
+            //ToDo: Theming (inkl. Darkmode)
+            //ToDo: I18n und L10n
+            
             var navigationService = serviceLocator.Resolve<INavigationService>();
             navigationService.NavigateTo("BeveragesSection");
         }

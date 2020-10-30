@@ -59,7 +59,7 @@
       <Version>1.7.335</Version>
     </PackageReference>
     <PackageReference Include="Microcharts.Forms">
-      <Version>0.9.5.8</Version>
+      <Version>0.9.5.9</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
