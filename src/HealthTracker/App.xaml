@@ -9,5 +9,7 @@
     x:Class="HealthTracker.App">
     <Application.Resources>
         <c:WeightToStringConverter x:Key="WeightToString" />
+        <c:GenderToStringConverter x:Key="GenderToString" />
+        <c:InvertedBooleanConverter x:Key="InvertedBoolean" />
     </Application.Resources>
 </Application>

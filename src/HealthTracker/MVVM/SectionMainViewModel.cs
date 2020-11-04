@@ -29,7 +29,7 @@ namespace HealthTracker.MVVM
 
         private void OpenUserSettings()
         {
-            NavigationService.NavigateTo("UserSettings");
+            NavigationService.NavigateTo("User");
         }
 
         #endregion
@@ -42,7 +42,7 @@ namespace HealthTracker.MVVM
 
         private void OpenAppSettings()
         {
-            NavigationService.NavigateTo("AppSettings");
+            NavigationService.NavigateTo("Settings");
         }
 
         #endregion

@@ -7,7 +7,7 @@ namespace HealthTracker.Services.Impl
 {
     public class ViewModelService : IViewModelService
     {
-        private const string ViewModelSuffix = "ViewModel";
+        public string ViewModelNameSuffix { get; } = "ViewModel";
 
         private readonly IServiceLocator _serviceLocator;
         private readonly Dictionary<string, Type> _viewModelTypes;
@@ -17,11 +17,17 @@ namespace HealthTracker.Services.Impl
             _serviceLocator = serviceLocator;
             _viewModelTypes = typeResolver.ResolveTypes<ViewModelBase>
                 (
-                    "HealthTracker.ViewModels",
-                    suffix: ViewModelSuffix,
+                    "HealthTracker.MVVM",
+                    suffix: ViewModelNameSuffix,
                     options: TypeResolvingOptions.IgnoreCase | TypeResolvingOptions.ClassesOnly
                 )
-                .ToDictionary(t => t.Name.Substring(0, t.Name.Length - ViewModelSuffix.Length), StringComparer.InvariantCultureIgnoreCase);
+                .Concat(typeResolver.ResolveTypes<ViewModelBase>
+                (
+                    "HealthTracker.ViewModels",
+                    suffix: ViewModelNameSuffix,
+                    options: TypeResolvingOptions.IgnoreCase | TypeResolvingOptions.ClassesOnly
+                ))
+                .ToDictionary(t => t.Name.Substring(0, t.Name.Length - ViewModelNameSuffix.Length), StringComparer.InvariantCultureIgnoreCase);
 
             foreach (var viewModelType in _viewModelTypes.Values)
                 _serviceLocator.Register(viewModelType);

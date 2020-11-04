@@ -1,18 +1,46 @@
 ﻿using HealthTracker.MVVM;
+using HealthTracker.Storage;
 using Xamarin.Forms;
 
 namespace HealthTracker.ViewModels
 {
     public class SectionViewModel : ViewModelBase
     {
-        public SectionViewModel(string name)
+        bool _loading = false;
+
+        private readonly ISettingsStorage _settingsStorage;
+
+        public SectionViewModel(ISettingsStorage settingsStorage)
         {
-            Name = name;
+            _settingsStorage = settingsStorage;
+        }
+
+        protected override void OnParameterChanged(object oldValue, object newValue)
+        {
+            Name = newValue as string;
+            Load();
+        }
+
+        private void Load()
+        {
+            _loading = true;
+
+            Disabled = bool.TryParse(_settingsStorage.GetValue($"{Name}_IsDisabled"), out var disabled) && disabled;
+
+            _loading = false;
+        }
+
+        private void Save()
+        {
+            if (_loading)
+                return;
+
+            _settingsStorage.SetValue($"{Name}_IsDisabled", Disabled.ToString());
         }
 
         #region Name
 
-        public string Name { get; }
+        public string Name { get; private set; }
        
         #endregion
 
@@ -67,11 +95,15 @@ namespace HealthTracker.ViewModels
         #region Disabled
 
         private bool _disabled;
-
+        
         public bool Disabled
         {
             get => _disabled;
-            set => SetProperty(ref _disabled, value);
+            set
+            {
+                SetProperty(ref _disabled, value);
+                Save();
+            }
         }
 
         #endregion

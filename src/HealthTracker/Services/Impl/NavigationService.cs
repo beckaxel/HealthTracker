@@ -51,14 +51,18 @@ namespace HealthTracker.Services.Impl
         {
             var views = _viewService.GetViews<SectionMainView>();
             return views
-                .Select(v => new SectionViewModel(_viewService.GetNameOfView(v))
-                {
-                    DisplayName = v.SectionName,
-                    IconImageSource = v.SectionIconImageSource,
-                    Collation = v.SectionCollation
-                })
+                .Select(GetSectionViewModel)
                 .OrderBy(s => s.Collation)
                 .ToDictionary(s => s.Name);
+        }
+
+        private SectionViewModel GetSectionViewModel(SectionMainView sectionMainView)
+        {
+            var sectionViewModel = _viewModelService.GetViewModel<SectionViewModel>(_viewService.GetNameOfView(sectionMainView));
+            sectionViewModel.DisplayName = sectionMainView.SectionName;
+            sectionViewModel.IconImageSource = sectionMainView.SectionIconImageSource;
+            sectionViewModel.Collation = sectionMainView.SectionCollation;
+            return sectionViewModel;
         }
 
         public event EventHandler<ActiveSectionChangedEventArgs> ActiveSectionChanged;
@@ -84,8 +88,8 @@ namespace HealthTracker.Services.Impl
             {
                 if (section.Disabled)
                     EnabledSections.Remove(section);
-                else
-                    EnabledSections.InsertBefore(s => s.Collation > section.Collation, section);
+                else if (!EnabledSections.InsertBefore(s => s.Collation > section.Collation, section))
+                    EnabledSections.Append(section);
             }
             else if (e.PropertyName == nameof(SectionViewModel.Active) && section.Active)
             {
@@ -99,14 +103,13 @@ namespace HealthTracker.Services.Impl
 
         #region NavigateTo
 
-        public void NavigateTo(string name, object parameter = null)
+        public void NavigateTo(string name, object parameter)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
             var view = _viewService.GetView(name);
-            var viewModel = _viewModelService.GetViewModel(name);
-            viewModel.Parameter = parameter;
+            var viewModel = _viewModelService.GetViewModel(name, parameter);
             view.BindingContext = viewModel;
 
             if (_navigationTarget.CurrentView != null)

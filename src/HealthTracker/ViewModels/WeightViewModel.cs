@@ -93,7 +93,7 @@ namespace HealthTracker.ViewModels
             {
                 Id = Id ?? default,
                 Date = _dateAndTime.UtcDateTime,
-                Amount = _amount ?? default
+                Amount = Amount ?? default
             };
         }
 

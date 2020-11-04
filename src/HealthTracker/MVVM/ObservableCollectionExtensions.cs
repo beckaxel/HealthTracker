@@ -22,38 +22,40 @@ namespace HealthTracker.MVVM
             source.Add(item);
         }
 
-        public static void InsertBefore<T>(this ObservableCollection<T> source, Func<T, bool> predicate, T item)
+        public static bool InsertBefore<T>(this ObservableCollection<T> source, Func<T, bool> predicate, T item)
         {
             for (var i = 0; i < source.Count; i++)
             {
                 if (predicate(source[i]))
                 {
                     source.Insert(i, item);
-                    break;
+                    return true;
                 }
             }
+            return false;
         }
 
-        public static void InsertBefore<T>(this ObservableCollection<T> source, T itemToFind, T itemToInsert)
+        public static bool InsertBefore<T>(this ObservableCollection<T> source, T itemToFind, T itemToInsert)
         {
-            InsertBefore(source, i => ReferenceEquals(i, itemToFind), itemToInsert);
+            return InsertBefore(source, i => ReferenceEquals(i, itemToFind), itemToInsert);
         }
 
-        public static void InsertAfter<T>(this ObservableCollection<T> source, Func<T, bool> predicate, T item)
+        public static bool InsertAfter<T>(this ObservableCollection<T> source, Func<T, bool> predicate, T item)
         {
             for (var i = 0; i < source.Count; i++)
             {
                 if (predicate(source[i]))
                 {
                     source.Insert(i + 1, item);
-                    break;
+                    return true;
                 }
             }
+            return false;
         }
 
-        public static void InsertAfter<T>(this ObservableCollection<T> source, T itemToFind, T itemToInsert)
+        public static bool InsertAfter<T>(this ObservableCollection<T> source, T itemToFind, T itemToInsert)
         {
-            InsertAfter(source, i => ReferenceEquals(i, itemToFind), itemToInsert);
+            return InsertAfter(source, i => ReferenceEquals(i, itemToFind), itemToInsert);
         }
     }
 }
