@@ -12,5 +12,6 @@ namespace HealthTracker.Services
         ICollection<SectionViewModel> AllSections { get; }
         ObservableCollection<SectionViewModel> EnabledSections { get; }
         void NavigateTo(string name, object parameter);
+        void Initialize();
     }
 }

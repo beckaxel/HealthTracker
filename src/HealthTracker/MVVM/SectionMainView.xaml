@@ -53,7 +53,7 @@
                     BackgroundColor="Transparent"
                     HorizontalOptions="End"
                     VerticalOptions="CenterAndExpand"
-                    Command="{Binding OpenUserSettingsCommand}">
+                    Command="{Binding OpenUserCommand}">
                     <Button.ImageSource>
                         <FontImageSource
                             Glyph="&#xf007;"
@@ -71,7 +71,7 @@
                     BackgroundColor="Transparent"
                     HorizontalOptions="End"
                     VerticalOptions="CenterAndExpand"
-                    Command="{Binding OpenAppSettingsCommand}">
+                    Command="{Binding OpenSettingsCommand}">
                     <Button.ImageSource>
                         <FontImageSource
                             Glyph="&#xf013;"

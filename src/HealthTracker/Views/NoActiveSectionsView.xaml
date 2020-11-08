@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:ViewBase
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    x:Class="HealthTracker.Views.NoEnabledSectionView"
+>
+    <ContentPage.Content>
+        <StackLayout
+            Margin="0"
+            Padding="0"
+            Spacing="0"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            BackgroundColor="CornflowerBlue"
+        >
+            <Label
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                TextColor="DarkBlue"
+                Text="Es gibt z.Zt. keine aktiven Bereiche"
+            />
+            <Label
+                VerticalOptions="StartAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                TextColor="DarkBlue"
+            >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="In den " />
+                        <Span
+                            TextColor="Black"
+                            TextDecorations="Underline"
+                            Text="Einstellungen"
+                        >
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenSettingsCommand}" />
+                            </Span.GestureRecognizers>
+                        </Span>
+                        <Span Text=" können Bereiche aktiviert und deaktiviert werden" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>
+    </ContentPage.Content>
+</mvvm:ViewBase>

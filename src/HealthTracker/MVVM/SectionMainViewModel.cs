@@ -23,24 +23,24 @@ namespace HealthTracker.MVVM
 
         #region UserSettings
 
-        private ICommand _openUserSettingsCommand;
+        private ICommand _openUserCommand;
 
-        public ICommand OpenUserSettingsCommand => GetLazyProperty(ref _openUserSettingsCommand, () => new Command(OpenUserSettings));
+        public ICommand OpenUserCommand => GetLazyProperty(ref _openUserCommand, () => new Command(OpenUser));
 
-        private void OpenUserSettings()
+        private void OpenUser()
         {
             NavigationService.NavigateTo("User");
         }
 
         #endregion
 
-        #region AppSettings
+        #region Settings
 
-        private ICommand _openAppSettingsCommand;
+        private ICommand _openSettingsCommand;
 
-        public ICommand OpenAppSettingsCommand => GetLazyProperty(ref _openAppSettingsCommand, () => new Command(OpenAppSettings));
+        public ICommand OpenSettingsCommand => GetLazyProperty(ref _openSettingsCommand, () => new Command(OpenSettings));
 
-        private void OpenAppSettings()
+        private void OpenSettings()
         {
             NavigationService.NavigateTo("Settings");
         }

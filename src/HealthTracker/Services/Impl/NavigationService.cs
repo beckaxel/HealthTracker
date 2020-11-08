@@ -87,16 +87,50 @@ namespace HealthTracker.Services.Impl
             if (e.PropertyName == nameof(SectionViewModel.Disabled))
             {
                 if (section.Disabled)
-                    EnabledSections.Remove(section);
-                else if (!EnabledSections.InsertBefore(s => s.Collation > section.Collation, section))
-                    EnabledSections.Append(section);
+                    OnSectionDisabled(section);
+                else
+                    OnSectionEnabled(section);
             }
             else if (e.PropertyName == nameof(SectionViewModel.Active) && section.Active)
             {
-                if (ActiveSection != null)
-                    ActiveSection.Active = false;
-                ActiveSection = section;
+                OnSectionActivated(section);
             }
+        }
+
+        private void OnSectionEnabled(SectionViewModel section)
+        {
+            if (!EnabledSections.InsertBefore(s => s.Collation > section.Collation, section))
+                EnabledSections.Append(section);
+
+            if (EnabledSections.Count == 1)
+                section.Active = true;
+        }
+
+        private void OnSectionDisabled(SectionViewModel section)
+        {
+            var disabledIndex = EnabledSections.IndexOf(section);
+            if (section.Active)
+            {
+                var activeIndex = Math.Abs(disabledIndex - 1);
+                if (activeIndex < EnabledSections.Count)
+                {
+                    EnabledSections[activeIndex].Active = true;
+                }
+                else
+                {
+                    section.Active = false;
+                    ActiveSection = null;
+                }
+            }
+
+            EnabledSections.RemoveAt(disabledIndex);
+        }
+
+        private void OnSectionActivated(SectionViewModel section)
+        {
+            if (ActiveSection != null)
+                ActiveSection.Active = false;
+            ActiveSection = section;
         }
         
         #endregion
@@ -123,11 +157,21 @@ namespace HealthTracker.Services.Impl
 
         private void OnBackButtonPressed(object sender, BackButtonPressedEventArgs e)
         {
-            if (sender is SectionMainView)
+            if (sender is SectionMainView || sender is NoEnabledSectionViewModel)
                 return;
 
             this.NavigateToActiveSection();
             e.PreventDefault = true;
+        }
+
+        #endregion
+
+        #region Initialize
+
+        public void Initialize()
+        {
+            ActiveSection = EnabledSections.FirstOrDefault();
+            this.NavigateToActiveSection();
         }
 
         #endregion

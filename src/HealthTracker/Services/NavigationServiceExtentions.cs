@@ -11,7 +11,7 @@ namespace HealthTracker.Services
 
         public static void NavigateToActiveSection(this INavigationService navigationService)
         {
-            navigationService.NavigateTo(navigationService.ActiveSection.Name);
+            navigationService.NavigateTo(navigationService.ActiveSection?.Name ?? "NoEnabledSection");
         }
     }
 }
