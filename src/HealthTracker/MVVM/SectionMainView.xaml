@@ -24,7 +24,7 @@
                 Spacing="0"
                 Orientation="Horizontal"
                 HorizontalOptions="FillAndExpand"
-                BackgroundColor="DarkBlue"
+                BackgroundColor="{DynamicResource PrimaryColor}"
             >
                 <Image
                     Margin="10"
@@ -37,7 +37,7 @@
                     BindingContext="{Binding ActiveSection}"
                     Text="{Binding DisplayName}"
                     Margin="10"
-                    TextColor="CornflowerBlue"
+                    TextColor="{DynamicResource PrimaryTextColor}"
                     HorizontalOptions="StartAndExpand"
                     VerticalOptions="CenterAndExpand"
                     HorizontalTextAlignment="Start"
@@ -58,7 +58,7 @@
                         <FontImageSource
                             Glyph="&#xf007;"
                             FontFamily="FontAwesomeSolid"
-                            Color="CornflowerBlue"
+                            Color="{DynamicResource PrimaryTextColor}"
                             Size="Title"
                         />
                     </Button.ImageSource>
@@ -76,7 +76,7 @@
                         <FontImageSource
                             Glyph="&#xf013;"
                             FontFamily="FontAwesomeSolid"
-                            Color="CornflowerBlue"
+                            Color="{DynamicResource PrimaryTextColor}"
                             Size="Title"
                         />
                     </Button.ImageSource>
@@ -94,7 +94,7 @@
                 Spacing="0"
                 Orientation="Horizontal"
                 HorizontalOptions="FillAndExpand"
-                BackgroundColor="DarkBlue"
+                BackgroundColor="{DynamicResource PrimaryColor}"
                 BindableLayout.ItemsSource="{Binding Sections}"
             >
                 <BindableLayout.ItemTemplate>
@@ -114,7 +114,7 @@
                             <BoxView HeightRequest="6">
                                 <BoxView.Triggers>
                                     <DataTrigger TargetType="BoxView" Binding="{Binding Active}" Value="True">
-                                        <Setter Property="BackgroundColor" Value="CornflowerBlue" />
+                                        <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryTextColor}" />
                                     </DataTrigger>
                                 </BoxView.Triggers>
                             </BoxView>
@@ -125,7 +125,7 @@
                                 VerticalTextAlignment="Center"
                                 HorizontalTextAlignment="Center"
                                 Margin="0, 0, 0, 10"
-                                TextColor="CornflowerBlue"
+                                TextColor="{DynamicResource PrimaryTextColor}"
                             />
                         </StackLayout>
                     </DataTemplate>

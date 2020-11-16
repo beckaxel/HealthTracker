@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:ViewBase
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    x:Class="HealthTracker.Views.NoActiveSectionsView"
+>
+    <ContentPage.Content>
+        <StackLayout
+            Margin="0"
+            Padding="0"
+            Spacing="0"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+        >
+            <StackLayout
+                Margin="0"
+                Padding="5, 0"
+                Spacing="0"
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand"
+                BackgroundColor="DarkBlue"
+            >
+                <BoxView
+                    Margin="0"
+                    HorizontalOptions="StartAndExpand"
+                />
+                <Button
+                    Margin="0"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="End"
+                    VerticalOptions="CenterAndExpand"
+                    Command="{Binding OpenUserSettingsCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf007;"
+                            FontFamily="FontAwesomeSolid"
+                            Color="CornflowerBlue"
+                            Size="Title"
+                        />
+                    </Button.ImageSource>
+                </Button>
+                <Button
+                    Margin="0"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="End"
+                    VerticalOptions="CenterAndExpand"
+                    Command="{Binding OpenAppSettingsCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf013;"
+                            FontFamily="FontAwesomeSolid"
+                            Color="CornflowerBlue"
+                            Size="Title"
+                        />
+                    </Button.ImageSource>
+                </Button>
+            </StackLayout>
+            <Label
+                Text="Es gibt z.Zt. keine aktiven Bereiche"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+            />
+        </StackLayout>
+    </ContentPage.Content>
+</mvvm:ViewBase>

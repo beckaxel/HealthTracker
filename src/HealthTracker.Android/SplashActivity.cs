@@ -22,9 +22,9 @@ namespace HealthTracker.Droid
         
         public override void OnBackPressed() { }
 
-        private async void LaunchAppAsync()
+        private Task LaunchAppAsync()
         {   
-            StartActivity(new Intent(Application.Context, typeof (MainActivity)));
+            return Task.Run(() => StartActivity(new Intent(Application.Context, typeof (MainActivity))));
         }
     }
 }

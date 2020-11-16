@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:ViewBase
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    xmlns:vm="clr-namespace:HealthTracker.ViewModels"
+    xmlns:c="clr-namespace:HealthTracker.Converters"
+    mc:Ignorable="d"
+    x:Class="HealthTracker.Views.UserView"
+    d:DataContext="{d:DesignInstance vm:UserViewModel, IsDesignTimeCreatable=False}"
+>
+    <ContentPage.Content>
+        <StackLayout
+            BackgroundColor="CornflowerBlue"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+        >
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="StartAndExpand"
+                BackgroundColor="DarkBlue"
+            >
+                <Button
+                    Margin="10"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="Start"
+                    VerticalOptions="CenterAndExpand"
+                    Command="{Binding CloseCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf060;"
+                            FontFamily="FontAwesomeSolid"
+                            Color="CornflowerBlue"
+                            Size="Title"
+                        />
+                    </Button.ImageSource>
+                </Button>
+                <Label
+                    Margin="10"
+                    Text="Über mich"
+                    TextColor="CornflowerBlue"
+                    FontSize="Title"
+                    FontAttributes="Bold"
+                    HorizontalOptions="StartAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                />
+            </StackLayout>
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+            >
+                <TableView Intent="Settings" HasUnevenRows="True">
+                    <TableRoot>
+                        <TableSection Title="Allgemein">
+                            <ViewCell>
+                                <StackLayout
+                                    Spacing="0"
+                                    Margin="15, 7, 9, 8"
+                                    Padding="0"
+                                    Orientation="Horizontal"
+                                    HorizontalOptions="FillAndExpand"
+                                >
+                                    <Label
+                                        Margin="0"
+                                        Text="Geschlecht"
+                                        VerticalTextAlignment="Center"
+                                    />
+                                    <Picker
+                                        Margin="0"
+                                        ItemsSource="{x:Static c:GenderToStringConverter.Values}"
+                                        SelectedItem="{Binding Gender, Converter={StaticResource GenderToString}}"
+                                        HorizontalOptions="FillAndExpand"
+                                    />
+                                </StackLayout>
+                            </ViewCell>
+                            <EntryCell Label="Größe" Keyboard="Numeric" Text="{Binding Height}" />
+                            <ViewCell>
+                                <StackLayout
+                                    Spacing="0"
+                                    Margin="15, 7, 9, 8"
+                                    Padding="0"
+                                    Orientation="Horizontal"
+                                    HorizontalOptions="FillAndExpand"
+                                >
+                                    <Label
+                                        Margin="0"
+                                        Text="Geburtstag"
+                                        VerticalTextAlignment="Center"
+                                    />
+                                    <DatePicker
+                                        Margin="0"
+                                        Date="{Binding BirthDate}"
+                                        HorizontalOptions="FillAndExpand"
+                                    />
+                                </StackLayout>
+                            </ViewCell>
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</mvvm:ViewBase>

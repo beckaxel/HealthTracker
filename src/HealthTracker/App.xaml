@@ -5,11 +5,19 @@
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:c="clr-namespace:HealthTracker.Converters"
+    xmlns:themes="clr-namespace:HealthTracker.Themes"
     mc:Ignorable="d"
     x:Class="HealthTracker.App">
     <Application.Resources>
-        <c:WeightToStringConverter x:Key="WeightToString" />
-        <c:GenderToStringConverter x:Key="GenderToString" />
-        <c:InvertedBooleanConverter x:Key="InvertedBoolean" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <themes:LightTheme />
+                <ResourceDictionary>
+                    <c:WeightToStringConverter x:Key="WeightToString" />
+                    <c:GenderToStringConverter x:Key="GenderToString" />
+                    <c:InvertedBooleanConverter x:Key="InvertedBoolean" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

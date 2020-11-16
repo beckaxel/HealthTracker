@@ -32,6 +32,8 @@
     <Folder Include="Converters\" />
     <Folder Include="Common\" />
     <Folder Include="Templates\" />
+    <Folder Include="Themes\" />
+    <Folder Include="i18n\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Fonts\Font Awesome 5 Free-Solid-900.otf" />
@@ -44,7 +46,26 @@
     <EmbeddedResource Include="Fonts\Font Awesome 5 Brands-Regular-400.otf" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microcharts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Microcharts, Version=0.9.5.9, Culture=neutral, PublicKeyToken=null" />
   </ItemGroup>
  
+  
+  <ItemGroup>
+    <EmbeddedResource Update="i18n\Text.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Text.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="i18n\Text.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Text.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="i18n\Text.Designer.cs">
+      <DependentUpon>Text.resx</DependentUpon>
+    </Compile>
+    <Compile Update="i18n\Text.de.Designer.cs">
+      <DependentUpon>Text.de.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

@@ -20,9 +20,6 @@ namespace HealthTracker
         public App()
         {
             InitializeComponent();
-
-            var splashScreenViewModel = new SplashScreenViewModel();
-            MainPage = new SplashScreenView() { BindingContext = splashScreenViewModel };
         }
 
         ViewBase INavigationTarget.CurrentView

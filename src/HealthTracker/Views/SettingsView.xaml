@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:ViewBase
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    xmlns:vm="clr-namespace:HealthTracker.ViewModels"
+    mc:Ignorable="d"
+    x:Class="HealthTracker.Views.SettingsView"
+    d:DataContext="{d:DesignInstance vm:SettingsViewModel, IsDesignTimeCreatable=False}"
+>
+    <ContentPage.Content>
+        <StackLayout
+            BackgroundColor="CornflowerBlue"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+        >
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="StartAndExpand"
+                BackgroundColor="DarkBlue"
+            >
+                <Button
+                    Margin="10"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="Start"
+                    VerticalOptions="CenterAndExpand"
+                    Command="{Binding CloseCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf060;"
+                            FontFamily="FontAwesomeSolid"
+                            Color="CornflowerBlue"
+                            Size="Title"
+                        />
+                    </Button.ImageSource>
+                </Button>
+                <Label
+                    Margin="10"
+                    Text="Einstellungen"
+                    TextColor="CornflowerBlue"
+                    FontSize="Title"
+                    FontAttributes="Bold"
+                    HorizontalOptions="StartAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                />
+            </StackLayout>
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+            >
+                <ListView
+                    Margin="10, 5"
+                    SelectionMode="None"
+                    ItemsSource="{Binding Sections}"
+                    Header="Bereiche"
+                >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <SwitchCell
+                                Text="{Binding DisplayName}"
+                                On="{Binding Disabled, Converter={StaticResource InvertedBoolean}}"
+                                OnColor="Green"
+                            />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</mvvm:ViewBase>
