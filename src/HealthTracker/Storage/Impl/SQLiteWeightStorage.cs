@@ -14,6 +14,7 @@ namespace HealthTracker.Storage.Impl
         {
             connection.CreateTable<Weight>(CreateFlags.None);
             Connection = connection;
+#if DEBUG
             if (!Connection.Table<Weight>().Any())
             {
                 Insert(new Weight { Date = DateTime.Now.AddDays(-5), Amount = 66.2m });
@@ -23,7 +24,9 @@ namespace HealthTracker.Storage.Impl
                 Insert(new Weight { Date = DateTime.Now.AddDays(-1), Amount = 65.5m });
                 Insert(new Weight { Date = DateTime.Now, Amount = 65.3m });
             }
+#endif
         }
+
 
         public IEnumerable<Weight> All()
         {

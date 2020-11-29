@@ -13,15 +13,15 @@
 >
     <ContentPage.Content>
         <StackLayout
-            BackgroundColor="CornflowerBlue"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"
+            Style="{DynamicResource AppContent}"
         >
             <StackLayout
                 Orientation="Horizontal"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="StartAndExpand"
-                BackgroundColor="DarkBlue"
+                Style="{DynamicResource AppHeader}"
             >
                 <Button
                     Margin="10"
@@ -36,7 +36,7 @@
                         <FontImageSource
                             Glyph="&#xf060;"
                             FontFamily="FontAwesomeSolid"
-                            Color="CornflowerBlue"
+                            Color="{DynamicResource PrimaryTextColor}"
                             Size="Title"
                         />
                     </Button.ImageSource>
@@ -44,7 +44,7 @@
                 <Label
                     Margin="10"
                     Text="Über mich"
-                    TextColor="CornflowerBlue"
+                    TextColor="{DynamicResource PrimaryTextColor}"
                     FontSize="Title"
                     FontAttributes="Bold"
                     HorizontalOptions="StartAndExpand"
@@ -58,7 +58,7 @@
             >
                 <TableView Intent="Settings" HasUnevenRows="True">
                     <TableRoot>
-                        <TableSection Title="Allgemein">
+                        <TableSection Title="Allgemein" TextColor="{DynamicResource PrimaryDarkColor}">
                             <ViewCell>
                                 <StackLayout
                                     Spacing="0"

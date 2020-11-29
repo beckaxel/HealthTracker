@@ -10,7 +10,7 @@
         <FontImageSource
             Glyph="&#xf2e7;"
             FontFamily="FontAwesomeSolid"
-            Color="CornflowerBlue"
+            Color="{DynamicResource PrimaryTextColor}"
             Size="24"
         />
     </mvvm:SectionMainView.SectionIconImageSource>

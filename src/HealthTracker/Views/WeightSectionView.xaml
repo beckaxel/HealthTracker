@@ -13,8 +13,8 @@
         <FontImageSource
             Glyph="&#xf496;"
             FontFamily="FontAwesomeSolid"
-            Color="CornflowerBlue"
             Size="24"
+            Color="{DynamicResource PrimaryTextColor}"
         />
     </mvvm:SectionMainView.SectionIconImageSource>
     <mvvm:SectionMainView.SectionCollation><x:Int32>3</x:Int32></mvvm:SectionMainView.SectionCollation>
@@ -96,13 +96,13 @@
                 WidthRequest="60"
                 HeightRequest="60"
                 Margin="10"
-                BackgroundColor="CornflowerBlue"
+                BackgroundColor="{DynamicResource SecondaryLightColor}"
                 Command="{Binding AddWeightCommand}">
                 <Button.ImageSource>
                     <FontImageSource
                         Glyph="&#xf067;"
                         FontFamily="FontAwesomeSolid"
-                        Color="DarkBlue"
+                        Color="{DynamicResource PrimaryTextColor}"
                         Size="36"
                     />
                 </Button.ImageSource>

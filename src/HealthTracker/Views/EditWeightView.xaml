@@ -12,15 +12,15 @@
 >
     <ContentPage.Content>
         <StackLayout
-            BackgroundColor="CornflowerBlue"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"
+            Style="{DynamicResource AppContent}"
         >
             <StackLayout
                 Orientation="Horizontal"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="StartAndExpand"
-                BackgroundColor="DarkBlue"
+                Style="{DynamicResource AppHeader}"
             >
                 <Button
                     Margin="10"
@@ -35,7 +35,7 @@
                         <FontImageSource
                             Glyph="&#xf060;"
                             FontFamily="FontAwesomeSolid"
-                            Color="CornflowerBlue"
+                            Color="{DynamicResource PrimaryTextColor}"
                             Size="Title"
                         />
                     </Button.ImageSource>
@@ -43,7 +43,7 @@
                 <Label
                     Margin="10"
                     Text="Gewicht eingeben"
-                    TextColor="CornflowerBlue"
+                    TextColor="{DynamicResource PrimaryTextColor}"
                     FontSize="Title"
                     FontAttributes="Bold"
                     HorizontalOptions="StartAndExpand"
@@ -57,14 +57,10 @@
             >
                 <DatePicker
                     Date="{Binding Date}"
-                    BackgroundColor="CornflowerBlue"
-                    TextColor="DarkBlue"
                     FontSize="Large"
                 />
                 <TimePicker
                     Time="{Binding Time}"
-                    BackgroundColor="CornflowerBlue"
-                    TextColor="DarkBlue"
                     FontSize="Large"
                 />
             </StackLayout>
@@ -77,8 +73,8 @@
                     Margin="10"
                     CornerRadius="4"
                     Text="-"
-                    BackgroundColor="DarkBlue"
-                    TextColor="CornflowerBlue"
+                    BackgroundColor="{DynamicResource PrimaryColor}"
+                    TextColor="{DynamicResource PrimaryTextColor}"
                     FontSize="Large"
                     HorizontalOptions="CenterAndExpand"
                     Command="{Binding DecreaseWeightCommand}"
@@ -88,22 +84,19 @@
                     Text="{Binding Amount, Converter={StaticResource Key=WeightToString}}"
                     Keyboard="Numeric"
                     HorizontalTextAlignment="End"
-                    BackgroundColor="CornflowerBlue"
-                    TextColor="DarkBlue"
                     FontSize="Large"
                 />
                 <Label
                     Text="kg"
                     VerticalOptions="CenterAndExpand"
                     FontSize="Large"
-                    TextColor="DarkBlue"
                 />
                 <Button
                     Margin="10"
                     CornerRadius="4"
                     Text="+"
-                    BackgroundColor="DarkBlue"
-                    TextColor="CornflowerBlue"
+                    BackgroundColor="{DynamicResource PrimaryColor}"
+                    TextColor="{DynamicResource PrimaryTextColor}"
                     FontSize="Large"
                     HorizontalOptions="CenterAndExpand"
                     Command="{Binding IncreaseWeightCommand}"
@@ -111,16 +104,17 @@
             </StackLayout>
             <StackLayout
                 Orientation="Horizontal"
-                HorizontalOptions="CenterAndExpand"
+                HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand"
+                Style="{DynamicResource AppFooter}"
             >
                 <Button
                     Margin="10"
                     CornerRadius="4"
                     ContentLayout="Right, 30"
                     HorizontalOptions="FillAndExpand"
-                    BackgroundColor="Red"
-                    TextColor="White"
+                    BackgroundColor="{DynamicResource PrimaryLightColor}"
+                    TextColor="{DynamicResource PrimaryTextColor}"
                     FontSize="Medium"
                     Command="{Binding CancelCommand}"
                 >
@@ -129,6 +123,7 @@
                         <FontImageSource
                             Glyph="&#xf057;"
                             FontFamily="FontAwesomeRegular"
+                            Color="{DynamicResource PrimaryTextColor}"
                         />
                     </Button.ImageSource>
                 </Button>
@@ -137,8 +132,8 @@
                     CornerRadius="4"
                     ContentLayout="Right, 30"
                     HorizontalOptions="FillAndExpand"
-                    BackgroundColor="Green"
-                    TextColor="White"
+                    BackgroundColor="{DynamicResource SecondaryColor}"
+                    TextColor="{DynamicResource SecondaryTextColor}"
                     FontSize="Medium"
                     Command="{Binding SaveCommand}"
                 >
@@ -147,6 +142,7 @@
                         <FontImageSource
                             Glyph="&#xf058;"
                             FontFamily="FontAwesomeRegular"
+                            Color="{DynamicResource SecondaryTextColor}"
                         />
                     </Button.ImageSource>
                 </Button>

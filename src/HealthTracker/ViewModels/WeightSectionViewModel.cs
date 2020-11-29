@@ -6,6 +6,7 @@ using HealthTracker.MVVM;
 using HealthTracker.Services;
 using HealthTracker.Skia;
 using HealthTracker.Storage;
+using HealthTracker.Themes;
 using Microcharts;
 using Xamarin.Forms;
 
@@ -58,7 +59,13 @@ namespace HealthTracker.ViewModels
 
         public void UpdateChart()
         {
-            var chartBuilder = new SimpleLineChartBuilder();
+            var theme = new LightTheme();
+
+            var chartBuilder = new SimpleLineChartBuilder
+            {
+                BackgroundColor = (Color)theme["PrimaryDarkColor"],
+                ForegroundColor = (Color)theme["SecondaryColor"]
+            };
 
             var values = Weights
                 .GroupBy(w => w.Date, w => w.Amount)
