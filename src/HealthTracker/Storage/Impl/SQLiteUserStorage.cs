@@ -1,5 +1,7 @@
 ﻿using SQLite;
 using HealthTracker.Models;
+using System.Linq;
+using HealthTracker.Seeds;
 
 namespace HealthTracker.Storage.Impl
 {
@@ -11,6 +13,11 @@ namespace HealthTracker.Storage.Impl
         {
             connection.CreateTable<User>(CreateFlags.None);
             Connection = connection;
+
+            if (!Connection.Table<User>().Any())
+            {
+                UserSeed.Seed(this);
+            }
         }
 
         public User GetOrAdd()

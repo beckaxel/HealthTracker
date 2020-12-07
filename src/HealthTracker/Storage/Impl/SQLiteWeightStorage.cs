@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HealthTracker.Models;
+using HealthTracker.Seeds;
 using SQLite;
 
 namespace HealthTracker.Storage.Impl
@@ -14,17 +15,11 @@ namespace HealthTracker.Storage.Impl
         {
             connection.CreateTable<Weight>(CreateFlags.None);
             Connection = connection;
-#if DEBUG
+
             if (!Connection.Table<Weight>().Any())
             {
-                Insert(new Weight { Date = DateTime.Now.AddDays(-5), Amount = 66.2m });
-                Insert(new Weight { Date = DateTime.Now.AddDays(-4), Amount = 65.9m });
-                Insert(new Weight { Date = DateTime.Now.AddDays(-3), Amount = 65.8m });
-                Insert(new Weight { Date = DateTime.Now.AddDays(-2), Amount = 65.2m });
-                Insert(new Weight { Date = DateTime.Now.AddDays(-1), Amount = 65.5m });
-                Insert(new Weight { Date = DateTime.Now, Amount = 65.3m });
+                WeightSeed.Seed(this);
             }
-#endif
         }
 
 

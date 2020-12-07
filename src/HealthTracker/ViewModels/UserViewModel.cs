@@ -91,7 +91,7 @@ namespace HealthTracker.ViewModels
 
             var user = UserStorage.GetOrAdd();
             _id = user.Id;
-            _birthDate = user.BirthDate.Date;
+            _birthDate = user.BirthDate.ToLocalTime().Date;
             _height = user.Height;
             _gender = user.Gender;
 
@@ -108,7 +108,7 @@ namespace HealthTracker.ViewModels
                 new User
                 {
                     Id = Id ?? default,
-                    BirthDate = BirthDate?.Date ?? default,
+                    BirthDate = BirthDate?.Date.ToUniversalTime() ?? default,
                     Height = Height ?? default,
                     Gender = Gender ?? default
                 }

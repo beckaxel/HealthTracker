@@ -69,6 +69,7 @@ namespace HealthTracker.ViewModels
 
             var values = Weights
                 .GroupBy(w => w.Date, w => w.Amount)
+                .OrderBy(g => g.Key)
                 .Select(g => Convert.ToSingle(g.Average()));
 
             chartBuilder.AddValueRange(values);

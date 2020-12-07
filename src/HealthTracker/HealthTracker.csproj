@@ -35,6 +35,7 @@
     <Folder Include="Themes\" />
     <Folder Include="i18n\" />
     <Folder Include="Styles\" />
+    <Folder Include="Seeds\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Fonts\Font Awesome 5 Free-Solid-900.otf" />
