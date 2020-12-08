@@ -42,6 +42,8 @@ namespace HealthTracker
             ));
             serviceLocator.RegisterSingleton<ISettingsStorage, SQLiteSettingsStorage>();
             serviceLocator.RegisterSingleton<IUserStorage, SQLiteUserStorage>();
+            serviceLocator.RegisterSingleton<IBeverageTypeStorage, SQLiteBeverageTypeStorage>();
+            serviceLocator.RegisterSingleton<IBeverageStorage, SQLiteBeverageStorage>();
             serviceLocator.RegisterSingleton<IWeightStorage, SQLiteWeightStorage>();
 
             //ToDo: Theming (inkl. Darkmode)
