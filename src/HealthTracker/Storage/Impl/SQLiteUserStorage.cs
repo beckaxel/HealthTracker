@@ -1,20 +1,15 @@
 ﻿using SQLite;
 using HealthTracker.Models;
-using System.Linq;
 using HealthTracker.Seeds;
 
 namespace HealthTracker.Storage.Impl
 {
-    public class SQLiteUserStorage : IUserStorage
+    public class SQLiteUserStorage : SQLiteStorageBase<User>, IUserStorage
     {
-        protected SQLiteConnection Connection { get; }
-
         public SQLiteUserStorage(SQLiteConnection connection)
+            : base(connection)
         {
-            connection.CreateTable<User>(CreateFlags.None);
-            Connection = connection;
-
-            if (!Connection.Table<User>().Any())
+            if (ShouldSeed())
             {
                 UserSeed.Seed(this);
             }

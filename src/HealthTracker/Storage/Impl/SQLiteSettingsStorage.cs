@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using HealthTracker.Models;
 using SQLite;
 
 namespace HealthTracker.Storage.Impl
 {
-    public class SQLiteSettingsStorage : ISettingsStorage
+    public class SQLiteSettingsStorage : SQLiteStorageBase<Setting>, ISettingsStorage
     {
-        protected SQLiteConnection Connection { get; }
-
         public SQLiteSettingsStorage(SQLiteConnection connection)
+            : base(connection)
         {
-            connection.CreateTable<Setting>(CreateFlags.None);
-            Connection = connection;
         }
 
         public IEnumerable<string> AllKeys => Connection.Table<Setting>().Select(s => s.Key);

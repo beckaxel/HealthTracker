@@ -2,11 +2,8 @@
 
 namespace HealthTracker.Models
 {
-    public class Setting
+    public class Setting : Entity
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-
         [Indexed]
         public string Key { get; set; }
 

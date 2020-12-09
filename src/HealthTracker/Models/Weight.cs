@@ -1,16 +1,7 @@
-﻿using System;
-using SQLite;
-
-namespace HealthTracker.Models
+﻿namespace HealthTracker.Models
 {
-    public class Weight
+    public class Weight : ActivityEntity
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
-
-        [Indexed]
-        public DateTime Date { get; set; }
-
         public decimal Amount { get; set; }        
     }
 }
