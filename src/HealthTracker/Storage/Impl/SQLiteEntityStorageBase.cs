@@ -13,27 +13,27 @@ namespace HealthTracker.Storage.Impl
         {
         }
 
-        public IEnumerable<T> All()
+        public virtual IEnumerable<T> All()
         {
             return Connection.Table<T>();
         }
 
-        public T Find(int id)
+        public virtual T Find(int id)
         {
             return Connection.Find<T>(id);
         }
 
-        public void Insert(T entity)
+        public virtual void Insert(T entity)
         {
             Connection.Insert(entity);
         }
 
-        public void Remove(T entity)
+        public virtual void Remove(T entity)
         {
             Connection.Delete(entity);
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             Connection.Update(entity);
         }

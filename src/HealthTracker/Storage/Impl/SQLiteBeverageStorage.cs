@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using HealthTracker.Models;
+﻿using HealthTracker.Models;
 using HealthTracker.Seeds;
 using SQLite;
 

@@ -400,6 +400,13 @@ namespace HealthTracker.Seeds
             weightStorage.Insert(new Weight { Date = DateTime.Parse("2020-12-05 09:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal), Amount = decimal.Parse("65.1", CultureInfo.InvariantCulture) });
             weightStorage.Insert(new Weight { Date = DateTime.Parse("2020-12-06 09:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal), Amount = decimal.Parse("65.1", CultureInfo.InvariantCulture) });
             weightStorage.Insert(new Weight { Date = DateTime.Parse("2020-12-07 09:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal), Amount = decimal.Parse("65.4", CultureInfo.InvariantCulture) });
+            weightStorage.Insert(new Weight { Date = DateTime.Parse("2020-12-08 07:39:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal), Amount = decimal.Parse("65.2", CultureInfo.InvariantCulture) });
+            weightStorage.Insert(new Weight { Date = DateTime.Parse("2020-12-09 07:58:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal), Amount = decimal.Parse("65.2", CultureInfo.InvariantCulture) });
+            weightStorage.Insert(new Weight { Date = DateTime.Parse("2020-12-10 07:56:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal), Amount = decimal.Parse("65.4", CultureInfo.InvariantCulture) });
+            weightStorage.Insert(new Weight { Date = DateTime.Parse("2020-12-11 08:12:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal), Amount = decimal.Parse("65.1", CultureInfo.InvariantCulture) });
+            weightStorage.Insert(new Weight { Date = DateTime.Parse("2020-12-12 09:21:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal), Amount = decimal.Parse("65.1", CultureInfo.InvariantCulture) });
+            weightStorage.Insert(new Weight { Date = DateTime.Parse("2020-12-13 11:58:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal), Amount = decimal.Parse("64.8", CultureInfo.InvariantCulture) });
+
         }
     }
 }
