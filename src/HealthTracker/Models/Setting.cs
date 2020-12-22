@@ -1,10 +1,9 @@
-﻿using SQLite;
-
-namespace HealthTracker.Models
+﻿namespace HealthTracker.Models
 {
-    public class Setting : Entity
+    public class Setting
     {
-        [Indexed]
+        public int SettingId { get; set; }
+
         public string Key { get; set; }
 
         public string Value { get; set; }

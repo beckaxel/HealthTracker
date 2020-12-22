@@ -30,7 +30,10 @@ namespace HealthTracker.Services.Impl
                 .ToDictionary(t => t.Name.Substring(0, t.Name.Length - ViewModelNameSuffix.Length), StringComparer.InvariantCultureIgnoreCase);
 
             foreach (var viewModelType in _viewModelTypes.Values)
-                _serviceLocator.Register(viewModelType);
+                if (viewModelType.IsSubclassOf(typeof(SectionMainViewModel)))
+                    _serviceLocator.RegisterSingleton(viewModelType);
+                else
+                    _serviceLocator.Register(viewModelType);
         }
 
         public ViewModelBase GetViewModel(string name)

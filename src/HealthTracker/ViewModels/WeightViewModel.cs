@@ -13,13 +13,13 @@ namespace HealthTracker.ViewModels
         {
             if (newValue == MVVM.Parameter.Empty)
             {
-                FromWeight(new Weight
+                FromWeight(new BodyMeasurement
                 {
                     Date = DateTime.UtcNow,
-                    Amount = default
+                    Weight = default
                 });
             }
-            else if (newValue is Weight weight)
+            else if (newValue is BodyMeasurement weight)
             {
                 FromWeight(weight);
             }
@@ -67,9 +67,9 @@ namespace HealthTracker.ViewModels
 
         #region Amount
 
-        private decimal? _amount;
+        private float? _amount;
 
-        public decimal? Amount
+        public float? Amount
         {
             get => _amount;
             set => SetProperty(ref _amount, value);
@@ -79,21 +79,21 @@ namespace HealthTracker.ViewModels
 
         #region Conversion
 
-        protected void FromWeight(Weight weight)
+        protected void FromWeight(BodyMeasurement weight)
         {
-            Id = weight.Id;
+            Id = weight.BodyMeasurementId;
             Date = weight.Date.ToLocalTime().Date;
             Time = weight.Date.ToLocalTime().TimeOfDay;
-            Amount = weight.Amount;
+            Amount = weight.Weight;
         }
 
-        protected Weight ToWeight()
+        protected BodyMeasurement ToWeight()
         {
-            return new Weight
+            return new BodyMeasurement
             {
-                Id = Id ?? default,
+                BodyMeasurementId = Id ?? default,
                 Date = _dateAndTime.UtcDateTime,
-                Amount = Amount ?? default
+                Weight = Amount ?? default
             };
         }
 

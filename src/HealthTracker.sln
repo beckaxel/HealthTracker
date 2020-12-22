@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthTracker.Android", "He
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthTracker", "HealthTracker\HealthTracker.csproj", "{5DB41F78-0787-49B8-9076-8A480F263054}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthTracker.DummyApp", "HealthTracker.DummyApp\HealthTracker.DummyApp.csproj", "{87353CEE-2DB9-4619-89FB-D832D6BC1872}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +21,9 @@ Global
 		{5DB41F78-0787-49B8-9076-8A480F263054}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DB41F78-0787-49B8-9076-8A480F263054}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DB41F78-0787-49B8-9076-8A480F263054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87353CEE-2DB9-4619-89FB-D832D6BC1872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87353CEE-2DB9-4619-89FB-D832D6BC1872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87353CEE-2DB9-4619-89FB-D832D6BC1872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87353CEE-2DB9-4619-89FB-D832D6BC1872}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

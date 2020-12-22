@@ -23,11 +23,46 @@
             <StackLayout
                 AbsoluteLayout.LayoutFlags="PositionProportional"
                 AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize"
-            >
+            >                
                 <c:ChartView
                     Chart="{Binding Chart}"
                     HeightRequest="200"
-                />
+                    IsVisible="False"
+                >                    
+                    <c:ChartView.Style>
+                        <Style TargetType="c:ChartView">
+                            <Style.Triggers>                              
+                                <DataTrigger TargetType="c:ChartView" Binding="{Binding IsChartLoading}" Value="False">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </c:ChartView.Style>                    
+                </c:ChartView>
+                <StackLayout
+                    BackgroundColor="{DynamicResource PrimaryColor}"                    
+                    HeightRequest="200"
+                    IsVisible="True"
+                >
+                    <Label
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                        FontAttributes="Bold"
+                        FontSize="Large"
+                        Text="Lade Daten ..."
+                    />                    
+                    <StackLayout.Style>                        
+                        <Style TargetType="StackLayout">
+                            <Style.Triggers>                                
+                                <DataTrigger TargetType="StackLayout" Binding="{Binding IsChartLoading}" Value="False">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>                        
+                    </StackLayout.Style>                        
+                </StackLayout>
                 <ListView ItemsSource="{Binding Weights}" HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:SectionMainView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    x:Class="HealthTracker.Views.DrinkingSectionView"
+>
+    <mvvm:SectionMainView.SectionName>Trinken</mvvm:SectionMainView.SectionName>
+    <mvvm:SectionMainView.SectionIconImageSource>
+        <FontImageSource
+            Glyph="&#xf7a0;"
+            FontFamily="FontAwesomeSolid"
+            Color="{DynamicResource PrimaryTextColor}"
+            Size="24"
+        />
+    </mvvm:SectionMainView.SectionIconImageSource>
+    <mvvm:SectionMainView.SectionCollation><x:Int32>1</x:Int32></mvvm:SectionMainView.SectionCollation>
+    <mvvm:SectionMainView.SectionContent>
+        <AbsoluteLayout>
+            <StackLayout
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize"
+            >               
+                <Label
+                    Text="{Binding AmountToday}"
+                    FontSize="Large"
+                    FontAttributes="Bold"
+                />
+            </StackLayout>
+            <Button
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
+                CornerRadius="30"
+                WidthRequest="60"
+                HeightRequest="60"
+                Margin="10"
+                BackgroundColor="{DynamicResource SecondaryLightColor}"
+                Command="{Binding AddDrinkingCommand}">
+                <Button.ImageSource>
+                    <FontImageSource
+                        Glyph="&#xf067;"
+                        FontFamily="FontAwesomeSolid"
+                        Color="{DynamicResource PrimaryTextColor}"
+                        Size="36"
+                    />
+                </Button.ImageSource>
+            </Button>
+        </AbsoluteLayout>
+    </mvvm:SectionMainView.SectionContent>
+</mvvm:SectionMainView>

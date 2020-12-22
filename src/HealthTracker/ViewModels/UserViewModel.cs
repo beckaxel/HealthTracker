@@ -53,9 +53,9 @@ namespace HealthTracker.ViewModels
 
         #region Height
 
-        private decimal? _height;
+        private float? _height;
 
-        public decimal? Height
+        public float? Height
         {
             get => _height;
             set
@@ -90,7 +90,7 @@ namespace HealthTracker.ViewModels
             _loading = true;
 
             var user = UserStorage.GetOrAdd();
-            _id = user.Id;
+            _id = user.UserId;
             _birthDate = user.BirthDate.ToLocalTime().Date;
             _height = user.Height;
             _gender = user.Gender;
@@ -107,7 +107,7 @@ namespace HealthTracker.ViewModels
             (
                 new User
                 {
-                    Id = Id ?? default,
+                    UserId = Id ?? default,
                     BirthDate = BirthDate?.Date.ToUniversalTime() ?? default,
                     Height = Height ?? default,
                     Gender = Gender ?? default

@@ -9,12 +9,12 @@ namespace HealthTracker.ViewModels
 {
     public class EditWeightViewModel : WeightViewModel
     {
-        private const decimal StepSize = 0.1m;
+        private const float StepSize = 0.1f;
 
         protected INavigationService NavigationService { get; }
-        protected IWeightStorage WeightStorage { get; }
+        protected IBodyMeasurementStorage WeightStorage { get; }
 
-        public EditWeightViewModel(INavigationService navigationService, IWeightStorage weightStorage)
+        public EditWeightViewModel(INavigationService navigationService, IBodyMeasurementStorage weightStorage)
         {
             NavigationService = navigationService;
             WeightStorage = weightStorage;
@@ -30,10 +30,10 @@ namespace HealthTracker.ViewModels
                 if (latest == null)
                     return;
 
-                FromWeight(new Weight
+                FromWeight(new BodyMeasurement
                 {
                     Date = DateTime.UtcNow,
-                    Amount = latest.Amount
+                    Weight = latest.Weight
                 });
             }
             else
@@ -93,7 +93,7 @@ namespace HealthTracker.ViewModels
         
         public void Save()
         {
-            WeightStorage.UpdateOrInsert(ToWeight());
+            WeightStorage.Insert(ToWeight());
             NavigationService.NavigateToActiveSection();
         }
 

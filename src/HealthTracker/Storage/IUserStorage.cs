@@ -1,5 +1,4 @@
-﻿using System;
-using HealthTracker.Models;
+﻿using HealthTracker.Models;
 
 namespace HealthTracker.Storage
 {

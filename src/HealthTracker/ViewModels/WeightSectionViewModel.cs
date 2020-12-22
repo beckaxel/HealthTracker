@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using HealthTracker.MVVM;
 using HealthTracker.Services;
@@ -14,19 +15,22 @@ namespace HealthTracker.ViewModels
 {
     public class WeightSectionViewModel : SectionMainViewModel
     {
-        private readonly IWeightStorage _weightStorage;
+        private readonly IBodyMeasurementStorage _weightStorage;
 
         public WeightSectionViewModel
         (
             INavigationService navigationService,
-            IWeightStorage weightStorage
+            IBodyMeasurementStorage weightStorage
         )
             : base(navigationService)
         {
             _weightStorage = weightStorage;
-            Weights.AddRange(_weightStorage.All().OrderByDescending(w => w.Date).Select(w => new WeightViewModel { Parameter = w }));
-            Weights.CollectionChanged += (s, e) => UpdateChart();
-            UpdateChart();
+            Task.Run(() =>
+            {
+                Weights.AddRange(_weightStorage.LastXDays(14).OrderByDescending(w => w.Date).Select(w => new WeightViewModel { Parameter = w }));
+                Weights.CollectionChanged += (s, e) => UpdateChartAsync();
+                UpdateChartAsync();
+            });
         }
 
         #region Weights
@@ -57,8 +61,23 @@ namespace HealthTracker.ViewModels
             set => SetProperty(ref _chart, value);
         }
 
-        public void UpdateChart()
+        private bool _isChartLoading;
+        public bool IsChartLoading
         {
+            get => _isChartLoading;
+            set => SetProperty(ref _isChartLoading, value);
+        }
+
+        
+        protected Task UpdateChartAsync()
+        {
+            return Task.Run(() => UpdateChart());
+        }
+
+        protected void UpdateChart()
+        {
+            
+            Task.Run(() => IsChartLoading = true);
             var theme = new LightTheme();
 
             var chartBuilder = new SimpleLineChartBuilder
@@ -70,10 +89,13 @@ namespace HealthTracker.ViewModels
             var values = Weights
                 .GroupBy(w => w.Date, w => w.Amount)
                 .OrderBy(g => g.Key)
-                .Select(g => Convert.ToSingle(g.Average()));
+                .Select(g => g.Average())
+                .Where(v => v.HasValue)
+                .Select(v => v.Value);
 
             chartBuilder.AddValueRange(values);
             Chart = chartBuilder.ToChart();
+            Task.Run(() => IsChartLoading = false);
         }
 
         #endregion

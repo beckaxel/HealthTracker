@@ -1,12 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.Threading.Tasks;
 using HealthTracker.MVVM;
 using HealthTracker.Services;
 using HealthTracker.Services.Impl;
 using HealthTracker.Storage;
 using HealthTracker.Storage.Impl;
 using HealthTracker.TinyIoC;
-using SQLite;
 using TinyIoC;
 using Xamarin.Forms;
 
@@ -26,25 +24,20 @@ namespace HealthTracker
         }
 
         protected override void OnStart()
-        {   
+        {
             var container = new TinyIoCContainer();
             IServiceLocator serviceLocator = new TinyIoCServiceLocatorAdapter(container);
             serviceLocator.RegisterSingleton(serviceLocator);
+            serviceLocator.RegisterSingleton<IHealthTrackerDbContextFactory, HealthTrackerDbContextFactory>();
             serviceLocator.RegisterSingleton<INavigationTarget>(this);
             serviceLocator.RegisterSingleton<ITypeResolver, TypeResolver>();
             serviceLocator.RegisterSingleton<IViewService, ViewService>();
             serviceLocator.RegisterSingleton<IViewModelService, ViewModelService>();
             serviceLocator.RegisterSingleton<INavigationService, NavigationService>();
-            serviceLocator.RegisterSingleton(new SQLiteConnection
-            (
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "HealthTracker.db3"),
-                openFlags: SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache
-            ));
-            serviceLocator.RegisterSingleton<ISettingsStorage, SQLiteSettingsStorage>();
-            serviceLocator.RegisterSingleton<IUserStorage, SQLiteUserStorage>();
-            serviceLocator.RegisterSingleton<IBeverageTypeStorage, SQLiteBeverageTypeStorage>();
-            serviceLocator.RegisterSingleton<IBeverageStorage, SQLiteBeverageStorage>();
-            serviceLocator.RegisterSingleton<IWeightStorage, SQLiteWeightStorage>();
+            serviceLocator.RegisterSingleton<ISettingsStorage, EFSettingsStorage>();
+            serviceLocator.RegisterSingleton<IUserStorage, EFUserStorage>();
+            serviceLocator.RegisterSingleton<IDrinkingStorage, EFDrinkingStorage>();
+            serviceLocator.RegisterSingleton<IBodyMeasurementStorage, EFBodyMeasurementStorage>();
 
             //ToDo: Theming (inkl. Darkmode)
             //ToDo: I18n und L10n

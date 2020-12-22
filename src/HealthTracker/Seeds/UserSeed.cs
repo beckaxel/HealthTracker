@@ -11,7 +11,7 @@ namespace HealthTracker.Seeds
         {
             var user = userStorage.GetOrAdd();
             user.BirthDate = DateTime.Parse("1979-08-31 00:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal);
-            user.Height = 165m;
+            user.Height = 165f;
             user.Gender = Gender.Male;
             userStorage.Update(user);
         }

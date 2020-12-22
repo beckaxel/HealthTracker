@@ -3,11 +3,13 @@ using HealthTracker.Common;
 
 namespace HealthTracker.Models
 {
-    public class User : Entity
-    {   
+    public class User
+    {
+        public int UserId { get; set; }
+
         public DateTime BirthDate { get; set; }
 
-        public decimal Height { get; set; }
+        public float Height { get; set; }
 
         public Gender Gender { get; set; }
     }
