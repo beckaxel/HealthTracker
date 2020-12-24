@@ -30,9 +30,9 @@ namespace HealthTracker.ViewModels
                 if (latest == null)
                     return;
 
-                FromWeight(new BodyMeasurement
+                MapFrom(new BodyMeasurement
                 {
-                    Date = DateTime.UtcNow,
+                    MeasureTime = DateTime.UtcNow,
                     Weight = latest.Weight
                 });
             }
@@ -52,8 +52,8 @@ namespace HealthTracker.ViewModels
 
         public void IncreaseWeight()
         {
-            Amount += StepSize;
-            OnPropertyChanged(nameof(Amount));
+            Weight += StepSize;
+            OnPropertyChanged(nameof(Weight));
         }
 
         #endregion
@@ -66,8 +66,8 @@ namespace HealthTracker.ViewModels
 
         public void DecreaseWeight()
         {
-            Amount -= StepSize;
-            OnPropertyChanged(nameof(Amount));
+            Weight -= StepSize;
+            OnPropertyChanged(nameof(Weight));
         }
 
         #endregion
@@ -93,7 +93,9 @@ namespace HealthTracker.ViewModels
         
         public void Save()
         {
-            WeightStorage.Insert(ToWeight());
+            var bodyMeasurement = new BodyMeasurement();
+            MapTo(bodyMeasurement);
+            WeightStorage.Insert(bodyMeasurement);
             NavigationService.NavigateToActiveSection();
         }
 

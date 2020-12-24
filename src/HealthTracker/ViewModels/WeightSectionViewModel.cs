@@ -27,7 +27,7 @@ namespace HealthTracker.ViewModels
             _weightStorage = weightStorage;
             Task.Run(() =>
             {
-                Weights.AddRange(_weightStorage.LastXDays(14).OrderByDescending(w => w.Date).Select(w => new WeightViewModel { Parameter = w }));
+                Weights.AddRange(_weightStorage.LastXDays(14).OrderByDescending(w => w.MeasureTime).Select(w => new WeightViewModel { Parameter = w }));
                 Weights.CollectionChanged += (s, e) => UpdateChartAsync();
                 UpdateChartAsync();
             });
@@ -87,7 +87,7 @@ namespace HealthTracker.ViewModels
             };
 
             var values = Weights
-                .GroupBy(w => w.Date, w => w.Amount)
+                .GroupBy(w => w.DateOfMeasureTime, w => w.Weight)
                 .OrderBy(g => g.Key)
                 .Select(g => g.Average())
                 .Where(v => v.HasValue)

@@ -149,7 +149,12 @@ namespace HealthTracker.Services.Impl
             if (_navigationTarget.CurrentView != null)
                 _navigationTarget.CurrentView.BackButtonPressed -= OnBackButtonPressed;
             view.BackButtonPressed += OnBackButtonPressed;
+
             _navigationTarget.CurrentView = view;
+
+            if (_navigationTarget.CurrentViewModel != null)
+                _navigationTarget.CurrentViewModel.Dispose();
+            _navigationTarget.CurrentViewModel = viewModel;
 
             if (_allSections.ContainsKey(name))
                 _allSections[name].Active = true;

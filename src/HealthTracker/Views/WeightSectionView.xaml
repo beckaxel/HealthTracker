@@ -87,7 +87,7 @@
                                         >
                                             <Label.FormattedText>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Date, StringFormat='{0:dd.MM.yyyy}'}" FontSize="Medium" FontAttributes="Bold" />
+                                                    <Span Text="{Binding DateOfMeasureTime, StringFormat='{0:dd.MM.yyyy}'}" FontSize="Medium" FontAttributes="Bold" />
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label>
@@ -97,7 +97,7 @@
                                         >
                                             <Label.FormattedText>
                                                 <FormattedString>
-                                                    <Span Text="{Binding Time, StringFormat='{0:hh\\:mm}'}" FontSize="Medium" />
+                                                    <Span Text="{Binding TimeOfMeasureTime, StringFormat='{0:hh\\:mm}'}" FontSize="Medium" />
                                                     <Span Text=" " FontSize="Medium" />
                                                     <Span Text="Uhr" FontSize="Medium" />
                                                 </FormattedString>
@@ -112,7 +112,7 @@
                                     >
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="{Binding Amount, Converter={StaticResource Key=WeightToString}}" FontSize="Large" FontAttributes="Bold" />
+                                                <Span Text="{Binding Weight, Converter={StaticResource Key=WeightToString}}" FontSize="Large" FontAttributes="Bold" />
                                                 <Span Text=" " FontSize="Large" />
                                                 <Span Text="kg" FontSize="Large" />
                                             </FormattedString>

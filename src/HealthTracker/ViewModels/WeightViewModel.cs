@@ -13,15 +13,14 @@ namespace HealthTracker.ViewModels
         {
             if (newValue == MVVM.Parameter.Empty)
             {
-                FromWeight(new BodyMeasurement
+                MapFrom(new BodyMeasurement
                 {
-                    Date = DateTime.UtcNow,
-                    Weight = default
+                    MeasureTime = DateTime.UtcNow
                 });
             }
             else if (newValue is BodyMeasurement weight)
             {
-                FromWeight(weight);
+                MapFrom(weight);
             }
         }
 
@@ -29,72 +28,61 @@ namespace HealthTracker.ViewModels
 
         #region Id
 
-        private int? _id;
+        private int? _bodyMeasurmentId;
 
-        public int? Id
+        public int? BodyMeasurementId
         {
-            get => _id;
-            protected set => SetProperty(ref _id, value);
+            get => _bodyMeasurmentId;
+            protected set => SetProperty(ref _bodyMeasurmentId, value);
         }
 
         #endregion
 
         #region Date and Time
 
-        private DateAndTime _dateAndTime;
+        private DateAndTime _measureTime;
 
-        public DateTime Date
+        public DateTime MeasureTime
         {
-            get => _dateAndTime.LocalDate;
+            get => _measureTime.UtcDateTime;
             set
             {
-                _dateAndTime.LocalDate = value;
-                OnPropertyChanged(nameof(Date));
+                _measureTime.UtcDateTime = value;
+                OnPropertyChanged(nameof(DateOfMeasureTime));
+                OnPropertyChanged(nameof(TimeOfMeasureTime));
             }
         }
 
-        public TimeSpan Time
+        public DateTime DateOfMeasureTime
         {
-            get => _dateAndTime.LocalTime;
+            get => _measureTime.LocalDate;
             set
             {
-                _dateAndTime.LocalTime = value;
-                OnPropertyChanged(nameof(Date));
+                _measureTime.LocalDate = value;
+                OnPropertyChanged(nameof(DateOfMeasureTime));
+            }
+        }
+
+        public TimeSpan TimeOfMeasureTime
+        {
+            get => _measureTime.LocalTime;
+            set
+            {
+                _measureTime.LocalTime = value;
+                OnPropertyChanged(nameof(TimeOfMeasureTime));
             }
         }
 
         #endregion
 
-        #region Amount
+        #region Weight
 
-        private float? _amount;
+        private float? _weight;
 
-        public float? Amount
+        public float? Weight
         {
-            get => _amount;
-            set => SetProperty(ref _amount, value);
-        }
-
-        #endregion
-
-        #region Conversion
-
-        protected void FromWeight(BodyMeasurement weight)
-        {
-            Id = weight.BodyMeasurementId;
-            Date = weight.Date.ToLocalTime().Date;
-            Time = weight.Date.ToLocalTime().TimeOfDay;
-            Amount = weight.Weight;
-        }
-
-        protected BodyMeasurement ToWeight()
-        {
-            return new BodyMeasurement
-            {
-                BodyMeasurementId = Id ?? default,
-                Date = _dateAndTime.UtcDateTime,
-                Weight = Amount ?? default
-            };
+            get => _weight;
+            set => SetProperty(ref _weight, value);
         }
 
         #endregion

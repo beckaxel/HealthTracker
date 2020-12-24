@@ -6,9 +6,9 @@ namespace HealthTracker.Storage.Impl
 {
     public class EFSettingsStorage : ISettingsStorage
     {
-        private readonly IHealthTrackerDbContextFactory _healthTrackerDbContextFactory;
+        private readonly IDbContextFactory _healthTrackerDbContextFactory;
 
-        public EFSettingsStorage(IHealthTrackerDbContextFactory healthTrackerDbContextFactory)
+        public EFSettingsStorage(IDbContextFactory healthTrackerDbContextFactory)
         {
             _healthTrackerDbContextFactory = healthTrackerDbContextFactory;
         }
@@ -17,14 +17,14 @@ namespace HealthTracker.Storage.Impl
         {
             get
             {
-                using var context = _healthTrackerDbContextFactory.Create();
+                using var context = _healthTrackerDbContextFactory.CreateHealthTrackerDbContext();
                 return context.Setting.Select(s => s.Key).ToList();
             }
         }
 
         public string GetValue(string key)
         {
-            using var conext = _healthTrackerDbContextFactory.Create();
+            using var conext = _healthTrackerDbContextFactory.CreateHealthTrackerDbContext();
             return conext.Setting
                 .Where(s => s.Key == key)
                 .Select(s => s.Value)
@@ -33,13 +33,13 @@ namespace HealthTracker.Storage.Impl
 
         public bool HasKey(string key)
         {
-            using var context = _healthTrackerDbContextFactory.Create();
+            using var context = _healthTrackerDbContextFactory.CreateHealthTrackerDbContext();
             return context.Setting.Any(s => s.Key == key);
         }
 
         public void SetValue(string key, string value)
         {
-            using (var context = _healthTrackerDbContextFactory.Create())
+            using (var context = _healthTrackerDbContextFactory.CreateHealthTrackerDbContext())
             {
                 var setting = context.Setting.FirstOrDefault(s => s.Key == key);
                 if (setting == null)

@@ -2,7 +2,7 @@
 
 namespace HealthTracker.Models
 {
-    public class Tag : INameable
+    public class Tag
     {
         public int TagId { get; set; }
 

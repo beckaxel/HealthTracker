@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HealthTracker.Models
 {
-    public class SleepLog : IDatable, ITagable
+    public class SleepLog
     {
         public int SleepLogId { get; set; }
 

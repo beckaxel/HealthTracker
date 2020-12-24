@@ -10,12 +10,10 @@ namespace HealthTracker.Storage
         public DbSet<Setting> Setting { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Tag> Tag { get; set; }
-        public DbSet<Beverage> Drinking { get; set; }
+        public DbSet<Beverage> Beverage { get; set; }
         public DbSet<Meal> Meal { get; set; }
         public DbSet<BodyMeasurement> BodyMeasurement { get; set; }
         public DbSet<SleepLog> SleepLog { get; set; }
-
-        
 
         public HealthTrackerDbContext(DbContextOptions options)
             : base(options)

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace HealthTracker.Models
 {
-    public class Photo : IDatable
+    public class Photo
     {
         public int PhotoId { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime RecordingTime { get; set; }
 
         public byte[] Content { get; set; }
 

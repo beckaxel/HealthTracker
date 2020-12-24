@@ -7,20 +7,16 @@ namespace HealthTracker.Storage.Impl
 {
     public class EFUserStorage : IUserStorage
     {
-        private readonly IHealthTrackerDbContextFactory _healthTrackerDbContextFactory;
+        private readonly IDbContextFactory _healthTrackerDbContextFactory;
 
-        public EFUserStorage(IHealthTrackerDbContextFactory healthTrackerDbContextFactory)
+        public EFUserStorage(IDbContextFactory healthTrackerDbContextFactory)
         {
             _healthTrackerDbContextFactory = healthTrackerDbContextFactory;
-            using var context = _healthTrackerDbContextFactory.Create();
-            if (!context.User.Any())
-                UserSeed.Seed(this);
-            
         }
 
         public User GetOrAdd()
         {
-            using (var context = _healthTrackerDbContextFactory.Create())
+            using (var context = _healthTrackerDbContextFactory.CreateHealthTrackerDbContext())
             {
                 var user = context.User.FirstOrDefault();
                 if (user == null)
@@ -35,7 +31,7 @@ namespace HealthTracker.Storage.Impl
 
         public void Update(User user)
         {
-            using (var context = _healthTrackerDbContextFactory.Create())
+            using (var context = _healthTrackerDbContextFactory.CreateHealthTrackerDbContext())
             {
                 var dbUser = context.User.Find(user.UserId);
                 if (dbUser == null)

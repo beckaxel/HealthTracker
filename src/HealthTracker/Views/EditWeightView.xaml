@@ -56,11 +56,11 @@
                 VerticalOptions="EndAndExpand"
             >
                 <DatePicker
-                    Date="{Binding Date}"
+                    Date="{Binding DateOfMeasureTime}"
                     FontSize="Large"
                 />
                 <TimePicker
-                    Time="{Binding Time}"
+                    Time="{Binding TimeOfMeasureTime}"
                     FontSize="Large"
                 />
             </StackLayout>
@@ -81,7 +81,7 @@
                 />
                 <Entry
                     WidthRequest="80"
-                    Text="{Binding Amount, Converter={StaticResource Key=WeightToString}}"
+                    Text="{Binding Weight, Converter={StaticResource Key=WeightToString}}"
                     Keyboard="Numeric"
                     HorizontalTextAlignment="End"
                     FontSize="Large"

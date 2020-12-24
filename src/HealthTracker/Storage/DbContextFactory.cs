@@ -1,16 +1,17 @@
 ﻿using System.IO;
+using HealthTracker.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Xamarin.Essentials;
 
 namespace HealthTracker.Storage
 {
-    public class HealthTrackerDbContextFactory : IHealthTrackerDbContextFactory
+    public class DbContextFactory : IDbContextFactory
     {
         public static string DatabasePath = Path.Combine(FileSystem.AppDataDirectory, "HealthTracker.db3");
 
         private bool _migrated = false;
 
-        public HealthTrackerDbContext Create()
+        public HealthTrackerDbContext CreateHealthTrackerDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<HealthTrackerDbContext>();
             optionsBuilder.UseSqlite($"Filename={DatabasePath}");
@@ -18,6 +19,10 @@ namespace HealthTracker.Storage
             var healthTrackerDbContext = new HealthTrackerDbContext(optionsBuilder.Options);
             if (!_migrated)
                 healthTrackerDbContext.Database.Migrate();
+
+            UserSeed.Seed(healthTrackerDbContext);
+            BeverageSeed.Seed(healthTrackerDbContext);
+            BodyMeasurementSeed.Seed(healthTrackerDbContext);
 
             return healthTrackerDbContext;
         }

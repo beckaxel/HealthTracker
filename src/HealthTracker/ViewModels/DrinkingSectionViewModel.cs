@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Linq;
+using System.Windows.Input;
 using HealthTracker.MVVM;
 using HealthTracker.Services;
 using HealthTracker.Storage;
@@ -8,17 +10,23 @@ namespace HealthTracker.ViewModels
 {
     public class DrinkingSectionViewModel : SectionMainViewModel
     {        
-        private readonly IDrinkingStorage _drinkingStorage;
+        private readonly HealthTrackerDbContext _healthTrackerDbContext;
 
         public DrinkingSectionViewModel
         (
             INavigationService navigationService,                     
-            IDrinkingStorage drinkingStorage
+            IDbContextFactory dbContextFactory
         )
             : base(navigationService)
         {            
-            _drinkingStorage = drinkingStorage;
-            AmountToday = _drinkingStorage.AmountToday();
+            _healthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
+            var today = DateTime.Today;
+            AmountToday = _healthTrackerDbContext.Beverage.Where(b => b.DrinkingTime >= today).Sum(b => b.Amount);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
         }
 
         private float _amountToday;
@@ -28,15 +36,15 @@ namespace HealthTracker.ViewModels
             set => SetProperty(ref _amountToday, value);
         }
 
-        #region AddDrinking
+        #region AddBeverage
 
-        private ICommand _addDrinkingCommand;
+        private ICommand _addBeverageCommand;
 
-        public ICommand AddDrinkingCommand => GetLazyProperty(ref _addDrinkingCommand, () => new Command(AddDrinking));
+        public ICommand AddBeverageCommand => GetLazyProperty(ref _addBeverageCommand, () => new Command(AddBeverage));
 
-        public void AddDrinking()
+        public void AddBeverage()
         {
-            NavigationService.NavigateTo("EditDrinking");
+            NavigationService.NavigateTo("EditBeverage");
         }
 
         #endregion

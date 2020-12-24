@@ -23,12 +23,14 @@ namespace HealthTracker
             set => MainPage = value;
         }
 
+        ViewModelBase INavigationTarget.CurrentViewModel { get; set; }
+
         protected override void OnStart()
         {
             var container = new TinyIoCContainer();
             IServiceLocator serviceLocator = new TinyIoCServiceLocatorAdapter(container);
             serviceLocator.RegisterSingleton(serviceLocator);
-            serviceLocator.RegisterSingleton<IHealthTrackerDbContextFactory, HealthTrackerDbContextFactory>();
+            serviceLocator.RegisterSingleton<IDbContextFactory, DbContextFactory>();
             serviceLocator.RegisterSingleton<INavigationTarget>(this);
             serviceLocator.RegisterSingleton<ITypeResolver, TypeResolver>();
             serviceLocator.RegisterSingleton<IViewService, ViewService>();
@@ -36,7 +38,6 @@ namespace HealthTracker
             serviceLocator.RegisterSingleton<INavigationService, NavigationService>();
             serviceLocator.RegisterSingleton<ISettingsStorage, EFSettingsStorage>();
             serviceLocator.RegisterSingleton<IUserStorage, EFUserStorage>();
-            serviceLocator.RegisterSingleton<IDrinkingStorage, EFDrinkingStorage>();
             serviceLocator.RegisterSingleton<IBodyMeasurementStorage, EFBodyMeasurementStorage>();
 
             //ToDo: Theming (inkl. Darkmode)
