@@ -36,6 +36,7 @@ namespace HealthTracker
             serviceLocator.RegisterSingleton<IViewService, ViewService>();
             serviceLocator.RegisterSingleton<IViewModelService, ViewModelService>();
             serviceLocator.RegisterSingleton<INavigationService, NavigationService>();
+            serviceLocator.RegisterSingleton<ICameraService, CameraService>();
             serviceLocator.RegisterSingleton<ISettingsStorage, EFSettingsStorage>();
             serviceLocator.RegisterSingleton<IUserStorage, EFUserStorage>();
             serviceLocator.RegisterSingleton<IBodyMeasurementStorage, EFBodyMeasurementStorage>();

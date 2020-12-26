@@ -18,13 +18,32 @@
     <mvvm:SectionMainView.SectionContent>
         <AbsoluteLayout>
             <StackLayout
-                AbsoluteLayout.LayoutFlags="PositionProportional"
-                AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize"
-            >               
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+            >
                 <Label
-                    Text="{Binding AmountToday}"
-                    FontSize="Large"
+                    Text="{Binding PercentToday, StringFormat='{0:P1}'}"
+                    VerticalOptions="EndAndExpand"
+                    HorizontalTextAlignment="Center"
+                    FontSize="48"
                     FontAttributes="Bold"
+                    TextColor="{DynamicResource SecondaryColor}"
+                />
+                <ProgressBar
+                    Margin="50,10"
+                    Progress="{Binding PercentToday}"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="Center"
+                    ProgressColor="{DynamicResource SecondaryColor}"
+                />
+                <Label
+                    Text="{Binding AmountToday, StringFormat='{0} ml'}"
+                    FontSize="32"
+                    VerticalOptions="StartAndExpand"
+                    HorizontalTextAlignment="Center"
+                    TextColor="{DynamicResource SecondaryColor}"
                 />
             </StackLayout>
             <Button
@@ -35,7 +54,7 @@
                 HeightRequest="60"
                 Margin="10"
                 BackgroundColor="{DynamicResource SecondaryLightColor}"
-                Command="{Binding AddDrinkingCommand}">
+                Command="{Binding AddBeverageCommand}">
                 <Button.ImageSource>
                     <FontImageSource
                         Glyph="&#xf067;"

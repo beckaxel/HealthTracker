@@ -16,10 +16,41 @@
     </mvvm:SectionMainView.SectionIconImageSource>
     <mvvm:SectionMainView.SectionCollation><x:Int32>2</x:Int32></mvvm:SectionMainView.SectionCollation>
     <mvvm:SectionMainView.SectionContent>
-        <Label
-                Text="Essen"
-                HorizontalTextAlignment="Center"
+        <AbsoluteLayout>
+            <StackLayout
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
                 HorizontalOptions="FillAndExpand"
-            />
+                VerticalOptions="FillAndExpand"
+            >
+                <Label
+                    Text="{Binding LastMealName}"
+                    FontSize="Large"
+                    TextColor="{DynamicResource SecondaryColor}"
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center"
+                    HorizontalOptions="FillAndExpand"
+                    HorizontalTextAlignment="Center"
+                />
+            </StackLayout>
+            <Button
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
+                CornerRadius="30"
+                WidthRequest="60"
+                HeightRequest="60"
+                Margin="10"
+                BackgroundColor="{DynamicResource SecondaryLightColor}"
+                Command="{Binding AddMealCommand}">
+                <Button.ImageSource>
+                    <FontImageSource
+                        Glyph="&#xf067;"
+                        FontFamily="FontAwesomeSolid"
+                        Color="{DynamicResource PrimaryTextColor}"
+                        Size="36"
+                    />
+                </Button.ImageSource>
+            </Button>
+        </AbsoluteLayout>
     </mvvm:SectionMainView.SectionContent>
 </mvvm:SectionMainView>

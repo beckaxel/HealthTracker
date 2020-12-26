@@ -9,7 +9,8 @@ using Xamarin.Forms;
 namespace HealthTracker.ViewModels
 {
     public class DrinkingSectionViewModel : SectionMainViewModel
-    {        
+    {
+        private const float DailyAmount = 2000f;
         private readonly HealthTrackerDbContext _healthTrackerDbContext;
 
         public DrinkingSectionViewModel
@@ -20,8 +21,7 @@ namespace HealthTracker.ViewModels
             : base(navigationService)
         {            
             _healthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
-            var today = DateTime.Today;
-            AmountToday = _healthTrackerDbContext.Beverage.Where(b => b.DrinkingTime >= today).Sum(b => b.Amount);
+            AmountToday = _healthTrackerDbContext.Beverage.AmountToday();
         }
 
         protected override void Dispose(bool disposing)
@@ -33,8 +33,14 @@ namespace HealthTracker.ViewModels
         public float AmountToday
         {
             get => _amountToday;
-            set => SetProperty(ref _amountToday, value);
+            set
+            {
+                SetProperty(ref _amountToday, value);
+                OnPropertyChanged(nameof(PercentToday));
+            }
         }
+
+        public float PercentToday => AmountToday / DailyAmount;
 
         #region AddBeverage
 

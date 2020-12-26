@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using HealthTracker.Services;
 using HealthTracker.Storage;
@@ -7,16 +7,20 @@ using Xamarin.Forms;
 
 namespace HealthTracker.ViewModels
 {
-    public class EditBeverageViewModel : BeverageViewModel
+    public class EditMealViewModel : MealViewModel
     {
-        private const float StepSize = 50.0f;
+        private readonly ICameraService _cameraService;
 
-        public EditBeverageViewModel
+        public EditMealViewModel
         (
             INavigationService navigationService,
-            IDbContextFactory dbContextFactory
+            IDbContextFactory dbContextFactory,
+            ICameraService cameraService
         )
-            : base(navigationService, dbContextFactory) { }
+            : base(navigationService, dbContextFactory)
+        {
+            _cameraService = cameraService;
+        }
 
         #region Parameter Handling
 
@@ -25,42 +29,31 @@ namespace HealthTracker.ViewModels
             base.OnParameterChanged(oldValue, newValue);
             if (newValue == MVVM.Parameter.Empty)
             {
-                var latest = HealthTrackerDbContext.Beverage.LatestOrDefault();
+                var latest = HealthTrackerDbContext.Meal.LatestOrDefault();
                 if (latest == null)
                     return;
 
-                Beverage.DrinkingTime = DateTime.UtcNow;
-                Beverage.Amount = latest.Amount;
+                Meal.EatingTime = DateTime.UtcNow;
+                Meal.Name = latest.Name;
 
-                MapFrom(Beverage);
+                MapFrom(Meal);
             }
         }
 
         #endregion
 
-        #region IncreaseAmount
+        #region TakePhotoCommand
 
-        private ICommand _increaseWeightCommand;
+        private ICommand _takePhotoCommand;
 
-        public ICommand IncreaseAmountCommand => GetLazyProperty(ref _increaseWeightCommand, () => new Command(IncreaseWeight));
+        public ICommand TakePhotoCommand => GetLazyProperty(ref _takePhotoCommand, () => new Command(async () => await TakePhoto()));
 
-        public void IncreaseWeight()
+        public async Task TakePhoto()
         {
-            Amount += StepSize;
-            OnPropertyChanged(nameof(Amount));
-        }
+            var stream = await _cameraService.TakePhotoAsync();
+            if (stream == null)
+                return;
 
-        #endregion
-
-        #region DecreaseAmount
-
-        private ICommand _decreaseAmountCommand;
-
-        public ICommand DecreaseAmountCommand => GetLazyProperty(ref _decreaseAmountCommand, () => new Command(DecreaseWeight));
-
-        public void DecreaseWeight()
-        {
-            Amount -= StepSize;
         }
 
         #endregion

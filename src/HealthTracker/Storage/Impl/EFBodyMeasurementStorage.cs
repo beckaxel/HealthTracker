@@ -22,9 +22,8 @@ namespace HealthTracker.Storage.Impl
 
         public IEnumerable<BodyMeasurement> LastXDays(int days)
         {
-            var fromDate = DateTime.Today.Subtract(TimeSpan.FromDays(days));
             using var context = _healthTrackerDbContextFactory.CreateHealthTrackerDbContext();
-            return context.BodyMeasurement.Where(bm => bm.MeasureTime >= fromDate).ToList();
+            return context.BodyMeasurement.LastXDays(days).ToList();
         }
 
         public BodyMeasurement Find(int id)
@@ -45,9 +44,7 @@ namespace HealthTracker.Storage.Impl
         public BodyMeasurement LatestOrDefault()
         {
             using var context = _healthTrackerDbContextFactory.CreateHealthTrackerDbContext();
-            return context.BodyMeasurement
-                .OrderByDescending(w => w.MeasureTime)
-                .FirstOrDefault();
+            return context.BodyMeasurement.LatestOrDefault();
         }
 
         public void Remove(BodyMeasurement bodyMeasurement)

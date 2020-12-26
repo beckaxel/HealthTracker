@@ -53,7 +53,6 @@ namespace HealthTracker.ViewModels
         public void IncreaseWeight()
         {
             Weight += StepSize;
-            OnPropertyChanged(nameof(Weight));
         }
 
         #endregion
@@ -67,7 +66,6 @@ namespace HealthTracker.ViewModels
         public void DecreaseWeight()
         {
             Weight -= StepSize;
-            OnPropertyChanged(nameof(Weight));
         }
 
         #endregion

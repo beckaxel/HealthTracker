@@ -8,4 +8,5 @@
     <c:GenderToStringConverter x:Key="GenderToString" />
     <c:InvertedBooleanConverter x:Key="InvertedBoolean" />
     <c:WeightToStringConverter x:Key="WeightToString" />
+    <c:BeverageAmountToStringConverter x:Key="BeverageAmountToString" />
 </ResourceDictionary>

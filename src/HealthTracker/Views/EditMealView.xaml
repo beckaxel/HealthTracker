@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mvvm:ViewBase
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    x:Class="HealthTracker.Views.EditMealView">
+    <ContentPage.Content>
+        <StackLayout
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            Style="{DynamicResource AppContent}"
+        >
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="StartAndExpand"
+                Style="{DynamicResource AppHeader}"
+            >
+                <Button
+                    Margin="10"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="Start"
+                    VerticalOptions="CenterAndExpand"
+                    Command="{Binding CancelCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf060;"
+                            FontFamily="FontAwesomeSolid"
+                            Color="{DynamicResource PrimaryTextColor}"
+                            Size="Title"
+                        />
+                    </Button.ImageSource>
+                </Button>
+                <Label
+                    Margin="10"
+                    Text="Mahlzeit erfassen"
+                    TextColor="{DynamicResource PrimaryTextColor}"
+                    FontSize="Title"
+                    FontAttributes="Bold"
+                    HorizontalOptions="StartAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                />
+            </StackLayout>
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+            >
+                <DatePicker
+                    Date="{Binding DateOfEatingTime}"
+                    FontSize="Large"
+                />
+                <TimePicker
+                    Time="{Binding TimeOfEatingTime}"
+                    FontSize="Large"
+                />
+            </StackLayout>
+            <Label
+                Margin="0,10,0,0"
+                Text="Name des Gerichts"
+                HorizontalOptions="FillAndExpand"
+                HorizontalTextAlignment="Center"
+            />
+            <Entry
+                Margin="50,0,50,10"
+                Text="{Binding Name}"
+                FontSize="Large"
+            />  
+            <Button
+                Margin="10"
+                CornerRadius="4"
+                BackgroundColor="{DynamicResource PrimaryColor}"
+                TextColor="{DynamicResource PrimaryTextColor}"
+                FontSize="Large"
+                HorizontalOptions="CenterAndExpand"
+                Command="{Binding TakePhotoCommand}"
+            >
+                <Button.ImageSource>
+                    <FontImageSource
+                        Glyph="&#xf030;"
+                        FontFamily="FontAwesomeSolid"
+                        Color="{DynamicResource PrimaryTextColor}"
+                    />
+                </Button.ImageSource>
+            </Button>
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="EndAndExpand"
+                Style="{DynamicResource AppFooter}"
+            >
+                <Button
+                    Margin="10"
+                    CornerRadius="4"
+                    ContentLayout="Right, 30"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="{DynamicResource PrimaryLightColor}"
+                    TextColor="{DynamicResource PrimaryTextColor}"
+                    FontSize="Medium"
+                    Command="{Binding CancelCommand}"
+                >
+                    <Button.Text>Abbrechen</Button.Text>
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf057;"
+                            FontFamily="FontAwesomeRegular"
+                            Color="{DynamicResource PrimaryTextColor}"
+                        />
+                    </Button.ImageSource>
+                </Button>
+                <Button
+                    Margin="10"
+                    CornerRadius="4"
+                    ContentLayout="Right, 30"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="{DynamicResource SecondaryColor}"
+                    TextColor="{DynamicResource SecondaryTextColor}"
+                    FontSize="Medium"
+                    Command="{Binding SaveCommand}"
+                >
+                    <Button.Text>Speichern</Button.Text>
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf058;"
+                            FontFamily="FontAwesomeRegular"
+                            Color="{DynamicResource SecondaryTextColor}"
+                        />
+                    </Button.ImageSource>
+                </Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</mvvm:ViewBase>
