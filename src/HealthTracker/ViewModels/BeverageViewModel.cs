@@ -59,7 +59,7 @@ namespace HealthTracker.ViewModels
         public int? BeverageId
         {
             get => _beverageId;
-            protected set => SetProperty(ref _beverageId, value);
+            set => SetProperty(ref _beverageId, value);
         }
 
         #endregion

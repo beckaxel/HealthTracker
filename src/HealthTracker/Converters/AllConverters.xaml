@@ -9,4 +9,5 @@
     <c:InvertedBooleanConverter x:Key="InvertedBoolean" />
     <c:WeightToStringConverter x:Key="WeightToString" />
     <c:BeverageAmountToStringConverter x:Key="BeverageAmountToString" />
+    <c:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSource" />
 </ResourceDictionary>

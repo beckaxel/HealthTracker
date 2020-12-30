@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using HealthTracker.Models;
 using HealthTracker.Services;
 using HealthTracker.Storage;
 using Xamarin.Forms;
@@ -9,6 +10,8 @@ namespace HealthTracker.ViewModels
 {
     public class EditMealViewModel : MealViewModel
     {
+        private readonly INavigationService _navigationService;
+        private readonly HealthTrackerDbContext _healthTrackerDbContext;
         private readonly ICameraService _cameraService;
 
         public EditMealViewModel
@@ -16,10 +19,17 @@ namespace HealthTracker.ViewModels
             INavigationService navigationService,
             IDbContextFactory dbContextFactory,
             ICameraService cameraService
-        )
-            : base(navigationService, dbContextFactory)
+        )   
         {
+            _navigationService = navigationService;
+            _healthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
             _cameraService = cameraService;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _healthTrackerDbContext.Dispose();
+            base.Dispose(disposing);
         }
 
         #region Parameter Handling
@@ -29,14 +39,17 @@ namespace HealthTracker.ViewModels
             base.OnParameterChanged(oldValue, newValue);
             if (newValue == MVVM.Parameter.Empty)
             {
-                var latest = HealthTrackerDbContext.Meal.LatestOrDefault();
+                var latest = _healthTrackerDbContext.Meal.LatestOrDefault();
                 if (latest == null)
                     return;
 
-                Meal.EatingTime = DateTime.UtcNow;
                 Meal.Name = latest.Name;
-
+                _healthTrackerDbContext.Add(Meal);
                 MapFrom(Meal);
+            }
+            else if (newValue is Meal)
+            {
+                _healthTrackerDbContext.Attach(Meal);
             }
         }
 
@@ -50,10 +63,19 @@ namespace HealthTracker.ViewModels
 
         public async Task TakePhoto()
         {
-            var stream = await _cameraService.TakePhotoAsync();
-            if (stream == null)
+            var photoTaken = await _cameraService.TakePhotoAsync();
+            if (photoTaken == null)
                 return;
 
+            var photo = new Photo
+            {
+                FileName = photoTaken.FileName,
+                RecordingTime = DateTime.UtcNow,
+                Content = photoTaken.Content
+            };
+
+            Meal.Photos.Add(photo);
+            Photos.Add(new PhotoViewModel { Parameter = photo });
         }
 
         #endregion
@@ -66,7 +88,7 @@ namespace HealthTracker.ViewModels
 
         public void Cancel()
         {
-            NavigationService.NavigateToActiveSection();
+            _navigationService.NavigateToActiveSection();
         }
 
         #endregion
@@ -79,8 +101,9 @@ namespace HealthTracker.ViewModels
 
         public void Save()
         {
-            SaveChanges();
-            NavigationService.NavigateToActiveSection();
+            MapTo(Meal);
+            _healthTrackerDbContext.SaveChanges();
+            _navigationService.NavigateToActiveSection();
         }
 
         #endregion

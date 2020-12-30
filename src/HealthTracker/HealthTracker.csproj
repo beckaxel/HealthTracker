@@ -37,6 +37,7 @@
     <Folder Include="i18n\" />
     <Folder Include="Styles\" />
     <Folder Include="Seeds\" />
+    <Folder Include="MVVM\Mapping\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Fonts\Font Awesome 5 Free-Solid-900.otf" />

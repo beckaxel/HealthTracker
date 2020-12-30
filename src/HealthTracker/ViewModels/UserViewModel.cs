@@ -30,7 +30,7 @@ namespace HealthTracker.ViewModels
         public int? Id
         {
             get => _id;
-            protected set => SetProperty(ref _id, value);
+            set => SetProperty(ref _id, value);
         }
 
         #endregion

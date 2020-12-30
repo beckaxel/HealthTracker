@@ -63,7 +63,7 @@
                         </Style>                        
                     </StackLayout.Style>                        
                 </StackLayout>
-                <ListView ItemsSource="{Binding Weights}" HasUnevenRows="True">
+                <ListView ItemsSource="{Binding Meals}" HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

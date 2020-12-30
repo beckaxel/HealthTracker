@@ -1,31 +1,25 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 using HealthTracker.Common;
 using HealthTracker.Models;
 using HealthTracker.MVVM;
-using HealthTracker.Services;
-using HealthTracker.Storage;
 
 namespace HealthTracker.ViewModels
 {
     public class MealViewModel : ViewModelBase
-    {
-        protected INavigationService NavigationService { get; }
+    {   
         protected Meal Meal { get; private set; }
-        protected HealthTrackerDbContext HealthTrackerDbContext { get; }
 
-        public MealViewModel
-        (
-            INavigationService navigationService,
-            IDbContextFactory dbContextFactory
-        )
+        public MealViewModel()
         {
-            HealthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
-            NavigationService = navigationService;
+            Photos.CollectionChanged += PhotosChanged;
         }
 
         protected override void Dispose(bool disposing)
         {
-            HealthTrackerDbContext.Dispose();
+            Photos.CollectionChanged -= PhotosChanged;
             base.Dispose(disposing);
         }
 
@@ -39,13 +33,11 @@ namespace HealthTracker.ViewModels
                 {
                     EatingTime = DateTime.UtcNow
                 };
-                HealthTrackerDbContext.Add(Meal);
                 MapFrom(Meal);
             }
             else if (newValue is Meal meal)
             {
                 Meal = meal;
-                HealthTrackerDbContext.Attach(Meal);
                 MapFrom(Meal);
             }
         }
@@ -59,7 +51,7 @@ namespace HealthTracker.ViewModels
         public int? MealId
         {
             get => _mealId;
-            protected set => SetProperty(ref _mealId, value);
+            set => SetProperty(ref _mealId, value);
         }
 
         #endregion
@@ -113,13 +105,15 @@ namespace HealthTracker.ViewModels
 
         #endregion
 
+        #region Photos
 
-        #region SaveChanges
+        public PhotoViewModel LatestPhoto => Photos.OrderByDescending(p => p).FirstOrDefault();
 
-        protected void SaveChanges()
+        public ObservableCollection<PhotoViewModel> Photos { get; } = new ObservableCollection<PhotoViewModel>();
+
+        private void PhotosChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            MapTo(Meal);
-            HealthTrackerDbContext.SaveChanges();
+            OnPropertyChanged(nameof(LatestPhoto));
         }
 
         #endregion

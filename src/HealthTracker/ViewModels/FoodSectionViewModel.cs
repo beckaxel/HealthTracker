@@ -1,7 +1,10 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using HealthTracker.MVVM;
 using HealthTracker.Services;
 using HealthTracker.Storage;
+using Microsoft.EntityFrameworkCore;
 using Xamarin.Forms;
 
 namespace HealthTracker.ViewModels
@@ -18,9 +21,11 @@ namespace HealthTracker.ViewModels
             : base(navigationService)
         {
             _healthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
-            var lastMeal = _healthTrackerDbContext.Meal.LatestOrDefault();
-
-            LastMealName = lastMeal?.Name ?? string.Empty;
+            Meals.AddRange(_healthTrackerDbContext.Meal
+                .Include(m => m.Photos)
+                .LastXDays(14)
+                .OrderByDescending(m => m.EatingTime)
+                .Select(m => new MealViewModel { Parameter = m }));
         }
 
         protected override void Dispose(bool disposing)
@@ -28,15 +33,9 @@ namespace HealthTracker.ViewModels
             base.Dispose(disposing);
         }
 
-        #region LastMeal
+        #region Weights
 
-        private string _lastMealName;
-
-        public string LastMealName
-        {
-            get => _lastMealName;
-            set => SetProperty(ref _lastMealName, value);
-        }
+        public ObservableCollection<MealViewModel> Meals { get; } = new ObservableCollection<MealViewModel>();
 
         #endregion
 

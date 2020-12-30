@@ -7,6 +7,8 @@ namespace HealthTracker.Models
     {
         public int PhotoId { get; set; }
 
+        public string FileName { get; set; }
+
         public DateTime RecordingTime { get; set; }
 
         public byte[] Content { get; set; }

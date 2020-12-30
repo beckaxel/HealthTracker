@@ -1,10 +1,9 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace HealthTracker.Services
 {
     public interface ICameraService
     {
-        Task<Stream> TakePhotoAsync();
+        Task<IPhoto> TakePhotoAsync();
     }
 }

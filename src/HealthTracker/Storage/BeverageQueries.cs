@@ -16,5 +16,11 @@ namespace HealthTracker.Storage
         {
             return source.OrderByDescending(b => b.DrinkingTime).FirstOrDefault();
         }
+
+        public static IQueryable<Beverage> LastXDays(this IQueryable<Beverage> source, int days)
+        {
+            var fromDate = DateTime.Today.Subtract(TimeSpan.FromDays(days));
+            return source.Where(b => b.DrinkingTime >= fromDate);
+        }
     }
 }

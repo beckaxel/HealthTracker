@@ -33,7 +33,7 @@ namespace HealthTracker.ViewModels
         public int? BodyMeasurementId
         {
             get => _bodyMeasurmentId;
-            protected set => SetProperty(ref _bodyMeasurmentId, value);
+            set => SetProperty(ref _bodyMeasurmentId, value);
         }
 
         #endregion

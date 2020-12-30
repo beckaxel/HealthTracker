@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
+using HealthTracker.MVVM.Mapping;
 using Xamarin.Forms;
 
 namespace HealthTracker.MVVM
 {
     public abstract class ViewModelBase : BindableObject, IDisposable
     {
+        private readonly static ModelViewModelMapper Mapper = new ModelViewModelMapper();
+
         #region Parameter
 
         private object _parameter;
@@ -56,37 +57,13 @@ namespace HealthTracker.MVVM
 
         protected void MapFrom<T>(T source)
         {
-            Map(source, this);
+            Mapper.Map(source, this);
         }
 
         protected void MapTo<T>(T target)
             where T : new()
         {
-            Map(this, target);
-        }
-
-        private static void Map(object source, object target)
-        {
-            var targetProperties = target.GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(p => p.CanWrite);
-
-            var sourceProperties = source.GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(p => p.CanRead)
-                .ToDictionary(p => p.Name, StringComparer.InvariantCultureIgnoreCase);
-
-            foreach (var targetProperty in targetProperties)
-            {
-                if (!sourceProperties.ContainsKey(targetProperty.Name))
-                    continue;
-
-                var sourceProperty = sourceProperties[targetProperty.Name];
-                if (!targetProperty.PropertyType.IsAssignableFrom(sourceProperty.PropertyType))
-                    continue;
-
-                targetProperty.SetValue(target, sourceProperty.GetValue(source));
-            }
+            Mapper.Map(this, target);
         }
 
         public void Dispose()
