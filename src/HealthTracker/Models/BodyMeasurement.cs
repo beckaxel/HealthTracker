@@ -9,8 +9,6 @@ namespace HealthTracker.Models
 
         public DateTime MeasureTime { get; set; }
 
-        public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
-
         public float? Weight { get; set; }
     }
 }

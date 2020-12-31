@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HealthTracker.Common
+﻿namespace HealthTracker.Models
 {
     public enum Gender
     {

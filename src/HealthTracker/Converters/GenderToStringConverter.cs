@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using HealthTracker.Common;
+using HealthTracker.Models;
 using Xamarin.Forms;
 
 namespace HealthTracker.Converters

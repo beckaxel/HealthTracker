@@ -9,8 +9,6 @@ namespace HealthTracker.Models
 
         public DateTime Date { get; set; }
 
-        public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
-
         public DateTime BedTime { get; set; }
 
         public DateTime LightOffTime { get; set; }
