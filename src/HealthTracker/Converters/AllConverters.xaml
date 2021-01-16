@@ -8,6 +8,8 @@
     <c:GenderToStringConverter x:Key="GenderToString" />
     <c:InvertedBooleanConverter x:Key="InvertedBoolean" />
     <c:WeightToStringConverter x:Key="WeightToString" />
-    <c:BeverageAmountToStringConverter x:Key="BeverageAmountToString" />
+    <c:DrinkingQuantityToStringConverter x:Key="DrinkingQuantityToString" />
     <c:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSource" />
+    <c:PhotoViewModelToImageSourceConverter x:Key="PhotoViewModelToImageSource" />
+    <c:LongToFileSizeStringConverter x:Key="LongToFileSizeString" />
 </ResourceDictionary>

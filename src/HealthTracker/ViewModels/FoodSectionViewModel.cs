@@ -30,6 +30,7 @@ namespace HealthTracker.ViewModels
 
         protected override void Dispose(bool disposing)
         {
+            _healthTrackerDbContext.Dispose();
             base.Dispose(disposing);
         }
 
@@ -48,6 +49,27 @@ namespace HealthTracker.ViewModels
         public void AddMeal()
         {
             NavigationService.NavigateTo("EditMeal");
+        }
+
+        #endregion
+
+        #region OpenMealCommand
+
+        private ICommand _openMealCommand;
+
+        public ICommand OpenMealCommand => GetLazyProperty(ref _openMealCommand, () => new Command(id => OpenMeal((int)id)));
+
+        public void OpenMeal(int mealId)
+        {
+            var meal = _healthTrackerDbContext
+                .Meal
+                .Include(m => m.Photos)
+                .FirstOrDefault(m => m.MealId == mealId);
+
+            if (meal == null)
+                return;
+
+            NavigationService.NavigateTo("EditMeal", meal);
         }
 
         #endregion

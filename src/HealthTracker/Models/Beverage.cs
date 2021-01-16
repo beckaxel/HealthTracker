@@ -15,6 +15,6 @@ namespace HealthTracker.Models
 
         public virtual ICollection<Food> Foods { get; set; } = new HashSet<Food>();
 
-        public float Amount { get; set; }
+        public float Quantity { get; set; }
     }
 }

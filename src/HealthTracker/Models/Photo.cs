@@ -9,6 +9,8 @@ namespace HealthTracker.Models
 
         public string FileName { get; set; }
 
+        public string OriginDirectoryName { get; set; }
+
         public DateTime RecordingTime { get; set; }
 
         public byte[] Content { get; set; }

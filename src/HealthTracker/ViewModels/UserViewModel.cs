@@ -83,6 +83,22 @@ namespace HealthTracker.ViewModels
 
         #endregion
 
+        #region Daily Drinking Quantity
+
+        private float? _dailyDrinkingQuantity;
+
+        public float? DailyDrinkingQuantity
+        {
+            get => _dailyDrinkingQuantity;
+            set
+            {
+                SetProperty(ref _dailyDrinkingQuantity, value);
+                Save();
+            }
+        }
+
+        #endregion
+
         #region Storage
 
         protected void Load()
@@ -94,6 +110,7 @@ namespace HealthTracker.ViewModels
             _birthDate = user.BirthDate.ToLocalTime().Date;
             _height = user.Height;
             _gender = user.Gender;
+            _dailyDrinkingQuantity = user.DailyDrinkingQuantity;
 
             _loading = false;
         }
@@ -110,7 +127,8 @@ namespace HealthTracker.ViewModels
                     UserId = Id ?? default,
                     BirthDate = BirthDate?.Date.ToUniversalTime() ?? default,
                     Height = Height ?? default,
-                    Gender = Gender ?? default
+                    Gender = Gender ?? default,
+                    DailyDrinkingQuantity = DailyDrinkingQuantity ?? 1500f
                 }
             );
         }

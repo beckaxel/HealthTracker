@@ -1,6 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using HealthTracker.Models;
+using HealthTracker.MVVM;
 using HealthTracker.Services;
 using HealthTracker.Storage;
 using Xamarin.Forms;
@@ -10,13 +10,24 @@ namespace HealthTracker.ViewModels
     public class EditBeverageViewModel : BeverageViewModel
     {
         private const float StepSize = 50.0f;
+        private readonly INavigationService _navigationService;
+        private readonly HealthTrackerDbContext _healthTrackerDbContext;
 
         public EditBeverageViewModel
         (
             INavigationService navigationService,
             IDbContextFactory dbContextFactory
-        )
-            : base(navigationService, dbContextFactory) { }
+        )   
+        {
+            _navigationService = navigationService;
+            _healthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _healthTrackerDbContext.Dispose();
+            base.Dispose(disposing);
+        }
 
         #region Parameter Handling
 
@@ -25,42 +36,58 @@ namespace HealthTracker.ViewModels
             base.OnParameterChanged(oldValue, newValue);
             if (newValue == MVVM.Parameter.Empty)
             {
-                var latest = HealthTrackerDbContext.Beverage.LatestOrDefault();
-                if (latest == null)
-                    return;
+                EditMode = EditMode.Create;
+                var latest = _healthTrackerDbContext.Beverage.LatestOrDefault();
+                if (latest != null)
+                    Beverage.Quantity = latest.Quantity;
 
-                Beverage.DrinkingTime = DateTime.UtcNow;
-                Beverage.Amount = latest.Amount;
-
+                _healthTrackerDbContext.Add(Beverage);
                 MapFrom(Beverage);
+            }
+            else if (newValue is Beverage)
+            {
+                EditMode = EditMode.Edit;
+                _healthTrackerDbContext.Attach(Beverage);
             }
         }
 
         #endregion
 
-        #region IncreaseAmount
+        #region EditMode
 
-        private ICommand _increaseWeightCommand;
+        private EditMode _editMode;
 
-        public ICommand IncreaseAmountCommand => GetLazyProperty(ref _increaseWeightCommand, () => new Command(IncreaseWeight));
-
-        public void IncreaseWeight()
+        public EditMode EditMode
         {
-            Amount += StepSize;
-            OnPropertyChanged(nameof(Amount));
+            get => _editMode;
+            set => SetProperty(ref _editMode, value);
         }
 
         #endregion
 
-        #region DecreaseAmount
+        #region Increase Quantity
 
-        private ICommand _decreaseAmountCommand;
+        private ICommand _increaseQuantityCommand;
 
-        public ICommand DecreaseAmountCommand => GetLazyProperty(ref _decreaseAmountCommand, () => new Command(DecreaseWeight));
+        public ICommand IncreaseQuantityCommand => GetLazyProperty(ref _increaseQuantityCommand, () => new Command(IncreaseQuantity));
 
-        public void DecreaseWeight()
+        public void IncreaseQuantity()
         {
-            Amount -= StepSize;
+            Quantity += StepSize;
+            OnPropertyChanged(nameof(Quantity));
+        }
+
+        #endregion
+
+        #region Decrease Quantity
+
+        private ICommand _decreaseQuantityCommand;
+
+        public ICommand DecreaseQuantityCommand => GetLazyProperty(ref _decreaseQuantityCommand, () => new Command(DecreaseQuantity));
+
+        public void DecreaseQuantity()
+        {
+            Quantity -= StepSize;
         }
 
         #endregion
@@ -73,7 +100,7 @@ namespace HealthTracker.ViewModels
 
         public void Cancel()
         {
-            NavigationService.NavigateToActiveSection();
+            _navigationService.NavigateToActiveSection();
         }
 
         #endregion
@@ -86,8 +113,27 @@ namespace HealthTracker.ViewModels
 
         public void Save()
         {
-            SaveChanges();
-            NavigationService.NavigateToActiveSection();
+            MapTo(Beverage);
+            _healthTrackerDbContext.SaveChanges();
+            _navigationService.NavigateToActiveSection();
+        }
+
+        #endregion
+
+        #region Delete
+
+        private ICommand _deleteCommand;
+
+        public ICommand DeleteCommand => GetLazyProperty(ref _deleteCommand, () => new Command(Delete, () => EditMode == EditMode.Edit));
+
+        public void Delete()
+        {
+            if (EditMode != EditMode.Edit)
+                return;
+
+            _healthTrackerDbContext.Remove(Beverage);
+            _healthTrackerDbContext.SaveChanges();
+            _navigationService.NavigateToActiveSection();
         }
 
         #endregion

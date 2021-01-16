@@ -40,6 +40,7 @@ namespace HealthTracker.Storage.Impl
                 dbUser.Height = user.Height;
                 dbUser.BirthDate = user.BirthDate;
                 dbUser.Gender = user.Gender;
+                dbUser.DailyDrinkingQuantity = user.DailyDrinkingQuantity;
 
                 context.SaveChanges();
             }

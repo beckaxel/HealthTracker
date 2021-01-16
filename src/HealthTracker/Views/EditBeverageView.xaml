@@ -36,13 +36,50 @@
                 </Button>
                 <Label
                     Margin="10"
-                    Text="Getränk erfassen"
+                    Text="Getränk bearbeiten"
                     TextColor="{DynamicResource PrimaryTextColor}"
                     FontSize="Title"
                     FontAttributes="Bold"
                     HorizontalOptions="StartAndExpand"
                     VerticalOptions="CenterAndExpand"
-                />
+                >
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Style.Triggers>                                
+                                <DataTrigger TargetType="Label" Binding="{Binding EditMode}" Value="{x:Static mvvm:EditMode.Create}">
+                                    <Setter Property="Text" Value="Getränk erfassen" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style> 
+                    </Label.Style>
+                </Label>
+                <Button
+                    Margin="10"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="End"
+                    VerticalOptions="CenterAndExpand"
+                    Command="{Binding DeleteCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf1f8;"
+                            FontFamily="FontAwesomeSolid"
+                            Color="{DynamicResource PrimaryTextColor}"
+                            Size="Title"
+                        />
+                    </Button.ImageSource>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>                                
+                                <DataTrigger TargetType="Button" Binding="{Binding EditMode}" Value="{x:Static mvvm:EditMode.Create}">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style> 
+                    </Button.Style>
+                </Button>
             </StackLayout>
             <StackLayout
                 Orientation="Horizontal"
@@ -71,11 +108,11 @@
                     TextColor="{DynamicResource PrimaryTextColor}"
                     FontSize="Large"
                     HorizontalOptions="CenterAndExpand"
-                    Command="{Binding DecreaseAmountCommand}"
+                    Command="{Binding DecreaseQuantityCommand}"
                 />
                 <Entry
                     WidthRequest="80"
-                    Text="{Binding Amount, Converter={StaticResource Key=BeverageAmountToString}}"
+                    Text="{Binding Quantity, Converter={StaticResource Key=DrinkingQuantityToString}}"
                     Keyboard="Numeric"
                     HorizontalTextAlignment="End"
                     FontSize="Large"
@@ -93,7 +130,7 @@
                     TextColor="{DynamicResource PrimaryTextColor}"
                     FontSize="Large"
                     HorizontalOptions="CenterAndExpand"
-                    Command="{Binding IncreaseAmountCommand}"
+                    Command="{Binding IncreaseQuantityCommand}"
                 />
             </StackLayout>
             <StackLayout

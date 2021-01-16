@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    xmlns:t="clr-namespace:HealthTracker.Templates"
     x:Class="HealthTracker.Views.DrinkingSectionView"
 >
     <mvvm:SectionMainView.SectionName>Trinken</mvvm:SectionMainView.SectionName>
@@ -23,28 +24,42 @@
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand"
             >
-                <Label
-                    Text="{Binding PercentToday, StringFormat='{0:P1}'}"
-                    VerticalOptions="EndAndExpand"
-                    HorizontalTextAlignment="Center"
-                    FontSize="48"
-                    FontAttributes="Bold"
-                    TextColor="{DynamicResource SecondaryColor}"
-                />
-                <ProgressBar
-                    Margin="50,10"
-                    Progress="{Binding PercentToday}"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="Center"
-                    ProgressColor="{DynamicResource SecondaryColor}"
-                />
-                <Label
-                    Text="{Binding AmountToday, StringFormat='{0} ml'}"
-                    FontSize="32"
-                    VerticalOptions="StartAndExpand"
-                    HorizontalTextAlignment="Center"
-                    TextColor="{DynamicResource SecondaryColor}"
-                />
+                <StackLayout
+                    HeightRequest="200"
+                    BackgroundColor="{DynamicResource PrimaryDarkColor}"
+                >
+                    <Label
+                        Text="{Binding DrinkingQuantityToday.Percent, StringFormat='{0:P1}'}"
+                        VerticalOptions="EndAndExpand"
+                        HorizontalTextAlignment="Center"
+                        FontSize="48"
+                        FontAttributes="Bold"
+                        TextColor="{DynamicResource SecondaryColor}"
+                    />
+                    <ProgressBar
+                        Margin="50,10"
+                        Progress="{Binding DrinkingQuantityToday.Percent}"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="Center"
+                        ProgressColor="{DynamicResource SecondaryColor}"
+                    />
+                    <Label
+                        Text="{Binding DrinkingQuantityToday.Quantity, StringFormat='{0} ml'}"
+                        FontSize="32"
+                        VerticalOptions="StartAndExpand"
+                        HorizontalTextAlignment="Center"
+                        TextColor="{DynamicResource SecondaryColor}"
+                    />
+                </StackLayout>
+                <StackLayout>
+                    <ListView ItemsSource="{Binding BeveragesToday}" HasUnevenRows="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <t:BeverageViewCell />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
             </StackLayout>
             <Button
                 AbsoluteLayout.LayoutFlags="PositionProportional"

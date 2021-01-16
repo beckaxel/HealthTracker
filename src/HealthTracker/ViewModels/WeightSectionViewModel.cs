@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -15,22 +14,33 @@ namespace HealthTracker.ViewModels
 {
     public class WeightSectionViewModel : SectionMainViewModel
     {
-        private readonly IBodyMeasurementStorage _weightStorage;
+        private readonly HealthTrackerDbContext _healthTrackerDbContext;
 
         public WeightSectionViewModel
         (
             INavigationService navigationService,
-            IBodyMeasurementStorage weightStorage
+            IDbContextFactory dbContextFactory
         )
             : base(navigationService)
         {
-            _weightStorage = weightStorage;
+            _healthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
             Task.Run(() =>
             {
-                Weights.AddRange(_weightStorage.LastXDays(14).OrderByDescending(w => w.MeasureTime).Select(w => new WeightViewModel { Parameter = w }));
+                Weights.AddRange(_healthTrackerDbContext
+                    .BodyMeasurement
+                    .LastXDays(14)
+                    .OrderByDescending(w => w.MeasureTime)
+                    .Select(w => new WeightViewModel { Parameter = w }));
+
                 Weights.CollectionChanged += (s, e) => UpdateChartAsync();
                 UpdateChartAsync();
             });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _healthTrackerDbContext.Dispose();
+            base.Dispose(disposing);
         }
 
         #region Weights
@@ -48,6 +58,26 @@ namespace HealthTracker.ViewModels
         public void AddWeight()
         {
             NavigationService.NavigateTo("EditWeight");
+        }
+
+        #endregion
+
+        #region OpenWeightCommand
+
+        private ICommand _openWeightCommand;
+
+        public ICommand OpenWeightCommand => GetLazyProperty(ref _openWeightCommand, () => new Command(id => OpenWeight((int)id)));
+
+        public void OpenWeight(int weightId)
+        {
+            var weight = _healthTrackerDbContext
+                .BodyMeasurement
+                .FirstOrDefault(bm => bm.BodyMeasurementId == weightId);
+
+            if (weight == null)
+                return;
+
+            NavigationService.NavigateTo("EditWeight", weight);
         }
 
         #endregion

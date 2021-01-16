@@ -1,6 +1,6 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using HealthTracker.Models;
+using HealthTracker.MVVM;
 using HealthTracker.Services;
 using HealthTracker.Storage;
 using Xamarin.Forms;
@@ -11,35 +11,57 @@ namespace HealthTracker.ViewModels
     {
         private const float StepSize = 0.1f;
 
-        protected INavigationService NavigationService { get; }
-        protected IBodyMeasurementStorage WeightStorage { get; }
+        private INavigationService _navigationService;
+        private HealthTrackerDbContext _healthTrackerDbContext;
 
-        public EditWeightViewModel(INavigationService navigationService, IBodyMeasurementStorage weightStorage)
+        public EditWeightViewModel
+        (
+            INavigationService navigationService,
+            IDbContextFactory dbContextFactory
+        )
         {
-            NavigationService = navigationService;
-            WeightStorage = weightStorage;
+            _navigationService = navigationService;
+            _healthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _healthTrackerDbContext.Dispose();
+            base.Dispose(disposing);
         }
 
         #region Parameter Handling
 
         protected override void OnParameterChanged(object oldValue, object newValue)
         {
+            base.OnParameterChanged(oldValue, newValue);
             if (newValue == MVVM.Parameter.Empty)
             {
-                var latest = WeightStorage.LatestOrDefault();
-                if (latest == null)
-                    return;
+                EditMode = EditMode.Create;
+                var latest = _healthTrackerDbContext.BodyMeasurement.LatestOrDefault();
+                if (latest != null)
+                    BodyMeasurement.Weight = latest.Weight;
 
-                MapFrom(new BodyMeasurement
-                {
-                    MeasureTime = DateTime.UtcNow,
-                    Weight = latest.Weight
-                });
+                _healthTrackerDbContext.Add(BodyMeasurement);
+                MapFrom(BodyMeasurement);
             }
-            else
+            else if (newValue is BodyMeasurement)
             {
-                base.OnParameterChanged(oldValue, newValue);
+                EditMode = EditMode.Edit;
+                _healthTrackerDbContext.Attach(BodyMeasurement);
             }
+        }
+
+        #endregion
+
+        #region EditMode
+
+        private EditMode _editMode;
+
+        public EditMode EditMode
+        {
+            get => _editMode;
+            set => SetProperty(ref _editMode, value);
         }
 
         #endregion
@@ -78,7 +100,7 @@ namespace HealthTracker.ViewModels
 
         public void Cancel()
         {
-            NavigationService.NavigateToActiveSection();
+            _navigationService.NavigateToActiveSection();
         }
 
         #endregion
@@ -91,10 +113,27 @@ namespace HealthTracker.ViewModels
         
         public void Save()
         {
-            var bodyMeasurement = new BodyMeasurement();
-            MapTo(bodyMeasurement);
-            WeightStorage.Insert(bodyMeasurement);
-            NavigationService.NavigateToActiveSection();
+            MapTo(BodyMeasurement);
+            _healthTrackerDbContext.SaveChanges();
+            _navigationService.NavigateToActiveSection();
+        }
+
+        #endregion
+
+        #region Delete
+
+        private ICommand _deleteCommand;
+
+        public ICommand DeleteCommand => GetLazyProperty(ref _deleteCommand, () => new Command(Delete, () => EditMode == EditMode.Edit));
+
+        public void Delete()
+        {
+            if (EditMode != EditMode.Edit)
+                return;
+
+            _healthTrackerDbContext.Remove(BodyMeasurement);
+            _healthTrackerDbContext.SaveChanges();
+            _navigationService.NavigateToActiveSection();
         }
 
         #endregion

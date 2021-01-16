@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:HealthTracker.ViewModels"
+    x:Class="HealthTracker.Templates.MealViewCell"
+>
+    <ViewCell.View>
+        <Grid
+            Padding="10"
+        >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer
+                    Command="{Binding OpenMealCommand, Source={RelativeSource AncestorType={x:Type vm:FoodSectionViewModel}}}"
+                    CommandParameter="{Binding MealId}"
+                />
+            </Grid.GestureRecognizers>
+            <StackLayout
+                Grid.Column="0"
+                Grid.Row="0"
+                Margin="0"
+                Padding="0"
+                Spacing="0"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+            >
+                <Label
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center"
+                >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding DateOfEatingTime, StringFormat='{0:dd.MM.yyyy}'}" FontSize="Medium" FontAttributes="Bold" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center"
+                >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding TimeOfEatingTime, StringFormat='{0:hh\\:mm}'}" FontSize="Medium" />
+                            <Span Text=" " FontSize="Medium" />
+                            <Span Text="Uhr" FontSize="Medium" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+            <Label
+                Grid.Column="2"
+                Grid.Row="0"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center"
+                FontSize="Medium"
+                FontAttributes="Bold"
+                Text="{Binding Name}"
+            />
+        </Grid>
+
+        <!--
+        <StackLayout
+            Orientation="Horizontal"
+            Margin="0"
+            Spacing="0"
+            Padding="10"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+        >
+            
+            
+            
+        </StackLayout>
+
+    -->
+    </ViewCell.View>
+</ViewCell>

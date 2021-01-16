@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using HealthTracker.Models;
+using HealthTracker.MVVM;
 using HealthTracker.Services;
 using HealthTracker.Storage;
 using Xamarin.Forms;
@@ -39,23 +40,43 @@ namespace HealthTracker.ViewModels
             base.OnParameterChanged(oldValue, newValue);
             if (newValue == MVVM.Parameter.Empty)
             {
+                EditMode = EditMode.Create;
                 var latest = _healthTrackerDbContext.Meal.LatestOrDefault();
-                if (latest == null)
-                    return;
+                if (latest != null)
+                    Meal.Name = latest.Name;
 
-                Meal.Name = latest.Name;
                 _healthTrackerDbContext.Add(Meal);
                 MapFrom(Meal);
             }
             else if (newValue is Meal)
             {
+                EditMode = EditMode.Edit;
                 _healthTrackerDbContext.Attach(Meal);
             }
         }
 
         #endregion
 
+        #region EditMode
+
+        private EditMode _editMode;
+
+        public EditMode EditMode
+        {
+            get => _editMode;
+            set => SetProperty(ref _editMode, value);
+        }
+
+        #endregion
+
         #region TakePhotoCommand
+
+        private bool _isPhotoTaking;
+        public bool IsPhotoTaking
+        {
+            get => _isPhotoTaking;
+            set => SetProperty(ref _isPhotoTaking, value);
+        }
 
         private ICommand _takePhotoCommand;
 
@@ -63,19 +84,28 @@ namespace HealthTracker.ViewModels
 
         public async Task TakePhoto()
         {
+            IsPhotoTaking = true;
+
             var photoTaken = await _cameraService.TakePhotoAsync();
             if (photoTaken == null)
+            {
+                IsPhotoTaking = false;
                 return;
+            }
+                
 
             var photo = new Photo
             {
                 FileName = photoTaken.FileName,
+                OriginDirectoryName = photoTaken.OriginDirectoryName,
                 RecordingTime = DateTime.UtcNow,
                 Content = photoTaken.Content
             };
 
             Meal.Photos.Add(photo);
             Photos.Add(new PhotoViewModel { Parameter = photo });
+
+            IsPhotoTaking = false;
         }
 
         #endregion
@@ -102,6 +132,24 @@ namespace HealthTracker.ViewModels
         public void Save()
         {
             MapTo(Meal);
+            _healthTrackerDbContext.SaveChanges();
+            _navigationService.NavigateToActiveSection();
+        }
+
+        #endregion
+
+        #region Delete
+        
+        private ICommand _deleteCommand;
+
+        public ICommand DeleteCommand => GetLazyProperty(ref _deleteCommand, () => new Command(Delete, () => EditMode == EditMode.Edit));
+
+        public void Delete()
+        {
+            if (EditMode != EditMode.Edit)
+                return;
+
+            _healthTrackerDbContext.Remove(Meal);
             _healthTrackerDbContext.SaveChanges();
             _navigationService.NavigateToActiveSection();
         }

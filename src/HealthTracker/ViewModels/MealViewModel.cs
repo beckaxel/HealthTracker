@@ -2,9 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Windows.Input;
 using HealthTracker.Common;
 using HealthTracker.Models;
 using HealthTracker.MVVM;
+using Xamarin.Forms;
 
 namespace HealthTracker.ViewModels
 {
@@ -107,12 +109,15 @@ namespace HealthTracker.ViewModels
 
         #region Photos
 
-        public PhotoViewModel LatestPhoto => Photos.OrderByDescending(p => p).FirstOrDefault();
+        public bool HasPhotos => Photos.Count > 0;
+
+        public PhotoViewModel LatestPhoto => Photos.OrderByDescending(p => p.RecordingTime).FirstOrDefault();
 
         public ObservableCollection<PhotoViewModel> Photos { get; } = new ObservableCollection<PhotoViewModel>();
 
         private void PhotosChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            OnPropertyChanged(nameof(HasPhotos));
             OnPropertyChanged(nameof(LatestPhoto));
         }
 

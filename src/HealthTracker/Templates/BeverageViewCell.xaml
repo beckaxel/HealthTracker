@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:HealthTracker.ViewModels"
+    x:Class="HealthTracker.Templates.BeverageViewCell"
+>
+    <ViewCell.View>
+        <StackLayout
+            Orientation="Horizontal"
+            Margin="0"
+            Spacing="0"
+            Padding="10"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+        >
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer
+                    Command="{Binding OpenBeverageCommand, Source={RelativeSource AncestorType={x:Type vm:DrinkingSectionViewModel}}}"
+                    CommandParameter="{Binding BeverageId}"
+                />
+            </StackLayout.GestureRecognizers>
+            <StackLayout
+                Margin="0"
+                Padding="0"
+                Spacing="0"
+                VerticalOptions="FillAndExpand"
+            >
+                <Label
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center"
+                >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding DateOfDrinkingTime, StringFormat='{0:dd.MM.yyyy}'}" FontSize="Medium" FontAttributes="Bold" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center"
+                >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding TimeOfDrinkingTime, StringFormat='{0:hh\\:mm}'}" FontSize="Medium" />
+                            <Span Text=" " FontSize="Medium" />
+                            <Span Text="Uhr" FontSize="Medium" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+            <Label
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                HorizontalTextAlignment="End"
+                VerticalTextAlignment="Center"
+            >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Quantity, Converter={StaticResource DrinkingQuantityToString}}" FontSize="Large" FontAttributes="Bold" />
+                        <Span Text=" " FontSize="Large" />
+                        <Span Text="ml" FontSize="Large" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </StackLayout>
+    </ViewCell.View>
+</ViewCell>

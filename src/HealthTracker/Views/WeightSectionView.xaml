@@ -5,6 +5,7 @@
     xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
     xmlns:i18n="clr-namespace:HealthTracker.i18n"
     xmlns:c="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+    xmlns:t="clr-namespace:HealthTracker.Templates"
     x:Class="HealthTracker.Views.WeightSectionView"
     SectionName="{x:Static i18n:Text.WeightSection_Title}"
 >
@@ -63,63 +64,10 @@
                         </Style>                        
                     </StackLayout.Style>                        
                 </StackLayout>
-                <ListView ItemsSource="{Binding Meals}" HasUnevenRows="True">
+                <ListView ItemsSource="{Binding Weights}" HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout
-                                    Orientation="Horizontal"
-                                    Margin="0"
-                                    Spacing="0"
-                                    Padding="10"
-                                    VerticalOptions="FillAndExpand"
-                                    HorizontalOptions="FillAndExpand"
-                                >
-                                    <StackLayout
-                                        Margin="0"
-                                        Padding="0"
-                                        Spacing="0"
-                                        VerticalOptions="FillAndExpand"
-                                    >
-                                        <Label
-                                            VerticalOptions="FillAndExpand"
-                                            VerticalTextAlignment="Center"
-                                        >
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding DateOfMeasureTime, StringFormat='{0:dd.MM.yyyy}'}" FontSize="Medium" FontAttributes="Bold" />
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                        <Label
-                                            VerticalOptions="FillAndExpand"
-                                            VerticalTextAlignment="Center"
-                                        >
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="{Binding TimeOfMeasureTime, StringFormat='{0:hh\\:mm}'}" FontSize="Medium" />
-                                                    <Span Text=" " FontSize="Medium" />
-                                                    <Span Text="Uhr" FontSize="Medium" />
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                    </StackLayout>
-                                    <Label
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="FillAndExpand"
-                                        HorizontalTextAlignment="End"
-                                        VerticalTextAlignment="Center"
-                                    >
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Weight, Converter={StaticResource Key=WeightToString}}" FontSize="Large" FontAttributes="Bold" />
-                                                <Span Text=" " FontSize="Large" />
-                                                <Span Text="kg" FontSize="Large" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                </StackLayout>
-                            </ViewCell>
+                            <t:BodyMeasurementViewCell />
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HealthTracker.Templates.DrinkingQuantityPerDayViewCell">
+    <ViewCell.View>
+        <StackLayout
+            Orientation="Horizontal"
+            Margin="0"
+            Spacing="0"
+            Padding="10"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+        >   
+            <Label
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center"
+                Text="{Binding Day, StringFormat='{0:dd.MM.yyyy}'}"
+                FontSize="Medium"
+                FontAttributes="Bold"
+            />      
+            <StackLayout
+                Margin="0"
+                Padding="0"
+                Spacing="0"
+                VerticalOptions="FillAndExpand"
+            >
+                <Label
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding Percent, StringFormat='{0:P1}'}"
+                    FontSize="Medium"
+                    FontAttributes="Bold"
+                />
+                <Label
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding Quantity, StringFormat='{0} ml'}"
+                    FontSize="Medium"
+                />
+            </StackLayout>
+        </StackLayout>                     
+    </ViewCell.View>
+</ViewCell>

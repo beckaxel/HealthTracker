@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace HealthTracker.Converters
 {
-    public class BeverageAmountToStringConverter : IValueConverter
+    public class DrinkingQuantityToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

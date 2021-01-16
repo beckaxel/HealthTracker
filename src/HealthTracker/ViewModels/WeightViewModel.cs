@@ -7,20 +7,24 @@ namespace HealthTracker.ViewModels
 {
     public class WeightViewModel : ViewModelBase
     {
+        protected BodyMeasurement BodyMeasurement { get; private set; }
+
         #region Parameter Handling
 
         protected override void OnParameterChanged(object oldValue, object newValue)
         {
             if (newValue == MVVM.Parameter.Empty)
             {
-                MapFrom(new BodyMeasurement
+                BodyMeasurement = new BodyMeasurement
                 {
                     MeasureTime = DateTime.UtcNow
-                });
+                };
+                MapFrom(BodyMeasurement);
             }
-            else if (newValue is BodyMeasurement weight)
+            else if (newValue is BodyMeasurement bodyMeasurement)
             {
-                MapFrom(weight);
+                BodyMeasurement = bodyMeasurement;
+                MapFrom(BodyMeasurement);
             }
         }
 

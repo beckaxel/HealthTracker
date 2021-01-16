@@ -11,5 +11,7 @@ namespace HealthTracker.Models
         public float Height { get; set; }
 
         public Gender Gender { get; set; }
+
+        public float DailyDrinkingQuantity { get; set; }
     }
 }

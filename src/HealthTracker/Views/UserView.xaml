@@ -101,6 +101,7 @@
                                     />
                                 </StackLayout>
                             </ViewCell>
+                            <EntryCell Label="Tägliche Trinkmenge" Keyboard="Numeric" Text="{Binding DailyDrinkingQuantity}" />
                         </TableSection>
                     </TableRoot>
                 </TableView>

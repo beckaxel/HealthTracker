@@ -38,6 +38,17 @@ namespace HealthTracker.ViewModels
 
         #endregion
 
+        #region OriginDirectoryName
+
+        private string _originDirectoryName;
+        public string OriginDirectoryName
+        {
+            get => _originDirectoryName;
+            set => SetProperty(ref _originDirectoryName, value);
+        }
+
+        #endregion
+
         #region RecordingTime
 
         private DateTime _recordingTime;
