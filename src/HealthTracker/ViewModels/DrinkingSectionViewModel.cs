@@ -39,6 +39,15 @@ namespace HealthTracker.ViewModels
             base.Dispose(disposing);
         }
 
+        #region FilterContent
+
+        protected override void FilterContent(string activeFilter)
+        {
+
+        }
+
+        #endregion
+
         public ObservableCollection<DrinkingQuantityPerDayViewModel> DrinkingQuantitiesPerDay { get; } = new ObservableCollection<DrinkingQuantityPerDayViewModel>();
 
         public ObservableCollection<BeverageViewModel> BeveragesToday { get; } = new ObservableCollection<BeverageViewModel>();

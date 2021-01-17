@@ -114,10 +114,13 @@ namespace HealthTracker.ViewModels
 
         private ICommand _cancelCommand;
 
-        public ICommand CancelCommand => GetLazyProperty(ref _cancelCommand, () => new Command(Cancel));
+        public ICommand CancelCommand => GetLazyProperty(ref _cancelCommand, () => new Command(Cancel, () => !IsPhotoTaking));
 
         public void Cancel()
         {
+            if (IsPhotoTaking)
+                return;
+
             _navigationService.NavigateToActiveSection();
         }
 
@@ -127,10 +130,13 @@ namespace HealthTracker.ViewModels
 
         private ICommand _saveCommand;
 
-        public ICommand SaveCommand => GetLazyProperty(ref _saveCommand, () => new Command(Save));
+        public ICommand SaveCommand => GetLazyProperty(ref _saveCommand, () => new Command(Save, () => !IsPhotoTaking));
 
         public void Save()
         {
+            if (IsPhotoTaking)
+                return;
+
             MapTo(Meal);
             _healthTrackerDbContext.SaveChanges();
             _navigationService.NavigateToActiveSection();
@@ -142,11 +148,11 @@ namespace HealthTracker.ViewModels
         
         private ICommand _deleteCommand;
 
-        public ICommand DeleteCommand => GetLazyProperty(ref _deleteCommand, () => new Command(Delete, () => EditMode == EditMode.Edit));
+        public ICommand DeleteCommand => GetLazyProperty(ref _deleteCommand, () => new Command(Delete, () => EditMode == EditMode.Edit && !IsPhotoTaking));
 
         public void Delete()
         {
-            if (EditMode != EditMode.Edit)
+            if (EditMode != EditMode.Edit || IsPhotoTaking)
                 return;
 
             _healthTrackerDbContext.Remove(Meal);

@@ -34,7 +34,16 @@ namespace HealthTracker.ViewModels
             base.Dispose(disposing);
         }
 
-        #region Weights
+        #region FilterContent
+
+        protected override void FilterContent(string activeFilter)
+        {
+
+        }
+
+        #endregion
+
+        #region Meals
 
         public ObservableCollection<MealViewModel> Meals { get; } = new ObservableCollection<MealViewModel>();
 

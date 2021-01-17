@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace HealthTracker.MVVM
 {
@@ -43,6 +44,30 @@ namespace HealthTracker.MVVM
             set => SetValue(SectionCollationProperty, value);
         }
 
+        #endregion
+
+        #region SectionSummary
+
+        private static BindableProperty SectionSummaryProperty = BindableProperty.Create(nameof(SectionSummary), typeof(View), typeof(SectionMainView));
+
+        public View SectionSummary
+        {
+            get => (View)GetValue(SectionSummaryProperty);
+            set => SetValue(SectionSummaryProperty, value);
+        }
+
+        #endregion
+
+        #region SectionFilters
+        
+        private static BindableProperty SectionFiltersProperty = BindableProperty.Create(nameof(SectionFilters), typeof(FilterCollection), typeof(SectionMainView));
+
+        public FilterCollection SectionFilters
+        {
+            get => (FilterCollection)GetValue(SectionFiltersProperty);
+            set => SetValue(SectionFiltersProperty, value);
+        }
+        
         #endregion
 
         #region SectionContent

@@ -26,14 +26,7 @@ namespace HealthTracker.ViewModels
             _healthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
             Task.Run(() =>
             {
-                Weights.AddRange(_healthTrackerDbContext
-                    .BodyMeasurement
-                    .LastXDays(14)
-                    .OrderByDescending(w => w.MeasureTime)
-                    .Select(w => new WeightViewModel { Parameter = w }));
-
-                Weights.CollectionChanged += (s, e) => UpdateChartAsync();
-                UpdateChartAsync();
+                FilterContent("Woche");
             });
         }
 
@@ -42,6 +35,23 @@ namespace HealthTracker.ViewModels
             _healthTrackerDbContext.Dispose();
             base.Dispose(disposing);
         }
+
+        #region FilterContent
+
+        protected override void FilterContent(string activeFilter)
+        {
+            Weights.Clear();
+            Weights.AddRange(_healthTrackerDbContext
+                    .BodyMeasurement
+                    .Filter(activeFilter)
+                    .OrderByDescending(w => w.MeasureTime)
+                    .Select(w => new WeightViewModel { Parameter = w }));
+
+            //Weights.CollectionChanged += (s, e) => UpdateChartAsync();
+            UpdateChartAsync();
+        }
+
+        #endregion
 
         #region Weights
 

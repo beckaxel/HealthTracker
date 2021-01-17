@@ -9,5 +9,14 @@ namespace HealthTracker.ViewModels
             : base(navigationService)
         {
         }
+
+        #region FilterContent
+
+        protected override void FilterContent(string activeFilter)
+        {
+
+        }
+
+        #endregion
     }
 }

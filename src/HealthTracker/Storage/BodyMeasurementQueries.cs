@@ -11,9 +11,16 @@ namespace HealthTracker.Storage
             return source.OrderByDescending(bm => bm.MeasureTime).FirstOrDefault();
         }
 
-        public static IQueryable<BodyMeasurement> LastXDays(this IQueryable<BodyMeasurement> source, int days)
+        public static IQueryable<BodyMeasurement> Filter(this IQueryable<BodyMeasurement> source, string name)
         {
-            var fromDate = DateTime.Today.Subtract(TimeSpan.FromDays(days));
+            var fromDate = DateTime.Today;
+            if (name == "Woche")
+                fromDate = fromDate.AddDays(-7);
+            else if (name == "Monat")
+                fromDate = fromDate.AddMonths(-1);
+            else if (name == "Jahr")
+                fromDate = fromDate.AddYears(-1);
+
             return source.Where(bm => bm.MeasureTime >= fromDate);
         }
     }

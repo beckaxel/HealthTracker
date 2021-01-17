@@ -47,6 +47,30 @@ namespace HealthTracker.MVVM
 
         #endregion
 
+        #region FilterContent
+
+        private ICommand _filterContentCommand;
+
+        public ICommand FilterContentCommand => GetLazyProperty(ref _filterContentCommand, () => new Command(p => FilterContentCore(p as Filter)));
+
+        private string _activeFilter;
+        public string ActiveFilter
+        {
+            get => _activeFilter;
+            set => SetProperty(ref _activeFilter, value);
+        }
+
+        private void FilterContentCore(Filter filter)
+        {
+            filter.IsActive = true;
+            ActiveFilter = filter.Name;
+            FilterContent(filter.Name);
+        }
+
+        protected abstract void FilterContent(string activeFilter);
+        
+        #endregion
+
         #region ActiveSection
 
         public SectionViewModel ActiveSection => NavigationService.ActiveSection;
