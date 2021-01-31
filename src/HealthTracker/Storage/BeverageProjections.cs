@@ -8,7 +8,7 @@ namespace HealthTracker.Storage
 {
     public static class BeverageProjections
     {
-        public static List<DrinkingQuantityPerDayViewModel> SelectIntoDrinkingQuantityPerDayViewModel(this IQueryable<Beverage> source, HealthTrackerDbContext healthTrackerDbContext)
+        public static List<DrinkingQuantityPerDayViewModel> SelectIntoDrinkingQuantityPerDayViewModel(this IEnumerable<Beverage> source, HealthTrackerDbContext healthTrackerDbContext)
         {
 
             return source

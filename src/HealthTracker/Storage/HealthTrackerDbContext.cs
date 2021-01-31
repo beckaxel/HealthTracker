@@ -7,7 +7,6 @@ namespace HealthTracker.Storage
     {
         public DbSet<Setting> Setting { get; set; }
         public DbSet<User> User { get; set; }
-        public DbSet<Food> Food { get; set; }
         public DbSet<Beverage> Beverage { get; set; }
         public DbSet<Meal> Meal { get; set; }
         public DbSet<BodyMeasurement> BodyMeasurement { get; set; }

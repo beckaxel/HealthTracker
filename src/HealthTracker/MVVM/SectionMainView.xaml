@@ -22,9 +22,9 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="4*" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="2*" />
+                <RowDefinition Height="5*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackLayout
@@ -93,16 +93,116 @@
                     </Button.ImageSource>
                 </Button>
             </StackLayout>
-            <ContentView
+            <Frame
+                Margin="6"
+                Padding="0"
+                CornerRadius="8"
                 Grid.Column="0"
                 Grid.Row="1"
-                Margin="0"
-                Padding="0"
-                VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
-                BackgroundColor="{DynamicResource PrimaryDarkColor}"
-                Content="{Binding SectionSummary, Source={x:Reference Name=Self}}"
-            />
+                VerticalOptions="FillAndExpand"
+                BackgroundColor="{DynamicResource PrimaryColor}"
+            >
+                <StackLayout
+                    Margin="0"
+                    Padding="0"
+                    Spacing="0"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                >
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        IsVisible="False"
+                    >
+                        <StackLayout.Triggers>                                
+                            <DataTrigger TargetType="StackLayout" Binding="{Binding IsLoading}" Value="True">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>              
+                        </StackLayout.Triggers>
+                        <ActivityIndicator
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="EndAndExpand"
+                            Color="{DynamicResource SecondaryColor}"
+                            IsRunning="True"
+                        />
+                        <Label
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="StartAndExpand"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                            FontSize="Medium"
+                            Text="Lade Daten ..."
+                            TextColor="{DynamicResource SecondaryColor}"
+                        />               
+                    </StackLayout>
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        IsVisible="False"
+                    >
+                        <StackLayout.Triggers>
+                            <MultiTrigger TargetType="StackLayout">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition
+                                        Binding="{Binding IsLoading}"
+                                        Value="False" />
+                                    <BindingCondition
+                                        Binding="{Binding HasSummaryData}"
+                                        Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>
+                        </StackLayout.Triggers>
+                        <Label
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                            FontSize="Medium"
+                            Text="Keine Daten gefunden"
+                            TextColor="{DynamicResource SecondaryColor}"
+                        />               
+                    </StackLayout>
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        IsVisible="False"
+                    >
+                        <StackLayout.Triggers>                                
+                            <MultiTrigger TargetType="StackLayout">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition
+                                        Binding="{Binding IsLoading}"
+                                        Value="False" />
+                                    <BindingCondition
+                                        Binding="{Binding HasSummaryData}"
+                                        Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsVisible" Value="True" />
+                            </MultiTrigger>              
+                        </StackLayout.Triggers>
+                        <ContentView
+                            Margin="0"
+                            Padding="0"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            Content="{Binding SectionSummary, Source={x:Reference Name=Self}}"
+                        />
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
             <StackLayout
                 Grid.Column="0"
                 Grid.Row="2"
@@ -110,7 +210,8 @@
                 Padding="0"
                 Spacing="0"
                 Orientation="Horizontal"
-                BindableLayout.ItemsSource="{Binding SectionFilters, Source={x:Reference Name=Self}}"
+                BindingContext="{Binding ActiveSection}"
+                BindableLayout.ItemsSource="{Binding Filters}"
             >
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
@@ -128,7 +229,7 @@
                                 />
                             </StackLayout.GestureRecognizers>
                             <Label
-                                Text="{Binding Name}"
+                                Text="{Binding DisplayName}"
                                 HorizontalOptions="FillAndExpand"
                                 VerticalTextAlignment="Center"
                                 HorizontalTextAlignment="Center"
@@ -138,7 +239,7 @@
                             />
                             <BoxView HeightRequest="3" BackgroundColor="{DynamicResource PrimaryDarkColor}">
                                 <BoxView.Triggers>
-                                    <DataTrigger TargetType="BoxView" Binding="{Binding IsActive}" Value="True">
+                                    <DataTrigger TargetType="BoxView" Binding="{Binding Active}" Value="True">
                                         <Setter Property="BackgroundColor" Value="{DynamicResource SecondaryColor}" />
                                     </DataTrigger>
                                 </BoxView.Triggers>
@@ -147,15 +248,84 @@
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
             </StackLayout>
-            <ContentView
+            <AbsoluteLayout
                 Grid.Column="0"
                 Grid.Row="3"
-                Margin="0"
-                Padding="0"
-                VerticalOptions="FillAndExpand"
-                HorizontalOptions="FillAndExpand"
-                Content="{Binding SectionContent, Source={x:Reference Name=Self}}"
-            />
+            >
+                <StackLayout
+                    AbsoluteLayout.LayoutFlags="All"
+                    AbsoluteLayout.LayoutBounds="0,0,1,1"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="0"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                >
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        IsVisible="False"
+                    >
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout" Binding="{Binding HasListData}" Value="True">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+                        <ContentView
+                            Margin="0"
+                            Padding="0"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            Content="{Binding SectionContent, Source={x:Reference Name=Self}}"
+                        />
+                    </StackLayout>
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand"
+                        IsVisible="False"
+                    >
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout" Binding="{Binding HasListData}" Value="False">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+                        <Label
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="FillAndExpand"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                            FontSize="Medium"
+                            Text="Keine Daten gefunden"
+                            TextColor="{DynamicResource SecondaryColor}"
+                        />   
+                    </StackLayout>
+                </StackLayout>
+                <Button
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
+                    CornerRadius="30"
+                    WidthRequest="60"
+                    HeightRequest="60"
+                    Margin="10"
+                    BackgroundColor="{DynamicResource SecondaryLightColor}"
+                    Command="{Binding AddItemCommand}">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            Glyph="&#xf067;"
+                            FontFamily="FontAwesomeSolid"
+                            Color="{DynamicResource PrimaryTextColor}"
+                            Size="36"
+                        />
+                    </Button.ImageSource>
+                </Button>
+            </AbsoluteLayout>
             <StackLayout
                 Grid.Column="0"
                 Grid.Row="4"

@@ -33,6 +33,25 @@ namespace HealthTracker.Services.Impl
                 _serviceLocator.Register(viewModelType);
         }
 
+        public string GetNameOfViewModel(ViewModelBase viewModel)
+        {
+            return GetNameOfViewModel(viewModel.GetType());
+        }
+
+
+        public string GetNameOfViewModel(Type viewModelType)
+        {
+            var name = _viewModelTypes
+                .Where(kvp => kvp.Value == viewModelType)
+                .Select(kvp => kvp.Key)
+                .FirstOrDefault();
+
+            if (name == null)
+                throw new ViewNotFoundException($"Der Typ {viewModelType.FullName} gehört zu keinem ViewModel");
+
+            return name;
+        }
+
         public ViewModelBase GetViewModel(string name)
         {
             if (!_viewModelTypes.ContainsKey(name))

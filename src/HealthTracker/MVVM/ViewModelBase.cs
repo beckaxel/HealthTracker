@@ -55,15 +55,21 @@ namespace HealthTracker.MVVM
 
         #region AutoMapping
 
+        protected bool IsMapping { get; private set; }
+
         protected void MapFrom<T>(T source)
         {
+            IsMapping = true;
             Mapper.Map(source, this);
+            IsMapping = false;
         }
 
         protected void MapTo<T>(T target)
             where T : new()
         {
+            IsMapping = true;
             Mapper.Map(this, target);
+            IsMapping = false;
         }
 
         public void Dispose()

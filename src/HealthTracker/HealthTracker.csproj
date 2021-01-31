@@ -49,11 +49,11 @@
     <EmbeddedResource Include="Fonts\Font Awesome 5 Free-Regular-400.otf" />
     <EmbeddedResource Include="Fonts\Font Awesome 5 Brands-Regular-400.otf" />
   </ItemGroup>
+  <!--
   <ItemGroup>
     <Reference Include="Microcharts, Version=0.9.5.9, Culture=neutral, PublicKeyToken=null" />
   </ItemGroup>
- 
-  
+  -->
   <ItemGroup>
     <EmbeddedResource Update="i18n\Text.resx">
       <Generator>ResXFileCodeGenerator</Generator>

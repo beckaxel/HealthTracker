@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    xmlns:c="clr-namespace:HealthTracker.Converters"
     x:Class="HealthTracker.Views.EditMealView">
     <ContentPage.Content>
         <StackLayout
@@ -91,16 +92,19 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="10" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Frame
                     Grid.Column="1"
                     Grid.Row="0"
+                    Grid.ColumnSpan="2"
                     Margin="40,20"
                     Padding="0"
                     CornerRadius="10"
@@ -218,7 +222,7 @@
                 </Frame>
                 <StackLayout
                     Grid.Column="0"
-                    Grid.ColumnSpan="3"
+                    Grid.ColumnSpan="4"
                     Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalOptions="CenterAndExpand"
@@ -236,9 +240,9 @@
                 <StackLayout
                     Grid.Column="1"
                     Grid.Row="2"
+                    Grid.ColumnSpan="2"
                     Spacing="0"
                 >
-                    
                     <Entry
                         Margin="0"
                         Text="{Binding Name}"
@@ -250,6 +254,22 @@
                         HorizontalOptions="FillAndExpand"
                     />
                 </StackLayout>
+                <Picker
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Margin="0"
+                    ItemsSource="{x:Static c:MealTypeToStringConverter.Values}"
+                    SelectedItem="{Binding MealType, Converter={StaticResource MealTypeToString}}"
+                    HorizontalOptions="FillAndExpand"
+                />
+                <Picker
+                    Grid.Column="2"
+                    Grid.Row="3"
+                    Margin="0"
+                    ItemsSource="{x:Static c:DietToStringConverter.Values}"
+                    SelectedItem="{Binding Diet, Converter={StaticResource DietToString}}"
+                    HorizontalOptions="FillAndExpand"
+                />
             </Grid>
             <StackLayout
                 Orientation="Horizontal"

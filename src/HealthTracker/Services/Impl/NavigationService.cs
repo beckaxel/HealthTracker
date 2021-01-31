@@ -51,17 +51,24 @@ namespace HealthTracker.Services.Impl
         {
             var views = _viewService.GetViews<SectionMainView>();
             return views
-                .Select(GetSectionViewModel)
+                .Select(CreateSectionViewModel)
                 .OrderBy(s => s.Collation)
                 .ToDictionary(s => s.Name);
         }
 
-        private SectionViewModel GetSectionViewModel(SectionMainView sectionMainView)
+        private SectionViewModel CreateSectionViewModel(SectionMainView sectionMainView)
         {
             var sectionViewModel = _viewModelService.GetViewModel<SectionViewModel>(_viewService.GetNameOfView(sectionMainView));
             sectionViewModel.DisplayName = sectionMainView.SectionName;
             sectionViewModel.IconImageSource = sectionMainView.SectionIconImageSource;
             sectionViewModel.Collation = sectionMainView.SectionCollation;
+            sectionViewModel.Filters.AddRange(sectionMainView.SectionFilters.Select(f => new FilterViewModel
+            {
+                Parameter = f,
+                Default = f.Name == sectionMainView.SectionFilters.DefaultFilterName,
+                Active = f.Name == sectionMainView.SectionFilters.DefaultFilterName
+            }));
+            sectionViewModel.ActiveFilter = sectionViewModel.Filters.FirstOrDefault(f => f.Default);
             return sectionViewModel;
         }
 
@@ -132,7 +139,13 @@ namespace HealthTracker.Services.Impl
                 ActiveSection.Active = false;
             ActiveSection = section;
         }
-        
+
+        public SectionViewModel FindSectionViewModel(SectionMainViewModel sectionMainViewModel)
+        {
+            var sectionName = _viewModelService.GetNameOfViewModel(sectionMainViewModel);
+            return AllSections.FirstOrDefault(s => s.Name == sectionName);
+        }
+
         #endregion
 
         #region NavigateTo
@@ -175,7 +188,11 @@ namespace HealthTracker.Services.Impl
 
         public void Initialize()
         {
-            ActiveSection = EnabledSections.FirstOrDefault();
+            var defaultSection = EnabledSections.FirstOrDefault();
+            if (defaultSection == null)
+                return;
+
+            defaultSection.Active = true;
             this.NavigateToActiveSection();
         }
 

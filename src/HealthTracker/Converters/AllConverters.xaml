@@ -6,10 +6,15 @@
     x:Class="HealthTracker.Converters.AllConverters"
 >
     <c:GenderToStringConverter x:Key="GenderToString" />
+    <c:MealTypeToStringConverter x:Key="MealTypeToString" />
+    <c:DietToStringConverter x:Key="DietToString" />
     <c:InvertedBooleanConverter x:Key="InvertedBoolean" />
     <c:WeightToStringConverter x:Key="WeightToString" />
     <c:DrinkingQuantityToStringConverter x:Key="DrinkingQuantityToString" />
     <c:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSource" />
     <c:PhotoViewModelToImageSourceConverter x:Key="PhotoViewModelToImageSource" />
     <c:LongToFileSizeStringConverter x:Key="LongToFileSizeString" />
+    <c:DaysSinceToStringConverter x:Key="DaysSinceToString" />
+    <c:BooleanToCheckBoxGlyphConverter x:Key="BooleanToCheckBoxGlyph" />
+    <c:AverageDaysToStringConverter x:Key="AverageDaysToString" />
 </ResourceDictionary>

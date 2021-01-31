@@ -11,8 +11,10 @@ namespace HealthTracker.Models
 
         public DateTime EatingTime { get; set; }
 
-        public virtual ICollection<Photo> Photos { get; set; } = new HashSet<Photo>();
+        public MealType MealType { get; set; }
 
-        public virtual ICollection<Food> Foods { get; set; } = new HashSet<Food>();
+        public Diet Diet { get; set; }
+
+        public virtual ICollection<Photo> Photos { get; set; } = new HashSet<Photo>();
     }
 }

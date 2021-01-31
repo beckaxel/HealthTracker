@@ -7,7 +7,7 @@
     <Style x:Key="AppHeader" TargetType="StackLayout">
         <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}" />
     </Style>
-    <Style x:Key="AppContent" TargetType="StackLayout">
+    <Style x:Key="AppContent" TargetType="Grid">
         <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryLightColor}" />
     </Style>
     <Style x:Key="AppFooter" TargetType="StackLayout">

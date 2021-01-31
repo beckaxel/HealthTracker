@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Input;
-using HealthTracker.Common;
 using HealthTracker.Models;
 using HealthTracker.MVVM;
 using HealthTracker.Services;
@@ -11,16 +10,39 @@ namespace HealthTracker.ViewModels
 {
     public class UserViewModel : ViewModelBase
     {
-        private bool _loading = false;
+        protected User User { get; private set; }
+        private readonly HealthTrackerDbContext _healthTrackerDbContext;
+        private readonly INavigationService _navigationService;
 
-        protected INavigationService NavigationService { get; }
-        protected IUserStorage UserStorage { get; }
-
-        public UserViewModel(INavigationService navigationService, IUserStorage userStorage)
+        public UserViewModel
+        (
+            INavigationService navigationService,
+            IDbContextFactory dbContextFactory
+        )
         {
-            NavigationService = navigationService;
-            UserStorage = userStorage;
-            Load();
+            _navigationService = navigationService;
+            _healthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _healthTrackerDbContext.Dispose();
+            base.Dispose(disposing);
+        }
+
+        protected override void OnParameterChanged(object oldValue, object newValue)
+        {
+            if (newValue == MVVM.Parameter.Empty)
+            {
+                User = _healthTrackerDbContext.GetOrAddUser();
+                MapFrom(User);
+            }
+            else if (newValue is User user)
+            {
+                User = user;
+                _healthTrackerDbContext.Attach(User);
+                MapFrom(User);
+            }
         }
 
         #region Id
@@ -37,15 +59,16 @@ namespace HealthTracker.ViewModels
 
         #region Birthdate
 
-        private DateTime? _birthDate;
+        private DateTime _birthDate;
 
-        public DateTime? BirthDate
+        public DateTime BirthDate
         {
             get => _birthDate;
             set
             {
-                SetProperty(ref _birthDate, value);
-                Save();
+                value = new DateTime(value.Year, value.Month, value.Day, 0, 0, 0, DateTimeKind.Utc);
+                if (SetProperty(ref _birthDate, value) && !IsMapping)
+                    Save();
             }
         }
 
@@ -53,15 +76,15 @@ namespace HealthTracker.ViewModels
 
         #region Height
 
-        private float? _height;
+        private float _height;
 
-        public float? Height
+        public float Height
         {
             get => _height;
             set
             {
-                SetProperty(ref _height, value);
-                Save();
+                if (SetProperty(ref _height, value) && !IsMapping)
+                    Save();
             }
         }
 
@@ -69,15 +92,15 @@ namespace HealthTracker.ViewModels
 
         #region Gender
 
-        private Gender? _gender;
+        private Gender _gender;
 
-        public Gender? Gender
+        public Gender Gender
         {
             get => _gender;
             set
             {
-                SetProperty(ref _gender, value);
-                Save();
+                if (SetProperty(ref _gender, value) && !IsMapping)
+                    Save();
             }
         }
 
@@ -85,15 +108,15 @@ namespace HealthTracker.ViewModels
 
         #region Daily Drinking Quantity
 
-        private float? _dailyDrinkingQuantity;
+        private float _dailyDrinkingQuantity;
 
-        public float? DailyDrinkingQuantity
+        public float DailyDrinkingQuantity
         {
             get => _dailyDrinkingQuantity;
             set
             {
-                SetProperty(ref _dailyDrinkingQuantity, value);
-                Save();
+                if (SetProperty(ref _dailyDrinkingQuantity, value) && !IsMapping)
+                    Save();
             }
         }
 
@@ -101,36 +124,10 @@ namespace HealthTracker.ViewModels
 
         #region Storage
 
-        protected void Load()
-        {
-            _loading = true;
-
-            var user = UserStorage.GetOrAdd();
-            _id = user.UserId;
-            _birthDate = user.BirthDate.ToLocalTime().Date;
-            _height = user.Height;
-            _gender = user.Gender;
-            _dailyDrinkingQuantity = user.DailyDrinkingQuantity;
-
-            _loading = false;
-        }
-
         protected void Save()
         {
-            if (_loading)
-                return;
-
-            UserStorage.Update
-            (
-                new User
-                {
-                    UserId = Id ?? default,
-                    BirthDate = BirthDate?.Date.ToUniversalTime() ?? default,
-                    Height = Height ?? default,
-                    Gender = Gender ?? default,
-                    DailyDrinkingQuantity = DailyDrinkingQuantity ?? 1500f
-                }
-            );
+            MapTo(User);
+            _healthTrackerDbContext.SaveChanges();
         }
 
         #endregion
@@ -143,7 +140,7 @@ namespace HealthTracker.ViewModels
 
         public void Close()
         {
-            NavigationService.NavigateToActiveSection();
+            _navigationService.NavigateToActiveSection();
         }
 
         #endregion

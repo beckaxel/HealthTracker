@@ -41,10 +41,6 @@ namespace HealthTracker.ViewModels
             if (newValue == MVVM.Parameter.Empty)
             {
                 EditMode = EditMode.Create;
-                var latest = _healthTrackerDbContext.Meal.LatestOrDefault();
-                if (latest != null)
-                    Meal.Name = latest.Name;
-
                 _healthTrackerDbContext.Add(Meal);
                 MapFrom(Meal);
             }

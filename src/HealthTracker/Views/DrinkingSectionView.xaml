@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:mvvm="clr-namespace:HealthTracker.MVVM"
+    xmlns:c="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
     xmlns:t="clr-namespace:HealthTracker.Templates"
     x:Class="HealthTracker.Views.DrinkingSectionView"
 >
@@ -22,30 +23,216 @@
             Padding="0"
             Spacing="0"
             HorizontalOptions="FillAndExpand"
-            VerticalOptions="CenterAndExpand"
+            VerticalOptions="FillAndExpand"
         >
-            <Label
-                Text="{Binding DrinkingQuantityToday.Percent, StringFormat='{0:P1}'}"
-                VerticalOptions="End"
-                HorizontalTextAlignment="Center"
-                FontSize="48"
-                FontAttributes="Bold"
-                TextColor="{DynamicResource SecondaryColor}"
-            />
-            <ProgressBar
-                Margin="50,10"
-                Progress="{Binding DrinkingQuantityToday.Percent}"
+            <StackLayout
+                Margin="0"
+                Padding="0"
+                Spacing="0"
                 HorizontalOptions="FillAndExpand"
-                VerticalOptions="Center"
-                ProgressColor="{DynamicResource SecondaryColor}"
-            />
-            <Label
-                Text="{Binding DrinkingQuantityToday.Quantity, StringFormat='{0} ml'}"
-                FontSize="32"
-                VerticalOptions="Start"
-                HorizontalTextAlignment="Center"
-                TextColor="{DynamicResource SecondaryColor}"
-            />
+                VerticalOptions="CenterAndExpand"
+                IsVisible="False"
+            >
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding ActiveSection.ActiveFilter.DisplayName}" Value="Heute">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label
+                    Text="{Binding DrinkingQuantityToday.Percent, StringFormat='{0:P1}'}"
+                    VerticalOptions="End"
+                    HorizontalTextAlignment="Center"
+                    FontSize="48"
+                    FontAttributes="Bold"
+                    TextColor="{DynamicResource SecondaryColor}"
+                />
+                <ProgressBar
+                    Margin="50,10"
+                    Progress="{Binding DrinkingQuantityToday.Percent}"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="Center"
+                    ProgressColor="{DynamicResource SecondaryColor}"
+                />
+                <Label
+                    FontSize="21"
+                    VerticalOptions="Start"
+                    HorizontalTextAlignment="Center"
+                    TextColor="{DynamicResource SecondaryColor}"
+                >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding DrinkingQuantityToday.Quantity, StringFormat='{0:0}'}" FontSize="28" FontAttributes="Bold" />
+                            <Span Text=" ml" />
+                            <Span Text=" von " />
+                            <Span Text="{Binding DailyDrinkingQuantity, StringFormat='{0:0}'}" FontSize="28" FontAttributes="Bold" />
+                            <Span Text=" ml" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+            <Grid
+                Margin="0"
+                Padding="10,5"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="CenterAndExpand"
+            >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid" Binding="{Binding ActiveSection.ActiveFilter.DisplayName}" Value="Heute">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center"
+                    HorizontalTextAlignment="Start"
+                    Text="{Binding From}"
+                />
+                <Label
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center"
+                    HorizontalTextAlignment="Center"
+                >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Ziel: " FontSize="Small" />
+                            <Span Text="{Binding DailyDrinkingQuantity, StringFormat='{0:0} ml'}" FontAttributes="Bold" FontSize="Medium" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label
+                    Grid.Column="2"
+                    Grid.Row="0"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center"
+                    HorizontalTextAlignment="End"
+                    Text="{Binding To}"
+                />
+                <c:ChartView
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    Chart="{Binding Chart}"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    HeightRequest="150"
+                />
+                <StackLayout
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="10"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="StartAndExpand"
+                    Orientation="Horizontal"
+                >
+                    <Label
+                        Text="↓"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"
+                        FontAttributes="Bold"
+                        FontSize="24"
+                    />
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                    >
+                        <Label
+                            Text="{Binding MinQuantity, StringFormat='{0:0} ml'}"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                        />
+                        <Label
+                            Text="{Binding MinPercent, StringFormat='{0:P1}'}"
+                            HorizontalTextAlignment="Center"
+                        />
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="10"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="CenterAndExpand"
+                    Orientation="Horizontal"
+                >
+                    <Label
+                        Text="∅"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Start"
+                        FontAttributes="Bold"
+                        FontSize="21"
+                    />
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                    >
+                        <Label
+                            Text="{Binding AverageQuantity, StringFormat='{0:0} ml'}"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                        />
+                        <Label
+                            Text="{Binding AveragePercent, StringFormat='{0:P1}'}"
+                            HorizontalTextAlignment="Center"
+                        />
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout
+                    Grid.Column="2"
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="10"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="EndAndExpand"
+                    Orientation="Horizontal"
+                >
+                    <Label
+                        Text="↑"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Start"
+                        FontAttributes="Bold"
+                        FontSize="24"
+                    />
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                    >
+                        <Label
+                            Text="{Binding MaxQuantity, StringFormat='{0:0} ml'}"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                        />
+                        <Label
+                            Text="{Binding MaxPercent, StringFormat='{0:P1}'}"
+                            HorizontalTextAlignment="Center"
+                        />
+                    </StackLayout>
+                </StackLayout>
+            </Grid>
         </StackLayout>
     </mvvm:SectionMainView.SectionSummary>
     <mvvm:SectionMainView.SectionFilters>
@@ -57,39 +244,12 @@
         </mvvm:FilterCollection>
     </mvvm:SectionMainView.SectionFilters>
     <mvvm:SectionMainView.SectionContent>
-        <AbsoluteLayout>
-            <StackLayout
-                AbsoluteLayout.LayoutFlags="All"
-                AbsoluteLayout.LayoutBounds="0,0,1,1"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="FillAndExpand"
-            >
-                <ListView ItemsSource="{Binding BeveragesToday}" HasUnevenRows="True">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <t:BeverageViewCell />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackLayout>
-            <Button
-                AbsoluteLayout.LayoutFlags="PositionProportional"
-                AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
-                CornerRadius="30"
-                WidthRequest="60"
-                HeightRequest="60"
-                Margin="10"
-                BackgroundColor="{DynamicResource SecondaryLightColor}"
-                Command="{Binding AddBeverageCommand}">
-                <Button.ImageSource>
-                    <FontImageSource
-                        Glyph="&#xf067;"
-                        FontFamily="FontAwesomeSolid"
-                        Color="{DynamicResource PrimaryTextColor}"
-                        Size="36"
-                    />
-                </Button.ImageSource>
-            </Button>
-        </AbsoluteLayout>
+        <ListView ItemsSource="{Binding BeveragesToday}" HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <t:BeverageViewCell />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </mvvm:SectionMainView.SectionContent>
 </mvvm:SectionMainView>

@@ -38,7 +38,6 @@ namespace HealthTracker
             serviceLocator.RegisterSingleton<INavigationService, NavigationService>();
             serviceLocator.RegisterSingleton<ICameraService, CameraService>();
             serviceLocator.RegisterSingleton<ISettingsStorage, EFSettingsStorage>();
-            serviceLocator.RegisterSingleton<IUserStorage, EFUserStorage>();
 
             //ToDo: Theming (inkl. Darkmode)
             //ToDo: I18n und L10n

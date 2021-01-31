@@ -7,11 +7,14 @@ using Xamarin.Forms;
 namespace HealthTracker.MVVM
 {
     public abstract class SectionMainViewModel : ViewModelBase
-    {
+    {   
         protected INavigationService NavigationService { get; }
-
-        protected SectionMainViewModel(INavigationService navigationService)
-        {
+        
+        protected SectionMainViewModel
+        (   
+            INavigationService navigationService
+        )
+        {   
             NavigationService = navigationService;
             NavigationService.ActiveSectionChanged += NavigationService_ActiveSectionChanged;
         }
@@ -45,30 +48,6 @@ namespace HealthTracker.MVVM
             NavigationService.NavigateTo("Settings");
         }
 
-        #endregion
-
-        #region FilterContent
-
-        private ICommand _filterContentCommand;
-
-        public ICommand FilterContentCommand => GetLazyProperty(ref _filterContentCommand, () => new Command(p => FilterContentCore(p as Filter)));
-
-        private string _activeFilter;
-        public string ActiveFilter
-        {
-            get => _activeFilter;
-            set => SetProperty(ref _activeFilter, value);
-        }
-
-        private void FilterContentCore(Filter filter)
-        {
-            filter.IsActive = true;
-            ActiveFilter = filter.Name;
-            FilterContent(filter.Name);
-        }
-
-        protected abstract void FilterContent(string activeFilter);
-        
         #endregion
 
         #region ActiveSection

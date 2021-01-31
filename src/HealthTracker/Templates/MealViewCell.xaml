@@ -13,8 +13,10 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.GestureRecognizers>
@@ -26,6 +28,7 @@
             <StackLayout
                 Grid.Column="0"
                 Grid.Row="0"
+                Grid.RowSpan="2"
                 Margin="0"
                 Padding="0"
                 Spacing="0"
@@ -62,26 +65,31 @@
                 VerticalOptions="FillAndExpand"
                 HorizontalTextAlignment="Start"
                 VerticalTextAlignment="Center"
+                FontSize="Small"
+                Text="{Binding MealType, Converter={x:StaticResource MealTypeToString}}"
+            />
+            <Label
+                Grid.Column="3"
+                Grid.Row="0"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center"
+                FontSize="Small"
+                Text="{Binding Diet, Converter={x:StaticResource DietToString}}"
+            />
+            <Label
+                Grid.Column="2"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="Center"
                 FontSize="Medium"
                 FontAttributes="Bold"
                 Text="{Binding Name}"
             />
         </Grid>
-
-        <!--
-        <StackLayout
-            Orientation="Horizontal"
-            Margin="0"
-            Spacing="0"
-            Padding="10"
-            VerticalOptions="FillAndExpand"
-            HorizontalOptions="FillAndExpand"
-        >
-            
-            
-            
-        </StackLayout>
-
-    -->
     </ViewCell.View>
 </ViewCell>

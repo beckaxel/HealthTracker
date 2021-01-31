@@ -6,6 +6,7 @@ namespace HealthTracker.Services
 {
     public interface IViewService
     {
+        string ViewNameSuffix { get; }
         string GetNameOfView(ViewBase view);
         string GetNameOfView(Type viewType);
         IEnumerable<TBaseType> GetViews<TBaseType>() where TBaseType : ViewBase;

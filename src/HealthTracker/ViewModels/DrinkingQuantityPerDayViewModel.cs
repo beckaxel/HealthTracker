@@ -19,8 +19,8 @@ namespace HealthTracker.ViewModels
             get => _quantity;
             set
             {
-                SetProperty(ref _quantity, value);
-                OnPropertyChanged(nameof(Percent));
+                if (SetProperty(ref _quantity, value))
+                    OnPropertyChanged(nameof(Percent));
             }
         }
 
@@ -30,8 +30,8 @@ namespace HealthTracker.ViewModels
             get => _drinkingQuantityPerDay;
             set
             {
-                SetProperty(ref _drinkingQuantityPerDay, value);
-                OnPropertyChanged(nameof(Percent));
+                if (SetProperty(ref _drinkingQuantityPerDay, value))
+                    OnPropertyChanged(nameof(Percent));
             } 
         }
 

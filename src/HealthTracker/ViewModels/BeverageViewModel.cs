@@ -2,7 +2,6 @@
 using HealthTracker.Common;
 using HealthTracker.Models;
 using HealthTracker.MVVM;
-using HealthTracker.Storage;
 
 namespace HealthTracker.ViewModels
 {

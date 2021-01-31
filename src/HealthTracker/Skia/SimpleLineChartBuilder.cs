@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microcharts;
 using Xamarin.Forms;
@@ -66,7 +65,7 @@ namespace HealthTracker.Skia
         public Chart ToChart()
         {
             if (_values.Count == 0)
-                throw new InvalidOperationException("You have to provide at least one value");
+                return _lineChart;
 
             var min = _values.Min();
             var max = _values.Max();

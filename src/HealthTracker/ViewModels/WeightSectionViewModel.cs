@@ -1,57 +1,138 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using HealthTracker.Common;
+using HealthTracker.Models;
 using HealthTracker.MVVM;
 using HealthTracker.Services;
 using HealthTracker.Skia;
 using HealthTracker.Storage;
 using HealthTracker.Themes;
 using Microcharts;
+using Microsoft.EntityFrameworkCore;
 using Xamarin.Forms;
 
 namespace HealthTracker.ViewModels
 {
-    public class WeightSectionViewModel : SectionMainViewModel
+    public class WeightSectionViewModel : FilterableSectionMainViewModel<BodyMeasurement>
     {
-        private readonly HealthTrackerDbContext _healthTrackerDbContext;
-
         public WeightSectionViewModel
         (
-            INavigationService navigationService,
-            IDbContextFactory dbContextFactory
+            IDbContextFactory dbContextFactory,
+            INavigationService navigationService
         )
-            : base(navigationService)
+            : base(dbContextFactory, navigationService)
         {
-            _healthTrackerDbContext = dbContextFactory.CreateHealthTrackerDbContext();
-            Task.Run(() =>
-            {
-                FilterContent("Woche");
-            });
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _healthTrackerDbContext.Dispose();
-            base.Dispose(disposing);
+            
         }
 
         #region FilterContent
 
-        protected override void FilterContent(string activeFilter)
+        protected override Task<List<BodyMeasurement>> GetFilteredItemsAsync(IQueryable<BodyMeasurement> query, string filterName)
+        {
+            return query
+                .Filter(filterName)
+                .Where(bm => bm.Weight.HasValue && bm.Weight > 0)
+                .OrderByDescending(w => w.MeasureTime)
+                .ToListAsync();
+        }
+
+        protected override Task<bool> UpdateListAsync(List<BodyMeasurement> filteredItems, string filterName)
+        {
+            return Task.Run(() => UpdateList(filteredItems, filterName));
+        }
+
+        private bool UpdateList(List<BodyMeasurement> filteredItems, string filterName)
         {
             Weights.Clear();
-            Weights.AddRange(_healthTrackerDbContext
-                    .BodyMeasurement
-                    .Filter(activeFilter)
-                    .OrderByDescending(w => w.MeasureTime)
-                    .Select(w => new WeightViewModel { Parameter = w }));
+            if (filteredItems.Count == 0)
+                return false;
 
-            //Weights.CollectionChanged += (s, e) => UpdateChartAsync();
-            UpdateChartAsync();
+            Weights.AddRange(filteredItems.Select(w => new WeightViewModel { Parameter = w }));
+            return true;
+        }
+
+        protected override Task<bool> UpdateSummaryAsync(List<BodyMeasurement> filteredItems, string filterName)
+        {
+            return Task.Run(() => UpdateSummary(filteredItems, filterName));
+        }
+
+        private bool UpdateSummary(List<BodyMeasurement> filteredItems, string filterName)
+        {
+            UserHeight = HealthTrackerDbContext.GetOrAddUser().Height;
+            return filterName == "Heute"
+                ? UpdateTodaySummary(filteredItems)
+                : UpdateChartSummary(filteredItems, filterName);
+        }
+
+        private bool UpdateTodaySummary(List<BodyMeasurement> filteredItems)
+        {
+            var actualMeasurement = filteredItems.FirstOrDefault();
+            if (actualMeasurement == null)
+                return false;
+
+            ActualWeight = actualMeasurement.Weight.Value;
+            ActualWeightMeasureTime = actualMeasurement.MeasureTime.ToLocalTime();
+            return true;
+        }
+
+        private bool UpdateChartSummary(List<BodyMeasurement> filteredItems, string filterName)
+        {
+            if (!UpdateTodaySummary(filteredItems))
+                return false;
+
+            var groupedItems = filteredItems
+                .GroupBy(w => w.MeasureTime.ToLocalTime().Date, w => w.Weight.Value)
+                .OrderBy(g => g.Key)
+                .ToList();
+
+            if (groupedItems.Count == 0)
+                return false;
+
+            From = Filter.FormatDateTime(filterName, groupedItems.First().Key);
+            To = Filter.FormatDateTime(filterName, groupedItems.Last().Key);
+
+            var values = groupedItems.Select(g => g.Average());
+            MinWeight = values.Min();
+            AverageWeight = values.Average();
+            MaxWeight = values.Max();
+
+            var theme = new LightTheme();
+
+            var chartBuilder = new SimpleLineChartBuilder
+            {
+                BackgroundColor = Color.Transparent,
+                ForegroundColor = (Color)theme["SecondaryColor"]
+            };
+
+            if (filterName == "Jahr")
+            {
+                chartBuilder.PointSize = 10;
+                chartBuilder.LineMode = LineMode.Spline;
+
+                values = groupedItems
+                    .GroupBy(g => g.Key.GetWeekOfYear(CultureInfo.CurrentCulture), g => g.Average())
+                    .Select(g => g.Average());
+            }
+
+            chartBuilder.AddValueRange(values);
+            Chart = chartBuilder.ToChart();
+
+            return true;
         }
 
         #endregion
+
+        private float _userHeight;
+        public float UserHeight
+        {
+            get => _userHeight;
+            set => SetProperty(ref _userHeight, value);
+        }
 
         #region Weights
 
@@ -59,13 +140,9 @@ namespace HealthTracker.ViewModels
 
         #endregion
 
-        #region AddWeight
+        #region AddItem
 
-        private ICommand _addWeightCommand;
-
-        public ICommand AddWeightCommand => GetLazyProperty(ref _addWeightCommand, () => new Command(AddWeight));
-        
-        public void AddWeight()
+        protected override void AddItem()
         {
             NavigationService.NavigateTo("EditWeight");
         }
@@ -80,7 +157,7 @@ namespace HealthTracker.ViewModels
 
         public void OpenWeight(int weightId)
         {
-            var weight = _healthTrackerDbContext
+            var weight = HealthTrackerDbContext
                 .BodyMeasurement
                 .FirstOrDefault(bm => bm.BodyMeasurementId == weightId);
 
@@ -92,7 +169,80 @@ namespace HealthTracker.ViewModels
 
         #endregion
 
-        #region Chart
+        #region Summary
+
+        private DateTime _actualWeightMeasureTime;
+        public DateTime ActualWeightMeasureTime
+        {
+            get => _actualWeightMeasureTime;
+            set => SetProperty(ref _actualWeightMeasureTime, value);
+        }
+
+        private float _actualWeight;
+        public float ActualWeight
+        {
+            get => _actualWeight;
+            set
+            {
+                if (SetProperty(ref _actualWeight, value))
+                    OnPropertyChanged(nameof(ActualBodyMassIndex));
+            }
+        }
+
+        public float ActualBodyMassIndex => CalcBodyMassIndex(ActualWeight);
+
+        private string _from;
+        public string From
+        {
+            get => _from;
+            set => SetProperty(ref _from, value);
+        }
+
+        private string _to;
+        public string To
+        {
+            get => _to;
+            set => SetProperty(ref _to, value);
+        }
+
+        private float _minWeight;
+        public float MinWeight
+        {
+            get => _minWeight;
+            set
+            {
+                if (SetProperty(ref _minWeight, value))
+                    OnPropertyChanged(nameof(MinBodyMassIndex));
+            }
+        }
+
+        public float MinBodyMassIndex => CalcBodyMassIndex(MinWeight);
+
+        private float _averageWeight;
+        public float AverageWeight
+        {
+            get => _averageWeight;
+            set
+            {
+                if (SetProperty(ref _averageWeight, value))
+                    OnPropertyChanged(nameof(AverageBodyMassIndex));
+            }
+        }
+
+        public float AverageBodyMassIndex => CalcBodyMassIndex(AverageWeight);
+
+        private float _maxWeight;
+        public float MaxWeight
+        {
+            get => _maxWeight;
+            set
+            {
+                if (SetProperty(ref _maxWeight, value))
+                    OnPropertyChanged(nameof(MaxBodyMassIndex));
+            }
+        }
+
+        public float MaxBodyMassIndex => CalcBodyMassIndex(MaxWeight);
 
         private Chart _chart;
         public Chart Chart
@@ -101,41 +251,12 @@ namespace HealthTracker.ViewModels
             set => SetProperty(ref _chart, value);
         }
 
-        private bool _isChartLoading;
-        public bool IsChartLoading
+        private float CalcBodyMassIndex(float weight)
         {
-            get => _isChartLoading;
-            set => SetProperty(ref _isChartLoading, value);
-        }
-
-        
-        protected Task UpdateChartAsync()
-        {
-            return Task.Run(() => UpdateChart());
-        }
-
-        protected void UpdateChart()
-        {
-            
-            Task.Run(() => IsChartLoading = true);
-            var theme = new LightTheme();
-
-            var chartBuilder = new SimpleLineChartBuilder
-            {
-                BackgroundColor = (Color)theme["PrimaryDarkColor"],
-                ForegroundColor = (Color)theme["SecondaryColor"]
-            };
-
-            var values = Weights
-                .GroupBy(w => w.DateOfMeasureTime, w => w.Weight)
-                .OrderBy(g => g.Key)
-                .Select(g => g.Average())
-                .Where(v => v.HasValue)
-                .Select(v => v.Value);
-
-            chartBuilder.AddValueRange(values);
-            Chart = chartBuilder.ToChart();
-            Task.Run(() => IsChartLoading = false);
+            if (weight <= 0 || UserHeight <= 0)
+                return 0;
+            var height = UserHeight / 100;
+            return weight / (height * height);
         }
 
         #endregion

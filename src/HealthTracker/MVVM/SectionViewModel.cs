@@ -1,4 +1,8 @@
-﻿using HealthTracker.MVVM;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using HealthTracker.MVVM;
 using HealthTracker.Storage;
 using Xamarin.Forms;
 
@@ -13,12 +17,52 @@ namespace HealthTracker.ViewModels
         public SectionViewModel(ISettingsStorage settingsStorage)
         {
             _settingsStorage = settingsStorage;
+            Filters.CollectionChanged += Filters_CollectionChanged;
         }
 
         protected override void OnParameterChanged(object oldValue, object newValue)
         {
             Name = newValue as string;
             Load();
+        }
+
+        private void Filters_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Move)
+                return;
+
+            if (e.OldItems != null)
+            {
+                foreach (FilterViewModel filterViewModel in e.OldItems)
+                    filterViewModel.PropertyChanged -= FilterViewModel_PropertyChanged;
+            }
+
+            if (e.NewItems != null)
+            {
+                foreach (FilterViewModel filterViewModel in e.NewItems)
+                    filterViewModel.PropertyChanged += FilterViewModel_PropertyChanged;
+            }
+        }
+
+        private void FilterViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!(sender is FilterViewModel filterViewModel))
+                return;
+
+            if (e.PropertyName != nameof(FilterViewModel.Active))
+                return;
+
+            if (filterViewModel.Active)
+            {
+                ActiveFilter.Active = false;
+                ActiveFilter = filterViewModel;
+            }
+            else if (Filters.All(f => !f.Active))
+            {
+                var defaultFilter = Filters.FirstOrDefault(f => f.Default);
+                if (defaultFilter != null)
+                    defaultFilter.Active = true;
+            }
         }
 
         private void Load()
@@ -41,7 +85,7 @@ namespace HealthTracker.ViewModels
         #region Name
 
         public string Name { get; private set; }
-       
+
         #endregion
 
         #region DisplayName
@@ -76,6 +120,24 @@ namespace HealthTracker.ViewModels
         {
             get => _collation;
             set => SetProperty(ref _collation, value);
+        }
+
+        #endregion
+
+        #region Filters
+
+        public ObservableCollection<FilterViewModel> Filters { get; } = new ObservableCollection<FilterViewModel>();
+
+        #endregion
+
+        #region ActiveFilter
+
+        private FilterViewModel _activeFilter;
+
+        public FilterViewModel ActiveFilter
+        {
+            get => _activeFilter;
+            set => SetProperty(ref _activeFilter, value);
         }
 
         #endregion

@@ -2,9 +2,9 @@
 {
     public enum Diet
     {
-        None,
-        Pescetarian,
+        Vegan,
         Vegetarian,
-        Vegan 
+        Fish,
+        Meat
     }
 }

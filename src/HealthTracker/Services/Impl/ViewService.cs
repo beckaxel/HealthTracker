@@ -8,7 +8,7 @@ namespace HealthTracker.Services.Impl
 {
     public class ViewService : IViewService
     {
-        private const string ViewSuffix = "View";
+        public string ViewNameSuffix { get; } = "View";
 
         private readonly IServiceLocator _serviceLocator;
         private readonly Dictionary<string, Type> _viewTypes;
@@ -19,10 +19,10 @@ namespace HealthTracker.Services.Impl
             _viewTypes = typeResolver.ResolveTypes<ViewBase>
                 (
                     "HealthTracker.Views",
-                    suffix: ViewSuffix,
+                    suffix: ViewNameSuffix,
                     options: TypeResolvingOptions.IgnoreCase | TypeResolvingOptions.ClassesOnly
                 )
-                .ToDictionary(t => t.Name.Substring(0, t.Name.Length - ViewSuffix.Length), StringComparer.InvariantCultureIgnoreCase);
+                .ToDictionary(t => t.Name.Substring(0, t.Name.Length - ViewNameSuffix.Length), StringComparer.InvariantCultureIgnoreCase);
 
             foreach (var viewType in _viewTypes.Values)
                 _serviceLocator.RegisterSingleton(viewType);

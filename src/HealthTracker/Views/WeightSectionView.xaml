@@ -25,56 +25,228 @@
             Padding="0"
             Spacing="0"
             HorizontalOptions="FillAndExpand"
-            VerticalOptions="CenterAndExpand"
+            VerticalOptions="FillAndExpand"
         >
-            <c:ChartView
-                Chart="{Binding Chart}"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="FillAndExpand"
-                HeightRequest="150"
-                IsVisible="False"
-            >                    
-                <c:ChartView.Style>
-                    <Style TargetType="c:ChartView">
-                        <Style.Triggers>                              
-                            <DataTrigger TargetType="c:ChartView" Binding="{Binding IsChartLoading}" Value="False">
-                                <Setter Property="IsVisible" Value="True" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </c:ChartView.Style>                    
-            </c:ChartView>
             <StackLayout
+                Margin="0"
+                Padding="0"
+                Spacing="0"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand"
                 IsVisible="False"
             >
-                <StackLayout.Style>                        
-                    <Style TargetType="StackLayout">
-                        <Style.Triggers>                                
-                            <DataTrigger TargetType="StackLayout" Binding="{Binding IsChartLoading}" Value="True">
-                                <Setter Property="IsVisible" Value="True" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>                        
-                </StackLayout.Style>
-                <ActivityIndicator
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding ActiveSection.ActiveFilter.DisplayName}" Value="Heute">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Label
                     HorizontalOptions="FillAndExpand"
                     VerticalOptions="EndAndExpand"
-                    Color="{DynamicResource SecondaryColor}"
-                    IsRunning="True"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding ActualWeightMeasureTime, StringFormat='{0:g} Uhr'}"
                 />
                 <Label
                     HorizontalOptions="FillAndExpand"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="CenterAndExpand"
+                    VerticalTextAlignment="Center"
+                    TextColor="{DynamicResource SecondaryColor}"
+                >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding ActualWeight, StringFormat='{0:0.0}'}" FontSize="48" FontAttributes="Bold" />
+                            <Span Text=" kg" FontSize="48" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label
+                    HorizontalOptions="FillAndExpand"
+                    HorizontalTextAlignment="Center"
                     VerticalOptions="StartAndExpand"
                     VerticalTextAlignment="Center"
-                    HorizontalTextAlignment="Center"
-                    FontAttributes="Bold"
-                    FontSize="Medium"
-                    Text="Lade Daten ..."
                     TextColor="{DynamicResource SecondaryColor}"
-                />               
+                >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="BMI " FontSize="28" />
+                            <Span Text="{Binding ActualBodyMassIndex, StringFormat='{0:0.0}'}" FontSize="28" FontAttributes="Bold" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </StackLayout>
+            <Grid
+                Margin="0"
+                Padding="10,5"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="CenterAndExpand"
+            >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid" Binding="{Binding ActiveSection.ActiveFilter.DisplayName}" Value="Heute">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Grid.Triggers>
+                <StackLayout
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="3"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="0"
+                    Orientation="Horizontal"
+                >
+                    <Label
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="StartAndExpand"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Start"
+                        Text="{Binding From}"
+                    />
+                    <Label
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="Center"
+                    >
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Aktuell: " FontSize="Small" />
+                                <Span Text="{Binding ActualWeight, StringFormat='{0:0.0}'}" FontAttributes="Bold" FontSize="Medium" />
+                                <Span Text=" kg" FontSize="Small" />
+                                <Span Text=" ≙ " FontSize="Small" />
+                                <Span Text="BMI " FontSize="Small" />
+                                <Span Text="{Binding ActualBodyMassIndex, StringFormat='{0:0.0}'}" FontAttributes="Bold" FontSize="Medium" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="EndAndExpand"
+                        VerticalTextAlignment="Center"
+                        HorizontalTextAlignment="End"
+                        Text="{Binding To}"
+                    />
+                </StackLayout>
+                <c:ChartView
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    Chart="{Binding Chart}"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    HeightRequest="150"
+                />
+                <StackLayout
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="10"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="StartAndExpand"
+                    Orientation="Horizontal"
+                >
+                    <Label
+                        Text="↓"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"
+                        FontAttributes="Bold"
+                        FontSize="24"
+                    />
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                    >
+                        <Label
+                            Text="{Binding MinWeight, StringFormat='{0:0.0} kg'}"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                        />
+                        <Label
+                            Text="{Binding MinBodyMassIndex, StringFormat='BMI {0:0.0}'}"
+                            HorizontalTextAlignment="Center"
+                        />
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="10"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="CenterAndExpand"
+                    Orientation="Horizontal"
+                >
+                    <Label
+                        Text="∅"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Start"
+                        FontAttributes="Bold"
+                        FontSize="21"
+                    />
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                    >
+                        <Label
+                            Text="{Binding AverageWeight, StringFormat='{0:0.0} kg'}"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                        />
+                        <Label
+                            Text="{Binding AverageBodyMassIndex, StringFormat='BMI {0:0.0}'}"
+                            HorizontalTextAlignment="Center"
+                        />
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout
+                    Grid.Column="2"
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="10"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="EndAndExpand"
+                    Orientation="Horizontal"
+                >
+                    <Label
+                        Text="↑"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="Start"
+                        FontAttributes="Bold"
+                        FontSize="24"
+                    />
+                    <StackLayout
+                        Margin="0"
+                        Padding="0"
+                        Spacing="0"
+                    >
+                        <Label
+                            Text="{Binding MaxWeight, StringFormat='{0:0.0} kg'}"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                        />
+                        <Label
+                            Text="{Binding MaxBodyMassIndex, StringFormat='BMI {0:0.0}'}"
+                            HorizontalTextAlignment="Center"
+                        />
+                    </StackLayout>
+                </StackLayout>
+            </Grid>
         </StackLayout>
     </mvvm:SectionMainView.SectionSummary>
     <mvvm:SectionMainView.SectionFilters>
@@ -86,37 +258,12 @@
         </mvvm:FilterCollection>
     </mvvm:SectionMainView.SectionFilters>
     <mvvm:SectionMainView.SectionContent>
-        <AbsoluteLayout>
-            <StackLayout
-                AbsoluteLayout.LayoutFlags="PositionProportional"
-                AbsoluteLayout.LayoutBounds="0, 0, AutoSize, AutoSize"
-            >   
-                <ListView ItemsSource="{Binding Weights}" HasUnevenRows="True">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <t:BodyMeasurementViewCell />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackLayout>
-            <Button
-                AbsoluteLayout.LayoutFlags="PositionProportional"
-                AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
-                CornerRadius="30"
-                WidthRequest="60"
-                HeightRequest="60"
-                Margin="10"
-                BackgroundColor="{DynamicResource SecondaryLightColor}"
-                Command="{Binding AddWeightCommand}">
-                <Button.ImageSource>
-                    <FontImageSource
-                        Glyph="&#xf067;"
-                        FontFamily="FontAwesomeSolid"
-                        Color="{DynamicResource PrimaryTextColor}"
-                        Size="36"
-                    />
-                </Button.ImageSource>
-            </Button>
-        </AbsoluteLayout>
+        <ListView ItemsSource="{Binding Weights}" HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <t:BodyMeasurementViewCell />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </mvvm:SectionMainView.SectionContent>
 </mvvm:SectionMainView>

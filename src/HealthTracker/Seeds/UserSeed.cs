@@ -17,7 +17,7 @@ namespace HealthTracker.Seeds
             {
                 Gender = Gender.Male,
                 Height = 165f,
-                BirthDate = DateTime.Parse("1979-08-31 00:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal | DateTimeStyles.AdjustToUniversal),
+                BirthDate = DateTime.Parse("1979-08-31 00:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal),
                 DailyDrinkingQuantity = 2000f
             });
             healthTrackerDbContext.SaveChanges();

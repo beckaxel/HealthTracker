@@ -2,11 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Windows.Input;
 using HealthTracker.Common;
 using HealthTracker.Models;
 using HealthTracker.MVVM;
-using Xamarin.Forms;
 
 namespace HealthTracker.ViewModels
 {
@@ -119,6 +117,30 @@ namespace HealthTracker.ViewModels
         {
             OnPropertyChanged(nameof(HasPhotos));
             OnPropertyChanged(nameof(LatestPhoto));
+        }
+
+        #endregion
+
+        #region MealType
+
+        private MealType _mealType;
+
+        public MealType MealType
+        {
+            get => _mealType;
+            set => SetProperty(ref _mealType, value);
+        }
+
+        #endregion
+
+        #region Diet
+
+        private Diet _diet;
+
+        public Diet Diet
+        {
+            get => _diet;
+            set => SetProperty(ref _diet, value);
         }
 
         #endregion

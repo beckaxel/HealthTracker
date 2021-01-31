@@ -16,21 +16,6 @@ namespace HealthTracker.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.1");
 
-            modelBuilder.Entity("BeverageFood", b =>
-                {
-                    b.Property<int>("BeveragesBeverageId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("FoodsFoodId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("BeveragesBeverageId", "FoodsFoodId");
-
-                    b.HasIndex("FoodsFoodId");
-
-                    b.ToTable("BeverageFood");
-                });
-
             modelBuilder.Entity("BeveragePhoto", b =>
                 {
                     b.Property<int>("BeveragesBeverageId")
@@ -44,21 +29,6 @@ namespace HealthTracker.Migrations
                     b.HasIndex("PhotosPhotoId");
 
                     b.ToTable("BeveragePhoto");
-                });
-
-            modelBuilder.Entity("FoodMeal", b =>
-                {
-                    b.Property<int>("FoodsFoodId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("MealsMealId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("FoodsFoodId", "MealsMealId");
-
-                    b.HasIndex("MealsMealId");
-
-                    b.ToTable("FoodMeal");
                 });
 
             modelBuilder.Entity("HealthTracker.Models.Beverage", b =>
@@ -98,43 +68,20 @@ namespace HealthTracker.Migrations
                     b.ToTable("BodyMeasurement");
                 });
 
-            modelBuilder.Entity("HealthTracker.Models.Food", b =>
-                {
-                    b.Property<int>("FoodId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<float>("AlcoholContent")
-                        .HasColumnType("REAL");
-
-                    b.Property<bool>("ContainsGluten")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("ContainsLactose")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("ContainsSugar")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Diet")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("FoodId");
-
-                    b.ToTable("Food");
-                });
-
             modelBuilder.Entity("HealthTracker.Models.Meal", b =>
                 {
                     b.Property<int>("MealId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Diet")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("EatingTime")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("MealType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
@@ -270,21 +217,6 @@ namespace HealthTracker.Migrations
                     b.ToTable("MealPhoto");
                 });
 
-            modelBuilder.Entity("BeverageFood", b =>
-                {
-                    b.HasOne("HealthTracker.Models.Beverage", null)
-                        .WithMany()
-                        .HasForeignKey("BeveragesBeverageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HealthTracker.Models.Food", null)
-                        .WithMany()
-                        .HasForeignKey("FoodsFoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BeveragePhoto", b =>
                 {
                     b.HasOne("HealthTracker.Models.Beverage", null)
@@ -296,21 +228,6 @@ namespace HealthTracker.Migrations
                     b.HasOne("HealthTracker.Models.Photo", null)
                         .WithMany()
                         .HasForeignKey("PhotosPhotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FoodMeal", b =>
-                {
-                    b.HasOne("HealthTracker.Models.Food", null)
-                        .WithMany()
-                        .HasForeignKey("FoodsFoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HealthTracker.Models.Meal", null)
-                        .WithMany()
-                        .HasForeignKey("MealsMealId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -154,7 +154,6 @@
                     TextColor="{DynamicResource PrimaryTextColor}"
                     FontSize="Medium"
                     Command="{Binding CancelCommand}"
-                    IsEnabled="{Binding IsPhotoTaking, Converter={StaticResource InvertedBoolean}}"
                 >
                     <Button.Text>Abbrechen</Button.Text>
                     <Button.ImageSource>
@@ -174,7 +173,6 @@
                     TextColor="{DynamicResource SecondaryTextColor}"
                     FontSize="Medium"
                     Command="{Binding SaveCommand}"
-                    IsEnabled="{Binding IsPhotoTaking, Converter={StaticResource InvertedBoolean}}"
                 >
                     <Button.Text>Speichern</Button.Text>
                     <Button.ImageSource>
