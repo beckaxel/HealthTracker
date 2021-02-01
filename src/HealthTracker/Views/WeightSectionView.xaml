@@ -27,55 +27,271 @@
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"
         >
-            <StackLayout
+            <Grid
                 Margin="0"
-                Padding="0"
-                Spacing="0"
+                Padding="5"
+                ColumnSpacing="0"
+                RowSpacing="0"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand"
                 IsVisible="False"
             >
-                <StackLayout.Triggers>
-                    <DataTrigger TargetType="StackLayout" Binding="{Binding ActiveSection.ActiveFilter.DisplayName}" Value="Heute">
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid" Binding="{Binding ActiveSection.ActiveFilter.DisplayName}" Value="Heute">
                         <Setter Property="IsVisible" Value="True" />
                     </DataTrigger>
-                </StackLayout.Triggers>
+                </Grid.Triggers>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
                 <Label
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="EndAndExpand"
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="4"
                     HorizontalTextAlignment="Center"
                     VerticalTextAlignment="Center"
-                    Text="{Binding ActualWeightMeasureTime, StringFormat='{0:g} Uhr'}"
+                    FontSize="Medium"
+                    Text="{Binding WeightToday.ActualMeasureTime, StringFormat='{0:g} Uhr'}"
                 />
-                <Label
+                <StackLayout
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="4"
                     HorizontalOptions="FillAndExpand"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="CenterAndExpand"
-                    VerticalTextAlignment="Center"
-                    TextColor="{DynamicResource SecondaryColor}"
+                    VerticalOptions="FillAndExpand"
                 >
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding ActualWeight, StringFormat='{0:0.0}'}" FontSize="48" FontAttributes="Bold" />
-                            <Span Text=" kg" FontSize="48" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Label
-                    HorizontalOptions="FillAndExpand"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="StartAndExpand"
-                    VerticalTextAlignment="Center"
-                    TextColor="{DynamicResource SecondaryColor}"
+                    <Grid
+                        Margin="0"
+                        Padding="0"
+                        ColumnSpacing="0"
+                        RowSpacing="0"
+                    >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Margin="10,0"
+                            VerticalOptions="End"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            TextColor="{DynamicResource SecondaryColor}"
+                        >
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding WeightToday.ActualWeight, Converter={StaticResource WeightToString}}" FontSize="48" FontAttributes="Bold" />
+                                    <Span Text=" kg" FontSize="48" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="10,0"
+                            VerticalOptions="Start"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center"
+                            TextColor="{DynamicResource SecondaryColor}"
+                        >
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="BMI " FontSize="28" />
+                                    <Span Text="{Binding WeightToday.ActualBodyMassIndex, Converter={StaticResource BodyMassIndexToString}}" FontSize="28" FontAttributes="Bold" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Margin="10,0"
+                            VerticalTextAlignment="End"
+                            HorizontalTextAlignment="Center"
+                            TextColor="{DynamicResource SecondaryColor}"
+                            FontSize="48"
+                            Text="➞"
+                            Rotation="{Binding WeightToday.TrendDirection, Converter={StaticResource TrendDirectionToRotationAngle}}"
+                        />
+                        <Label
+                            Grid.Column="2"
+                            Grid.Row="1"
+                            Margin="10,0"
+                            VerticalTextAlignment="Top"
+                            HorizontalTextAlignment="Center"
+                            TextColor="{DynamicResource SecondaryColor}"
+                        >
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span
+                                        FontAttributes="Bold"
+                                        FontSize="24"
+                                        Text="{Binding WeightToday.TrendValue, Converter={StaticResource TrendValueToString}}"
+                                    />
+                                    <Span
+                                        FontSize="18"
+                                        Text=" g/Tag"
+                                    />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </StackLayout>
+                <StackLayout
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="0"
                 >
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="BMI " FontSize="28" />
-                            <Span Text="{Binding ActualBodyMassIndex, StringFormat='{0:0.0}'}" FontSize="28" FontAttributes="Bold" />
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-            </StackLayout>
+                    <Label
+                        TextColor="{DynamicResource SecondaryColor}"
+                        Text="Gestern"
+                        HorizontalTextAlignment="Center"
+                    />
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="{Binding WeightToday.YesterdayWeight, Converter={StaticResource WeightToString}}"
+                                />
+                                <Span Text=" kg" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="BMI " />
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="{Binding WeightToday.YesterdayBodyMassIndex, Converter={StaticResource BodyMassIndexToString}}"
+                                />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+                <StackLayout
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="0"
+                >
+                    <Label
+                        TextColor="{DynamicResource SecondaryColor}"
+                        Text="Letzte Woche"
+                        HorizontalTextAlignment="Center"
+                    />
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="{Binding WeightToday.LastWeekWeight, Converter={StaticResource WeightToString}}"
+                                />
+                                <Span Text=" kg" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="BMI " />
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="{Binding WeightToday.LastWeekBodyMassIndex, Converter={StaticResource BodyMassIndexToString}}"
+                                />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+                <StackLayout
+                    Grid.Column="2"
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="0"
+                >
+                    <Label
+                        TextColor="{DynamicResource SecondaryColor}"
+                        Text="LetzterMonat"
+                        HorizontalTextAlignment="Center"
+                    />
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="{Binding WeightToday.LastMonthWeight, Converter={StaticResource WeightToString}}"
+                                />
+                                <Span Text=" kg" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="BMI " />
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="{Binding WeightToday.LastMonthBodyMassIndex, Converter={StaticResource BodyMassIndexToString}}"
+                                />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+                <StackLayout
+                    Grid.Column="3"
+                    Grid.Row="2"
+                    Margin="0"
+                    Padding="0"
+                    Spacing="0"
+                >
+                    <Label
+                        TextColor="{DynamicResource SecondaryColor}"
+                        Text="Letztes Jahr"
+                        HorizontalTextAlignment="Center"
+                    />
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="{Binding WeightToday.LastYearWeight, Converter={StaticResource WeightToString}}"
+                                />
+                                <Span Text=" kg" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="BMI " />
+                                <Span
+                                    FontAttributes="Bold"
+                                    Text="{Binding WeightToday.LastYearBodyMassIndex, Converter={StaticResource BodyMassIndexToString}}"
+                                />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+            </Grid>
             <Grid
                 Margin="0"
                 Padding="10,5"
@@ -121,12 +337,9 @@
                     >
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="Aktuell: " FontSize="Small" />
-                                <Span Text="{Binding ActualWeight, StringFormat='{0:0.0}'}" FontAttributes="Bold" FontSize="Medium" />
-                                <Span Text=" kg" FontSize="Small" />
-                                <Span Text=" ≙ " FontSize="Small" />
-                                <Span Text="BMI " FontSize="Small" />
-                                <Span Text="{Binding ActualBodyMassIndex, StringFormat='{0:0.0}'}" FontAttributes="Bold" FontSize="Medium" />
+                                <Span Text="{Binding WeightToday.ActualWeight, Converter={StaticResource WeightToString}}" FontAttributes="Bold" FontSize="Medium" />
+                                <Span Text=" kg | BMI " FontSize="Small" />
+                                <Span Text="{Binding WeightToday.ActualBodyMassIndex, Converter={StaticResource BodyMassIndexToString}}" FontAttributes="Bold" FontSize="Medium" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

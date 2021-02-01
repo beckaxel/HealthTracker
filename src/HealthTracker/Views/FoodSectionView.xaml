@@ -310,7 +310,9 @@
                         <Label
                             HorizontalTextAlignment="Center"
                             TextColor="{DynamicResource SecondaryColor}"
-                            Text="Vegetarisch"
+                            LineBreakMode="TailTruncation"
+                            WidthRequest="50"
+                            Text="Vegetarian"
                         />
                         <Label
                             HorizontalTextAlignment="Center"

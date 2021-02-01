@@ -10,6 +10,7 @@
     <c:DietToStringConverter x:Key="DietToString" />
     <c:InvertedBooleanConverter x:Key="InvertedBoolean" />
     <c:WeightToStringConverter x:Key="WeightToString" />
+    <c:BodyMassIndexToStringConverter x:Key="BodyMassIndexToString" />
     <c:DrinkingQuantityToStringConverter x:Key="DrinkingQuantityToString" />
     <c:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSource" />
     <c:PhotoViewModelToImageSourceConverter x:Key="PhotoViewModelToImageSource" />
@@ -17,4 +18,6 @@
     <c:DaysSinceToStringConverter x:Key="DaysSinceToString" />
     <c:BooleanToCheckBoxGlyphConverter x:Key="BooleanToCheckBoxGlyph" />
     <c:AverageDaysToStringConverter x:Key="AverageDaysToString" />
+    <c:TrendDirectionToRotationAngleConverter x:Key="TrendDirectionToRotationAngle" />
+    <c:TrendValueToStringConverter x:Key="TrendValueToString" />
 </ResourceDictionary>

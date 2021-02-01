@@ -32,7 +32,7 @@
                 >
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding DateOfDrinkingTime, StringFormat='{0:dd.MM.yyyy}'}" FontSize="Medium" FontAttributes="Bold" />
+                            <Span Text="{Binding DateOfDrinkingTime, StringFormat='{0:ddd. dd.MM.yyyy}'}" FontSize="Medium" FontAttributes="Bold" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>

@@ -75,8 +75,20 @@ namespace HealthTracker.ViewModels
             if (actualMeasurement == null)
                 return false;
 
-            ActualWeight = actualMeasurement.Weight.Value;
-            ActualWeightMeasureTime = actualMeasurement.MeasureTime.ToLocalTime();
+            var actualDay = actualMeasurement.MeasureTime.Date.ToLocalTime();
+            WeightToday = new WeightPerDayViewModel
+            {
+                Day = actualDay,
+                UserHeight = UserHeight,
+                ActualMeasureTime = actualMeasurement.MeasureTime.ToLocalTime(),
+                ActualWeight = actualMeasurement.Weight.Value,
+                TrendValue = HealthTrackerDbContext.BodyMeasurement.CalcTrendValue(actualDay),
+                YesterdayWeight = HealthTrackerDbContext.BodyMeasurement.GetYesterdayWeight(actualDay),
+                LastWeekWeight = HealthTrackerDbContext.BodyMeasurement.GetLastWeekWeight(actualDay),
+                LastMonthWeight = HealthTrackerDbContext.BodyMeasurement.GetLastMonthWeight(actualDay),
+                LastYearWeight = HealthTrackerDbContext.BodyMeasurement.GetLastYearWeight(actualDay)
+            };
+
             return true;
         }
 
@@ -171,25 +183,12 @@ namespace HealthTracker.ViewModels
 
         #region Summary
 
-        private DateTime _actualWeightMeasureTime;
-        public DateTime ActualWeightMeasureTime
+        private WeightPerDayViewModel _weightToday;
+        public WeightPerDayViewModel WeightToday
         {
-            get => _actualWeightMeasureTime;
-            set => SetProperty(ref _actualWeightMeasureTime, value);
+            get => _weightToday;
+            set => SetProperty(ref _weightToday, value);
         }
-
-        private float _actualWeight;
-        public float ActualWeight
-        {
-            get => _actualWeight;
-            set
-            {
-                if (SetProperty(ref _actualWeight, value))
-                    OnPropertyChanged(nameof(ActualBodyMassIndex));
-            }
-        }
-
-        public float ActualBodyMassIndex => CalcBodyMassIndex(ActualWeight);
 
         private string _from;
         public string From

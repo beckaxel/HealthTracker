@@ -133,10 +133,10 @@ namespace HealthTracker.ViewModels
                 EatingYear = new EatingPerYearViewModel
                 {
                     TotalEatingDays = groupedItems.Count(),
-                    MeatDaysPerYear = groupedItems.Count(g => g.Max(m => m.Diet == Diet.Meat)),
-                    FishDaysPerYear = groupedItems.Count(g => g.Max(m => m.Diet == Diet.Fish)),
-                    VegetarianDaysPerYear = groupedItems.Count(g => g.Max(m => m.Diet == Diet.Vegetarian)),
-                    VeganDaysPerYear = groupedItems.Count(g => g.Max(m => m.Diet == Diet.Vegan))
+                    MeatDaysPerYear = groupedItems.Count(g => g.Max(m => m.Diet) == Diet.Meat),
+                    FishDaysPerYear = groupedItems.Count(g => g.Max(m => m.Diet) == Diet.Fish),
+                    VegetarianDaysPerYear = groupedItems.Count(g => g.Max(m => m.Diet) == Diet.Vegetarian),
+                    VeganDaysPerYear = groupedItems.Count(g => g.Max(m => m.Diet) == Diet.Vegan)
                 };
 
                 values = new[]

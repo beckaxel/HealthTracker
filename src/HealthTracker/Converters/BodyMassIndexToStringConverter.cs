@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace HealthTracker.Converters
 {
-    public class WeightToStringConverter : IValueConverter
+    public class BodyMassIndexToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
